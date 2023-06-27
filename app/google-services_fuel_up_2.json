@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "239198761474",
+    "firebase_url": "https://fuelup-960e8-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fuelup-960e8",
+    "storage_bucket": "fuelup-960e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239198761474:android:11c4496e4b2c134b5fad1b",
+        "android_client_info": {
+          "package_name": "app.as_flexi_fuel_2023_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239198761474-lprvgc5ia5vi54v37sr5aefvsu7o09cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-YASzBpXtAC4v9Cz0L4FpcZV2r_B6DBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239198761474-lprvgc5ia5vi54v37sr5aefvsu7o09cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239198761474:android:3438488938d65ca95fad1b",
+        "android_client_info": {
+          "package_name": "com.example.as_flexifuel_firebase_2023"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "239198761474-lprvgc5ia5vi54v37sr5aefvsu7o09cd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-YASzBpXtAC4v9Cz0L4FpcZV2r_B6DBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "239198761474-lprvgc5ia5vi54v37sr5aefvsu7o09cd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

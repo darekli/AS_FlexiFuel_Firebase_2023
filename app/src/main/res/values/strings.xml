@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AS_FlexiFuel_Firebase_2023</string>
+
+    <string name="select_fuel_type">Select Fuel Type</string>
+    <string name="select_fuel_fp">Select Fuel Filling Type</string>
+
+</resources>
