@@ -66,6 +66,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Amount" />
+    <Spinner
+        android:id="@+id/currencySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/fuel_fp_array"
+        android:prompt="@string/select_currency" />
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"

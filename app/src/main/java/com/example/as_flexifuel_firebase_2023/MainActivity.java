@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner fuelFPSpinner;
     private EditText litersEditText;
     private EditText amountEditText;
+    private Spinner currencySpinner;
     private Button addButton;
 
     private DatabaseReference refuelingsRef;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         fuelFPSpinner = findViewById(R.id.fuelFPSpinner);
         litersEditText = findViewById(R.id.litersEditText);
         amountEditText = findViewById(R.id.amountEditText);
+        currencySpinner = findViewById(R.id.currencySpinner);
 
         addButton = findViewById(R.id.addButton);
 
@@ -73,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<FuelFP> fuelFPAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelFP.values());
         fuelFPAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fuelFPSpinner.setAdapter(fuelFPAdapter);
+
+        ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Currency.values());
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        currencySpinner.setAdapter(currencyAdapter);
 
         refuelingsList = new ArrayList<>();
         refuelingAdapter = new RefuelingAdapter(refuelingsList);
@@ -113,11 +119,12 @@ public class MainActivity extends AppCompatActivity {
         FuelFP fuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
         String liters = litersEditText.getText().toString().trim();
         String amount = amountEditText.getText().toString().trim();
+        Currency currency = (Currency) currencySpinner.getSelectedItem();
 
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters,amount);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters,amount,currency);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -148,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
         fuelFPSpinner.setSelection(refueling.getFuelFP().ordinal());
         litersEditText.setText(refueling.getLiters());
         amountEditText.setText(refueling.getAmount());
+        currencySpinner.setSelection(refueling.getCurrency().ordinal());
+
     }
 
     private void clearFields() {
@@ -156,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         fuelFPSpinner.setSelection(0);
         litersEditText.setText("");
         amountEditText.setText("");
+        currencySpinner.setSelection(0);
+
     }
 
     private void retrieveRefuelings() {
@@ -215,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
         final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
+        final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
 
         // Set initial values for the dialog fields
         vehicleEditText.setText(refueling.getVehicle());
@@ -262,6 +274,23 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText(refueling.getLiters());
         amountEditText.setText(refueling.getAmount());
 
+        List<Currency> currencyList = Arrays.asList(Currency.values());
+        ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, currencyList);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        currencySpinner.setAdapter(currencyAdapter);
+        Currency refuelingCurrency = refueling.getCurrency();
+        if (refuelingCurrency != null) {
+            int currencySelection = currencyAdapter.getPosition(refuelingCurrency);
+            if (currencySelection != Spinner.INVALID_POSITION) {
+                currencySpinner.setSelection(currencySelection);
+            } else {
+                // Handle the case where the fuel FP is not found in the adapter
+            }
+        } else {
+            // Handle the case where the fuel FP is null
+            // Set a default selection or perform any other desired action
+        }
+
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
@@ -276,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 FuelFP updatedFuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
                 String updatedLiters = litersEditText.getText().toString().trim();
                 String updatedAmount = amountEditText.getText().toString().trim();
+                Currency updatedCurrency = (Currency) currencySpinner.getSelectedItem();
 
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
@@ -284,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setFuelFP(updatedFuelFP);
                 refueling.setLiters(updatedLiters);
                 refueling.setAmount(updatedAmount);
+                refueling.setCurrency(updatedCurrency);
 
                 // Update the refueling in the Firebase database
                 refuelingsRef.child(refueling.getId()).setValue(refueling)
@@ -336,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
         final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
+        final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
 
         // Set initial values for the dialog views
         vehicleEditText.setText(refueling.getVehicle());

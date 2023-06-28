@@ -48,6 +48,8 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView fuelFPTextView;
         private TextView litersTextView;
         private TextView amountTextView;
+        private TextView currencyTextView;
+
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
@@ -56,6 +58,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
             litersTextView = itemView.findViewById(R.id.litersTextView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
+            currencyTextView = itemView.findViewById(R.id.currencyTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,6 +106,12 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
                 amountTextView.setText(refueling.getAmount());
             } else {
                 amountTextView.setText("");
+            }
+            Currency currency = refueling.getCurrency();
+            if (currency != null) {
+                currencyTextView.setText(currency.name());
+            } else {
+                currencyTextView.setText("");
             }
         }
 

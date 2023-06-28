@@ -41,6 +41,12 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/currencyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -13,7 +13,7 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
     private TextView fuelFPTextView;
     private TextView litersTextView;
     private TextView amountTextView;
-
+    private TextView currencyTextView;
     public RefuelingViewHolder(@NonNull View itemView) {
         super(itemView);
         vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
@@ -22,6 +22,8 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
         litersTextView = itemView.findViewById(R.id.litersTextView);
         amountTextView = itemView.findViewById(R.id.amountTextView);
+        currencyTextView = itemView.findViewById(R.id.currencyTextView);
+
 
     }
 
@@ -32,6 +34,7 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         fuelFPTextView.setText(refueling.getFuelFP().name());
         litersTextView.setText(refueling.getLiters());
         amountTextView.setText(refueling.getAmount());
+        currencyTextView.setText(refueling.getCurrency().name());
 
     }
 
