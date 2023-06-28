@@ -46,13 +46,14 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView dateTextView;
         private TextView fuelTypeTextView;
         private TextView fuelFPTextView;
-
+        private TextView litersTextView;
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             fuelTypeTextView = itemView.findViewById(R.id.fuelTypeTextView);
             fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
+            litersTextView = itemView.findViewById(R.id.litersTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,6 +91,11 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
                 fuelFPTextView.setText(fuelFP.name());
             } else {
                 fuelFPTextView.setText("");
+            }
+            if (refueling.getLiters() != null) {
+                litersTextView.setText(refueling.getLiters());
+            } else {
+                litersTextView.setText("");
             }
         }
 

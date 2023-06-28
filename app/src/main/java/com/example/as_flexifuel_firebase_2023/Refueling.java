@@ -10,17 +10,20 @@ public class Refueling {
     private String date;
     private FuelType fuelType;
     private FuelFP fuelFP;
+    private String liters;
+
 
     public Refueling() {
         // Default constructor required for Firebase
     }
 
-    public Refueling(String id, String vehicle, String date, FuelType fuelType, FuelFP fuelFP) {
+    public Refueling(String id, String vehicle, String date, FuelType fuelType, FuelFP fuelFP, String liters) {
         this.id = id;
         this.vehicle = vehicle;
         this.date = date;
         this.fuelType = fuelType;
         this.fuelFP = fuelFP;
+        this.liters = liters;
     }
 
     public String getId() {
@@ -61,6 +64,14 @@ public class Refueling {
 
     public void setFuelFP(FuelFP fuelFP) {
         this.fuelFP = fuelFP;
+    }
+
+    public String getLiters() {
+        return liters;
+    }
+
+    public void setLiters(String liters) {
+        this.liters = liters;
     }
 }
 

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private DatePicker dateDatePicker;
     private Spinner fuelTypeSpinner;
     private Spinner fuelFPSpinner;
+    private EditText litersEditText;
     private Button addButton;
 
     private DatabaseReference refuelingsRef;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         dateDatePicker = findViewById(R.id.dateDatePicker);
         fuelTypeSpinner = findViewById(R.id.fuelTypeSpinner);
         fuelFPSpinner = findViewById(R.id.fuelFPSpinner);
+        litersEditText = findViewById(R.id.litersEditText);
         addButton = findViewById(R.id.addButton);
 
         // Initialize Firebase database reference
@@ -111,13 +113,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter vehicle and date", Toast.LENGTH_SHORT).show();
             return;
         }
-
         FuelType fuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
         FuelFP fuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
+        String liters = litersEditText.getText().toString().trim();
+
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         fuelTypeSpinner.setSelection(refueling.getFuelType().ordinal());
         fuelFPSpinner.setSelection(refueling.getFuelFP().ordinal());
+        litersEditText.setText(refueling.getLiters());
     }
 
     private void clearFields() {
@@ -209,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
         final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
+        final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
 
         // Set initial values for the dialog fields
         vehicleEditText.setText(refueling.getVehicle());
@@ -253,6 +258,9 @@ public class MainActivity extends AppCompatActivity {
             // Handle the case where the fuel FP is null
             // Set a default selection or perform any other desired action
         }
+        litersEditText.setText(refueling.getLiters());
+
+
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
@@ -265,12 +273,14 @@ public class MainActivity extends AppCompatActivity {
                 String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
                 FuelType updatedFuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
                 FuelFP updatedFuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
+                String updatedLiters = litersEditText.getText().toString().trim();
 
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
                 refueling.setDate(updatedDate);
                 refueling.setFuelType(updatedFuelType);
                 refueling.setFuelFP(updatedFuelFP);
+                refueling.setLiters(updatedLiters);
 
                 // Update the refueling in the Firebase database
                 refuelingsRef.child(refueling.getId()).setValue(refueling)
@@ -321,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
         final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
         final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
+        final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
 
         // Set initial values for the dialog views
         vehicleEditText.setText(refueling.getVehicle());
@@ -332,6 +343,10 @@ public class MainActivity extends AppCompatActivity {
                 // Retrieve the updated values from the dialog views
                 String updatedVehicle = vehicleEditText.getText().toString().trim();
                 // Retrieve other updated values accordingly
+//todo
+                String updatedLiters = litersEditText.getText().toString().trim();
+
+
 
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
