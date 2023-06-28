@@ -72,6 +72,11 @@
         android:layout_height="wrap_content"
         android:entries="@array/fuel_fp_array"
         android:prompt="@string/select_currency" />
+    <EditText
+        android:id="@+id/notesEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notes" />
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"

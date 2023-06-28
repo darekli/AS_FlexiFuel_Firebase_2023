@@ -37,4 +37,9 @@
         android:id="@+id/dialogCurrencySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/dialogNotesEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notes" />
 </LinearLayout>

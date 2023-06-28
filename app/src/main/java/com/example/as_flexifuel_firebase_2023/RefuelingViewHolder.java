@@ -14,6 +14,8 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
     private TextView litersTextView;
     private TextView amountTextView;
     private TextView currencyTextView;
+    private TextView notesTextView;
+
     public RefuelingViewHolder(@NonNull View itemView) {
         super(itemView);
         vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
@@ -23,6 +25,7 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         litersTextView = itemView.findViewById(R.id.litersTextView);
         amountTextView = itemView.findViewById(R.id.amountTextView);
         currencyTextView = itemView.findViewById(R.id.currencyTextView);
+        notesTextView = itemView.findViewById(R.id.notesTextView);
 
 
     }
@@ -35,7 +38,7 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         litersTextView.setText(refueling.getLiters());
         amountTextView.setText(refueling.getAmount());
         currencyTextView.setText(refueling.getCurrency().name());
-
+        notesTextView.setText(refueling.getNotes());
     }
 
     public void setOnClickListener(View.OnClickListener listener) {

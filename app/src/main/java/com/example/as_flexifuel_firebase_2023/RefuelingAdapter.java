@@ -49,6 +49,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView litersTextView;
         private TextView amountTextView;
         private TextView currencyTextView;
+        private TextView notesTextView;
 
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -59,6 +60,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             litersTextView = itemView.findViewById(R.id.litersTextView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
             currencyTextView = itemView.findViewById(R.id.currencyTextView);
+            notesTextView = itemView.findViewById(R.id.notesTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,6 +115,12 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             } else {
                 currencyTextView.setText("");
             }
+            if (refueling.getNotes() != null) {
+                notesTextView.setText(refueling.getNotes());
+            } else {
+                notesTextView.setText("");
+            }
+
         }
 
     }

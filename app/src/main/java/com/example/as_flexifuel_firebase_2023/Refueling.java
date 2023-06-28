@@ -14,12 +14,14 @@ public class Refueling {
     private String amount;
 
     private Currency currency;
+    private String notes;
+
 
     public Refueling() {
         // Default constructor required for Firebase
     }
 
-    public Refueling(String id, String vehicle, String date, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Currency currency) {
+    public Refueling(String id, String vehicle, String date, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Currency currency, String notes) {
         this.id = id;
         this.vehicle = vehicle;
         this.date = date;
@@ -28,6 +30,7 @@ public class Refueling {
         this.liters = liters;
         this.amount = amount;
         this.currency = currency;
+        this.notes = notes;
     }
 
     public String getId() {
@@ -92,6 +95,14 @@ public class Refueling {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
 

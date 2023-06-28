@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText litersEditText;
     private EditText amountEditText;
     private Spinner currencySpinner;
+    private EditText notesEditText;
     private Button addButton;
 
     private DatabaseReference refuelingsRef;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         litersEditText = findViewById(R.id.litersEditText);
         amountEditText = findViewById(R.id.amountEditText);
         currencySpinner = findViewById(R.id.currencySpinner);
+        notesEditText = findViewById(R.id.notesEditText);
 
         addButton = findViewById(R.id.addButton);
 
@@ -120,11 +122,12 @@ public class MainActivity extends AppCompatActivity {
         String liters = litersEditText.getText().toString().trim();
         String amount = amountEditText.getText().toString().trim();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
+        String notes = notesEditText.getText().toString().trim();
 
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters,amount,currency);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters,amount,currency,notes);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -156,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText(refueling.getLiters());
         amountEditText.setText(refueling.getAmount());
         currencySpinner.setSelection(refueling.getCurrency().ordinal());
+        notesEditText.setText(refueling.getNotes());
 
     }
 
@@ -166,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText("");
         amountEditText.setText("");
         currencySpinner.setSelection(0);
+        notesEditText.setText("");
 
     }
 
@@ -227,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
         final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
         final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
+        final EditText notesEditText = dialogView.findViewById(R.id.dialogNotesEditText);
 
         // Set initial values for the dialog fields
         vehicleEditText.setText(refueling.getVehicle());
@@ -290,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
             // Handle the case where the fuel FP is null
             // Set a default selection or perform any other desired action
         }
+        notesEditText.setText(refueling.getNotes());
 
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -306,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 String updatedLiters = litersEditText.getText().toString().trim();
                 String updatedAmount = amountEditText.getText().toString().trim();
                 Currency updatedCurrency = (Currency) currencySpinner.getSelectedItem();
+                String updatedNotes = notesEditText.getText().toString().trim();
 
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
@@ -315,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setLiters(updatedLiters);
                 refueling.setAmount(updatedAmount);
                 refueling.setCurrency(updatedCurrency);
+                refueling.setNotes(updatedNotes);
 
                 // Update the refueling in the Firebase database
                 refuelingsRef.child(refueling.getId()).setValue(refueling)
@@ -368,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
         final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
         final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
+        final EditText notesEditText = dialogView.findViewById(R.id.dialogNotesEditText);
 
         // Set initial values for the dialog views
         vehicleEditText.setText(refueling.getVehicle());
@@ -382,6 +392,7 @@ public class MainActivity extends AppCompatActivity {
 //todo
                 String updatedLiters = litersEditText.getText().toString().trim();
                 String updateAmount = amountEditText.getText().toString().trim();
+                String updateNotes = notesEditText.getText().toString().trim();
 
 
 
@@ -390,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setVehicle(updatedVehicle);
                 refueling.setLiters(updatedLiters);
                 refueling.setAmount(updateAmount);
+                refueling.setNotes(updateNotes);
                 // Update other fields accordingly
 
                 // Save the updated refueling object to the database
