@@ -44,6 +44,8 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
     public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         private TextView vehicleTextView;
         private TextView dateTextView;
+        private TextView mileageTextView;
+
         private TextView fuelTypeTextView;
         private TextView fuelFPTextView;
         private TextView litersTextView;
@@ -55,6 +57,8 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             super(itemView);
             vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
+            mileageTextView = itemView.findViewById(R.id.mileageTextView);
+
             fuelTypeTextView = itemView.findViewById(R.id.fuelTypeTextView);
             fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
             litersTextView = itemView.findViewById(R.id.litersTextView);
@@ -85,7 +89,11 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             } else {
                 dateTextView.setText("");
             }
-
+            if (refueling.getMileage() != null) {
+                mileageTextView.setText(refueling.getMileage());
+            } else {
+                mileageTextView.setText("");
+            }
             FuelType fuelType = refueling.getFuelType();
             if (fuelType != null) {
                 fuelTypeTextView.setText(fuelType.name());

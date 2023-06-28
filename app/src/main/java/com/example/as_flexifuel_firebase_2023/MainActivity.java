@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText vehicleEditText;
     private DatePicker dateDatePicker;
+    private EditText mileageEditText;
+
     private Spinner fuelTypeSpinner;
     private Spinner fuelFPSpinner;
     private EditText litersEditText;
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         vehicleEditText = findViewById(R.id.vehicleEditText);
         dateDatePicker = findViewById(R.id.dateDatePicker);
+        mileageEditText = findViewById(R.id.mileageEditText);
+
         fuelTypeSpinner = findViewById(R.id.fuelTypeSpinner);
         fuelFPSpinner = findViewById(R.id.fuelFPSpinner);
         litersEditText = findViewById(R.id.litersEditText);
@@ -117,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter vehicle and date", Toast.LENGTH_SHORT).show();
             return;
         }
+        String mileage = mileageEditText.getText().toString().trim();
+
         FuelType fuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
         FuelFP fuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
         String liters = litersEditText.getText().toString().trim();
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, fuelType, fuelFP,liters,amount,currency,notes);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date,mileage, fuelType, fuelFP,liters,amount,currency,notes);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -153,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
         int year = Integer.parseInt(dateParts[2]);
         dateDatePicker.updateDate(year, month, day);
+        mileageEditText.setText(refueling.getMileage());
 
         fuelTypeSpinner.setSelection(refueling.getFuelType().ordinal());
         fuelFPSpinner.setSelection(refueling.getFuelFP().ordinal());
@@ -165,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void clearFields() {
         vehicleEditText.setText("");
+        mileageEditText.setText("");
+
         fuelTypeSpinner.setSelection(0);
         fuelFPSpinner.setSelection(0);
         litersEditText.setText("");
@@ -227,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText vehicleEditText = dialogView.findViewById(R.id.dialogVehicleEditText);
         final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
+        final EditText mileageEditText = dialogView.findViewById(R.id.dialogMileageEditText);
+
         final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
@@ -241,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
         int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
         int year = Integer.parseInt(dateParts[2]);
         dateDatePicker.updateDate(year, month, day);
+        mileageEditText.setText(refueling.getMileage());
 
         // Create the fuel type adapter and set the selection
         List<FuelType> fuelTypeList = Arrays.asList(FuelType.values());
@@ -308,6 +320,8 @@ public class MainActivity extends AppCompatActivity {
                 int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
                 int updatedYear = dateDatePicker.getYear();
                 String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
+                String updatedMileage = mileageEditText.getText().toString().trim();
+
                 FuelType updatedFuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
                 FuelFP updatedFuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
                 String updatedLiters = litersEditText.getText().toString().trim();
@@ -318,6 +332,8 @@ public class MainActivity extends AppCompatActivity {
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
                 refueling.setDate(updatedDate);
+                refueling.setMileage(updatedMileage);
+
                 refueling.setFuelType(updatedFuelType);
                 refueling.setFuelFP(updatedFuelFP);
                 refueling.setLiters(updatedLiters);
@@ -372,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText vehicleEditText = dialogView.findViewById(R.id.dialogVehicleEditText);
         final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
+        final EditText mileageEditText = dialogView.findViewById(R.id.dialogMileageEditText);
         final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
@@ -389,6 +406,8 @@ public class MainActivity extends AppCompatActivity {
                 // Retrieve the updated values from the dialog views
                 String updatedVehicle = vehicleEditText.getText().toString().trim();
                 // Retrieve other updated values accordingly
+                String updatedMileage = mileageEditText.getText().toString().trim();
+
 //todo
                 String updatedLiters = litersEditText.getText().toString().trim();
                 String updateAmount = amountEditText.getText().toString().trim();

@@ -17,7 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp" />
-
+    <TextView
+        android:id="@+id/mileageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/fuelTypeTextView"
         android:layout_width="match_parent"

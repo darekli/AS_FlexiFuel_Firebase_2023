@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RefuelingViewHolder extends RecyclerView.ViewHolder {
     private TextView vehicleTextView;
     private TextView dateTextView;
+    private TextView mileageTextView;
     private TextView fuelTypeTextView;
     private TextView fuelFPTextView;
     private TextView litersTextView;
@@ -20,6 +21,7 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
         dateTextView = itemView.findViewById(R.id.dateTextView);
+        mileageTextView = itemView.findViewById(R.id.mileageTextView);
         fuelTypeTextView = itemView.findViewById(R.id.fuelTypeTextView);
         fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
         litersTextView = itemView.findViewById(R.id.litersTextView);
@@ -33,6 +35,8 @@ public class RefuelingViewHolder extends RecyclerView.ViewHolder {
     public void bind(Refueling refueling) {
         vehicleTextView.setText(refueling.getVehicle());
         dateTextView.setText(refueling.getDate());
+        mileageTextView.setText(refueling.getMileage());
+
         fuelTypeTextView.setText(refueling.getFuelType().name());
         fuelFPTextView.setText(refueling.getFuelFP().name());
         litersTextView.setText(refueling.getLiters());
