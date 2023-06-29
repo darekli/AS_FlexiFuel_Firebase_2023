@@ -1,0 +1,37 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+<!--         Customize your theme here.-->
+        <item name="colorPrimary">@color/darkMode_background_l4</item>
+        <item name="colorPrimaryDark">@color/darkMode_background_l3</item>
+        <item name="colorAccent">@color/darkMode_background_l4</item>
+        <item name="android:textColorPrimary">@color/white</item>
+
+    </style>
+    <!--  Menu Style  -->
+    <style name="navigationTheme">
+        <!-- Color of text and icon when SELECTED -->
+        <item name="colorPrimary">@color/darkMode_background_l4</item>
+<!--         Background color when SELECTED -->
+        <item name="colorControlHighlight">@color/colorGray_800</item>
+
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+<!--    <style name="LabelStyle">-->
+<!--        <item name="android:background">@drawable/bg_button_style_plus_minus</item>-->
+<!--        <item name="android:textColor">#FFF</item>-->
+<!--    </style>-->
+
+
+    <style name="RadioButtonPress_1" parent="@style/AppTheme">
+        <item name="colorControlActivated">@color/place_space_700_1</item>
+        <item name="colorControlNormal">@color/avgSpeed_Dark</item>
+    </style>
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
+</resources>

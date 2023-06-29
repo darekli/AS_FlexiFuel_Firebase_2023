@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".MainActivity">
@@ -11,16 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/refuelingsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/fuelFPSpinner"
             app:layout_constraintBottom_toTopOf="@id/addButton"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/fuelFPSpinner" />
     </LinearLayout>
 
 
@@ -29,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Vehicle" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
@@ -38,16 +40,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-    <DatePicker
-        android:id="@+id/dateDatePicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+        <DatePicker
+            android:id="@+id/dateDatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </ScrollView>
+
     <EditText
         android:id="@+id/mileageEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Mileage" />
+
     <Spinner
         android:id="@+id/fuelTypeSpinner"
         android:layout_width="match_parent"
@@ -61,33 +66,138 @@
         android:layout_height="wrap_content"
         android:entries="@array/fuel_fp_array"
         android:prompt="@string/select_fuel_fp" />
+
     <EditText
         android:id="@+id/litersEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Liters" />
+
     <EditText
         android:id="@+id/amountEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Amount" />
+
     <Spinner
         android:id="@+id/currencySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/fuel_fp_array"
         android:prompt="@string/select_currency" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:id="@+id/np_number_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_marginStart="16dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="0"
+            android:textSize="32dp"
+            android:textStyle="bold|italic"
+            android:theme="@style/AppTheme.Picker"
+            app:layout_constraintBottom_toBottomOf="@+id/np_ware"
+            app:layout_constraintStart_toEndOf="@+id/np_ware"
+            app:layout_constraintTop_toTopOf="@+id/np_ware" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="H" />
+
+        <NumberPicker
+            android:id="@+id/np_number_minutes"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:layout_marginEnd="32dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="0"
+            android:textSize="32dp"
+            android:textStyle="bold|italic"
+            android:theme="@style/AppTheme.Picker"
+            app:layout_constraintBottom_toBottomOf="@+id/np_number_loaded"
+            app:layout_constraintEnd_toStartOf="@+id/button_check"
+            app:layout_constraintStart_toEndOf="@+id/np_number_loaded"
+            app:layout_constraintTop_toTopOf="@+id/np_number_loaded" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="min" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
     <EditText
         android:id="@+id/notesEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Notes" />
+
     <Button
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Refueling" />
 
+    <TextView
+        android:id="@+id/tv_answer_01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="answer..."
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/button_ask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ask" />
+
+    <ScrollView
+        android:id="@+id/scrollView3c"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/top"
+                layout="@layout/ask_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
 </LinearLayout>
 
 

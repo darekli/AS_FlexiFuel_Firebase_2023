@@ -3,6 +3,9 @@ package com.example.as_flexifuel_firebase_2023;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -48,21 +54,107 @@ public class MainActivity extends AppCompatActivity {
     private List<Refueling> refuelingsList;
     private RefuelingAdapter refuelingAdapter;
 
-    private Refueling selectedRefueling;
+    private TextView tv_answer_01;
+    private Button buttonAsk;
+    private DatabaseReference databaseRef;
+
+    private NumberPicker np_number_hours, np_number_minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        tv_answer_01 = findViewById(R.id.tv_answer_01);
+        // askDateDatePicker = findViewById(R.id.askDateDatePicker);
+        buttonAsk = findViewById(R.id.button_ask);
+        np_number_hours = findViewById(R.id.np_number_hours);
+        np_number_hours.setMinValue(0);
+        np_number_hours.setMaxValue(9);
+        np_number_minutes = findViewById(R.id.np_number_minutes);
+        np_number_minutes.setMinValue(0);
+        np_number_minutes.setMaxValue(59);
+        np_number_minutes.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                return String.format("%02d", i);
+            }
+        });
+        buttonAsk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseRef = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                Query query = databaseRef.orderByChild("date").equalTo("29/6/2023").limitToFirst(1);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String kilometers = snapshot.child("mileage").getValue(String.class);
+                                tv_answer_01.setText(kilometers);
+                                break;  // Only retrieve the first result
+                            }
+                        } else {
+                            tv_answer_01.setText("No data found for the given date");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("Firebase", "Query canceled with error: " + databaseError.getMessage());
+                    }
+                });
+            }
+
+        });
+
+
         vehicleEditText = findViewById(R.id.vehicleEditText);
         dateDatePicker = findViewById(R.id.dateDatePicker);
         mileageEditText = findViewById(R.id.mileageEditText);
+        InputFilter mileageFilter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String regex = "-?[0-9]+"; // Wyrażenie regularne dopasowujące tylko liczby całkowite, włączając wartości ujemne
+                if (!source.toString().matches(regex)) {
+                    return ""; // Odrzuć wprowadzone znaki
+                }
+                return null; // Zaakceptuj wprowadzone znaki
+            }
+        };
+
+        mileageEditText.setFilters(new InputFilter[]{mileageFilter});
 
         fuelTypeSpinner = findViewById(R.id.fuelTypeSpinner);
         fuelFPSpinner = findViewById(R.id.fuelFPSpinner);
         litersEditText = findViewById(R.id.litersEditText);
+
+        InputFilter litersFilter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String regex = "-?[0-9]*(\\.[0-9]*)?"; // Wyrażenie regularne dopasowujące tylko liczby zmiennoprzecinkowe, włączając wartości ujemne
+                if (!source.toString().matches(regex)) {
+                    return ""; // Odrzuć wprowadzone znaki
+                }
+                return null; // Zaakceptuj wprowadzone znaki
+            }
+        };
+
+        litersEditText.setFilters(new InputFilter[]{litersFilter});
+
         amountEditText = findViewById(R.id.amountEditText);
+        InputFilter amountFilter = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                String regex = "-?[0-9]*(\\.[0-9]*)?"; // Wyrażenie regularne dopasowujące tylko liczby zmiennoprzecinkowe, włączając wartości ujemne
+                if (!source.toString().matches(regex)) {
+                    return ""; // Odrzuć wprowadzone znaki
+                }
+                return null; // Zaakceptuj wprowadzone znaki
+            }
+        };
+        amountEditText.setFilters(new InputFilter[]{amountFilter});
+
+
         currencySpinner = findViewById(R.id.currencySpinner);
         notesEditText = findViewById(R.id.notesEditText);
 
@@ -133,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date,mileage, fuelType, fuelFP,liters,amount,currency,notes);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, currency, notes);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -173,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
     private void clearFields() {
         vehicleEditText.setText("");
         mileageEditText.setText("");
-
         fuelTypeSpinner.setSelection(0);
         fuelFPSpinner.setSelection(0);
         litersEditText.setText("");
@@ -364,7 +455,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void deleteRefueling(final Refueling refueling) {
         refuelingsRef.child(refueling.getId()).removeValue()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -414,8 +504,6 @@ public class MainActivity extends AppCompatActivity {
                 String updateNotes = notesEditText.getText().toString().trim();
 
 
-
-
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
                 refueling.setLiters(updatedLiters);
@@ -443,6 +531,40 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton("Cancel", null);
 
         builder.create().show();
+    }
+
+    /**
+     * RETRIVING DATA
+     *
+     * @param targetDate
+     */
+    private void getLowestMileageByDate(String targetDate) {
+        Query query = databaseRef.orderByChild("date").equalTo(targetDate).limitToFirst(1);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Otrzymano element dla określonej daty
+                    DataSnapshot firstSnapshot = dataSnapshot.getChildren().iterator().next();
+                    Refueling refueling = firstSnapshot.getValue(Refueling.class);
+
+                    // Pobierz najniższy przebieg dla określonej daty
+                    String lowestMileage = refueling.getMileage();
+                    //tv_answer_01.setText(lowestMileage + " lower mileage");
+                    //  tv_answer_01.setText("hjhgjhghjgjgh");
+                    // Wykonaj działania na najniższym przebiegu
+                    // ...
+                } else {
+                    // Brak danych w bazie danych dla określonej daty
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Obsłuż błąd
+            }
+        });
     }
 
 

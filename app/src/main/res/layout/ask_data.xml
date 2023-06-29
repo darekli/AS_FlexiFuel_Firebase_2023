@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/layout_ask_data">
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/dialogVehicleEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Vehicle" />-->
+
+    <DatePicker
+        android:id="@+id/askDateDatePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+<!--    <Spinner-->
+<!--        android:id="@+id/dialogFuelTypeSpinner"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+
+<!--    <Spinner-->
+<!--        android:id="@+id/dialogFuelFPSpinner"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+<!--    <EditText-->
+    <!--        android:id="@+id/askMileageEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Mileage" />-->
+
+
+
+
+    <!--    <EditText-->
+<!--        android:id="@+id/dialogLitersEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Liters" />-->
+<!--    <EditText-->
+<!--        android:id="@+id/dialogAmountEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Amount" />-->
+<!--    <Spinner-->
+<!--        android:id="@+id/dialogCurrencySpinner"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content" />-->
+<!--    <EditText-->
+<!--        android:id="@+id/dialogNotesEditText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Notes" />-->
+</LinearLayout>

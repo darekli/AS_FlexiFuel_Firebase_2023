@@ -1,51 +1,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/dialogVehicleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Vehicle" />
+        <EditText
+            android:id="@+id/dialogVehicleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vehicle" />
 
-    <DatePicker
-        android:id="@+id/dialogDateDatePicker"
+    <ScrollView
+        android:id="@+id/scrollView3c"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Spinner
-        android:id="@+id/dialogFuelTypeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <DatePicker
+            android:id="@+id/dialogDateDatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
-    <Spinner
-        android:id="@+id/dialogFuelFPSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/dialogMileageEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mileage" />
+        <Spinner
+            android:id="@+id/dialogFuelTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/dialogLitersEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Liters" />
-    <EditText
-        android:id="@+id/dialogAmountEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Amount" />
-    <Spinner
-        android:id="@+id/dialogCurrencySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:id="@+id/dialogNotesEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Notes" />
+        <Spinner
+            android:id="@+id/dialogFuelFPSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/dialogMileageEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mileage" />
+
+        <EditText
+            android:id="@+id/dialogLitersEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Liters" />
+
+        <EditText
+            android:id="@+id/dialogAmountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Amount" />
+
+        <Spinner
+            android:id="@+id/dialogCurrencySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <EditText
+            android:id="@+id/dialogNotesEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Notes" />
 </LinearLayout>
