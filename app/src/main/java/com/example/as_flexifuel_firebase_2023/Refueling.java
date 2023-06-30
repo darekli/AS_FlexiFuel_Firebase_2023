@@ -15,6 +15,7 @@ public class Refueling {
     private String amount;
 
     private Currency currency;
+    private String timeworn;
     private String notes;
 
 
@@ -22,7 +23,7 @@ public class Refueling {
         // Default constructor required for Firebase
     }
 
-    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Currency currency, String notes) {
+    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Currency currency, String timeworn, String notes) {
         this.id = id;
         this.vehicle = vehicle;
         this.date = date;
@@ -32,6 +33,7 @@ public class Refueling {
         this.liters = liters;
         this.amount = amount;
         this.currency = currency;
+        this.timeworn = timeworn;
         this.notes = notes;
     }
 
@@ -105,6 +107,14 @@ public class Refueling {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public String getTimeworn() {
+        return timeworn;
+    }
+
+    public void setTimeworn(String timeworn) {
+        this.timeworn = timeworn;
     }
 
     public String getNotes() {

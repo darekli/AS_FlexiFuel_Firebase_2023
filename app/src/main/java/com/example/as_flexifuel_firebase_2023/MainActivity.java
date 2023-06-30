@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText litersEditText;
     private EditText amountEditText;
     private Spinner currencySpinner;
+    private TextView timeWornTextView;
     private EditText notesEditText;
+
     private Button addButton;
 
     private DatabaseReference refuelingsRef;
@@ -67,20 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         tv_answer_01 = findViewById(R.id.tv_answer_01);
-        // askDateDatePicker = findViewById(R.id.askDateDatePicker);
         buttonAsk = findViewById(R.id.button_ask);
-        np_number_hours = findViewById(R.id.np_number_hours);
-        np_number_hours.setMinValue(0);
-        np_number_hours.setMaxValue(9);
-        np_number_minutes = findViewById(R.id.np_number_minutes);
-        np_number_minutes.setMinValue(0);
-        np_number_minutes.setMaxValue(59);
-        np_number_minutes.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int i) {
-                return String.format("%02d", i);
-            }
-        });
         buttonAsk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,9 +142,39 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         amountEditText.setFilters(new InputFilter[]{amountFilter});
-
-
         currencySpinner = findViewById(R.id.currencySpinner);
+
+
+        np_number_hours = findViewById(R.id.np_number_hours);
+        np_number_hours.setMinValue(0);
+        np_number_hours.setMaxValue(9);
+        np_number_minutes = findViewById(R.id.np_number_minutes);
+        np_number_minutes.setMinValue(0);
+        np_number_minutes.setMaxValue(59);
+        np_number_minutes.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                return String.format("%02d", i);
+            }
+        });
+        int hours = np_number_hours.getValue();
+        int minutes = np_number_minutes.getValue();
+        int totalMinutes = hours * 60 + minutes;
+        timeWornTextView = findViewById(R.id.timeWornTextView);
+       // timeWornTextView.setText(totalMinutes);
+        np_number_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                updateTextView();
+            }
+        });
+        np_number_minutes.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                updateTextView();
+            }
+        });
+
         notesEditText = findViewById(R.id.notesEditText);
 
         addButton = findViewById(R.id.addButton);
@@ -220,12 +239,13 @@ public class MainActivity extends AppCompatActivity {
         String liters = litersEditText.getText().toString().trim();
         String amount = amountEditText.getText().toString().trim();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
+        String timeworn = timeWornTextView.getText().toString().trim();
         String notes = notesEditText.getText().toString().trim();
 
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, currency, notes);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, currency, timeworn, notes);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -258,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText(refueling.getLiters());
         amountEditText.setText(refueling.getAmount());
         currencySpinner.setSelection(refueling.getCurrency().ordinal());
+        timeWornTextView.setText(refueling.getTimeworn());
         notesEditText.setText(refueling.getNotes());
 
     }
@@ -270,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText("");
         amountEditText.setText("");
         currencySpinner.setSelection(0);
+        timeWornTextView.setText("");
         notesEditText.setText("");
 
     }
@@ -565,6 +587,13 @@ public class MainActivity extends AppCompatActivity {
                 // Obsłuż błąd
             }
         });
+    }
+    private void updateTextView() {
+        int hours = np_number_hours.getValue();
+        int minutes = np_number_minutes.getValue();
+
+        String combinedValue = hours + ":" + minutes;
+        timeWornTextView.setText(combinedValue);
     }
 
 

@@ -145,6 +145,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="min" />
+        <TextView
+            android:id="@+id/timeWornTextView"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <EditText

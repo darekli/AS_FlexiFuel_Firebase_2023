@@ -50,6 +50,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView litersTextView;
         private TextView amountTextView;
         private TextView currencyTextView;
+        private TextView timeWornTextView;
         private TextView notesTextView;
 
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
@@ -62,6 +63,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             litersTextView = itemView.findViewById(R.id.litersTextView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
             currencyTextView = itemView.findViewById(R.id.currencyTextView);
+            timeWornTextView = itemView.findViewById(R.id.timeWornTextView);
             notesTextView = itemView.findViewById(R.id.notesTextView);
 
             itemView.setOnClickListener(new View.OnClickListener() {

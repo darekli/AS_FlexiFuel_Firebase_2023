@@ -20,11 +20,11 @@ public class RefuelingDao {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     }
 
-    public void addRefueling(String vehicle, Calendar date,String mileage, FuelType fuelType, FuelFP fuelFP,String liters,String amount,Currency currency,String notes) {
+    public void addRefueling(String vehicle, Calendar date,String mileage, FuelType fuelType, FuelFP fuelFP,String liters,String amount,Currency currency,String timeWorn,String notes) {
         String id = refuelingsRef.push().getKey();
         String dateString = dateFormat.format(date.getTime());
 
-        Refueling refueling = new Refueling(id, vehicle, dateString,mileage, fuelType, fuelFP,liters,amount,currency, notes);
+        Refueling refueling = new Refueling(id, vehicle, dateString,mileage, fuelType, fuelFP,liters,amount,currency,timeWorn,notes);
         refuelingsRef.child(id).setValue(refueling);
     }
 }
