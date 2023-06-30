@@ -165,19 +165,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Refueling" />
-
-    <TextView
-        android:id="@+id/tv_answer_01"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="answer..."
-        android:textSize="14dp" />
-
     <Button
-        android:id="@+id/button_ask"
-        android:layout_width="match_parent"
+        android:id="@+id/button_ask_page"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ask" />
+        android:text="Ask page" />
+
+
 
     <ScrollView
         android:id="@+id/scrollView3c"
@@ -189,22 +183,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        </ScrollView>
 
-            <include
-                android:id="@+id/top"
-                layout="@layout/ask_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-    </ScrollView>
 </LinearLayout>
 
 

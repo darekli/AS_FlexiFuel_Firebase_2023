@@ -2,13 +2,13 @@ package com.example.as_flexifuel_firebase_2023;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.as_flexifuel_firebase_2023.adapter.Ask;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,29 +39,29 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText vehicleEditText;
-    private DatePicker dateDatePicker;
-    private EditText mileageEditText;
+    public EditText vehicleEditText;
+    public DatePicker dateDatePicker;
+    public EditText mileageEditText;
 
-    private Spinner fuelTypeSpinner;
-    private Spinner fuelFPSpinner;
-    private EditText litersEditText;
-    private EditText amountEditText;
-    private Spinner currencySpinner;
-    private TextView timeWornTextView;
-    private EditText notesEditText;
+    public Spinner fuelTypeSpinner;
+    public Spinner fuelFPSpinner;
+    public EditText litersEditText;
+    public EditText amountEditText;
+    public Spinner currencySpinner;
+    public TextView timeWornTextView;
+    public EditText notesEditText;
 
-    private Button addButton;
+    public Button addButton;
 
-    private DatabaseReference refuelingsRef;
+    public DatabaseReference refuelingsRef;
     private List<Refueling> refuelingsList;
     private RefuelingAdapter refuelingAdapter;
 
-    private TextView tv_answer_01;
-    private Button buttonAsk;
-    private DatabaseReference databaseRef;
+//    private TextView tv_answer_01;
+   private Button buttonAsk, buttonAskPage;
+//    private DatabaseReference databaseRef;
 
-    private NumberPicker np_number_hours, np_number_minutes;
+    public NumberPicker np_number_hours, np_number_minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,35 +69,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        tv_answer_01 = findViewById(R.id.tv_answer_01);
-        buttonAsk = findViewById(R.id.button_ask);
-        buttonAsk.setOnClickListener(new View.OnClickListener() {
+        /**
+         * PAGE ASK
+         */
+        buttonAskPage
+                = findViewById(R.id.button_ask_page);
+
+        buttonAskPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseRef = FirebaseDatabase.getInstance().getReference("refuelings");
-
-                Query query = databaseRef.orderByChild("date").equalTo("29/6/2023").limitToFirst(1);
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                String kilometers = snapshot.child("mileage").getValue(String.class);
-                                tv_answer_01.setText(kilometers);
-                                break;  // Only retrieve the first result
-                            }
-                        } else {
-                            tv_answer_01.setText("No data found for the given date");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.e("Firebase", "Query canceled with error: " + databaseError.getMessage());
-                    }
-                });
+                startActivity(new Intent(MainActivity.this, Ask.class));
             }
-
         });
 
 
@@ -161,17 +144,17 @@ public class MainActivity extends AppCompatActivity {
         int minutes = np_number_minutes.getValue();
         int totalMinutes = hours * 60 + minutes;
         timeWornTextView = findViewById(R.id.timeWornTextView);
-       // timeWornTextView.setText(totalMinutes);
+        // timeWornTextView.setText(totalMinutes);
         np_number_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                updateTextView();
+                updateTimeWorn();
             }
         });
         np_number_minutes.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                updateTextView();
+                updateTimeWorn();
             }
         });
 
@@ -555,40 +538,9 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    /**
-     * RETRIVING DATA
-     *
-     * @param targetDate
-     */
-    private void getLowestMileageByDate(String targetDate) {
-        Query query = databaseRef.orderByChild("date").equalTo(targetDate).limitToFirst(1);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Otrzymano element dla określonej daty
-                    DataSnapshot firstSnapshot = dataSnapshot.getChildren().iterator().next();
-                    Refueling refueling = firstSnapshot.getValue(Refueling.class);
 
-                    // Pobierz najniższy przebieg dla określonej daty
-                    String lowestMileage = refueling.getMileage();
-                    //tv_answer_01.setText(lowestMileage + " lower mileage");
-                    //  tv_answer_01.setText("hjhgjhghjgjgh");
-                    // Wykonaj działania na najniższym przebiegu
-                    // ...
-                } else {
-                    // Brak danych w bazie danych dla określonej daty
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Obsłuż błąd
-            }
-        });
-    }
-    private void updateTextView() {
+    private void updateTimeWorn() {
         int hours = np_number_hours.getValue();
         int minutes = np_number_minutes.getValue();
 

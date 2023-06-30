@@ -15,7 +15,18 @@
         android:id="@+id/askDateDatePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_answer_01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="answer..."
+        android:textSize="14dp" />
 
+    <Button
+        android:id="@+id/button_ask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ask" />
 <!--    <Spinner-->
 <!--        android:id="@+id/dialogFuelTypeSpinner"-->
 <!--        android:layout_width="match_parent"-->
