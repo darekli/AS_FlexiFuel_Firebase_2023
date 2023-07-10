@@ -9,4 +9,10 @@
         <item>FULL</item>
         <item>PART</item>
     </string-array>
+    <string-array name="counrty_array">
+        <item>POLAND</item>
+        <item>GERMANY</item>
+        <item>NEDERLAND</item>
+        <item>BELGIUM</item>
+    </string-array>
 </resources>

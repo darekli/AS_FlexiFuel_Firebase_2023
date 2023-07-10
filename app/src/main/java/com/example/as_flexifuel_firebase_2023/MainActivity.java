@@ -47,9 +47,15 @@ public class MainActivity extends AppCompatActivity {
     public Spinner fuelFPSpinner;
     public EditText litersEditText;
     public EditText amountEditText;
+    public Spinner countrySpinner;
     public Spinner currencySpinner;
     public TextView timeWornTextView;
     public EditText notesEditText;
+    public EditText poiEditText;
+
+    public EditText latEditText;
+    public EditText lngEditText;
+
 
     public Button addButton;
 
@@ -57,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Refueling> refuelingsList;
     private RefuelingAdapter refuelingAdapter;
 
-//    private TextView tv_answer_01;
-   private Button buttonAsk, buttonAskPage;
+    //    private TextView tv_answer_01;
+    private Button buttonAsk, buttonAskPage;
 //    private DatabaseReference databaseRef;
 
     public NumberPicker np_number_hours, np_number_minutes;
@@ -125,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         amountEditText.setFilters(new InputFilter[]{amountFilter});
+        countrySpinner = findViewById(R.id.countrySpinner);
         currencySpinner = findViewById(R.id.currencySpinner);
-
 
         np_number_hours = findViewById(R.id.np_number_hours);
         np_number_hours.setMinValue(0);
@@ -159,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         notesEditText = findViewById(R.id.notesEditText);
-
+        poiEditText = findViewById(R.id.poiEditText);
         addButton = findViewById(R.id.addButton);
 
         // Initialize Firebase database reference
@@ -175,6 +181,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<FuelFP> fuelFPAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelFP.values());
         fuelFPAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fuelFPSpinner.setAdapter(fuelFPAdapter);
+
+        ArrayAdapter<Country> countryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Country.values());
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(countryAdapter);
 
         ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Currency.values());
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -206,10 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addRefueling() {
         String vehicle = vehicleEditText.getText().toString().trim();
-        int day = dateDatePicker.getDayOfMonth();
-        int month = dateDatePicker.getMonth() + 1; // Months are zero-based
-        int year = dateDatePicker.getYear();
-        String date = day + "/" + month + "/" + year;
+        String date = userDatePickerFormatDate();
 
         if (vehicle.isEmpty() || date.isEmpty()) {
             Toast.makeText(this, "Please enter vehicle and date", Toast.LENGTH_SHORT).show();
@@ -221,14 +228,17 @@ public class MainActivity extends AppCompatActivity {
         FuelFP fuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
         String liters = litersEditText.getText().toString().trim();
         String amount = amountEditText.getText().toString().trim();
+        Country country = (Country) countrySpinner.getSelectedItem();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
         String timeworn = timeWornTextView.getText().toString().trim();
         String notes = notesEditText.getText().toString().trim();
-
+        String poi = poiEditText.getText().toString().trim();
+        String lat = latEditText.getText().toString().trim();
+        String lng = lngEditText.getText().toString().trim();
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, currency, timeworn, notes);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, country, currency, timeworn, notes, poi,lat,lng);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -246,25 +256,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void populateFields(Refueling refueling) {
-        vehicleEditText.setText(refueling.getVehicle());
-
-        String[] dateParts = refueling.getDate().split("/");
-        int day = Integer.parseInt(dateParts[0]);
-        int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
-        int year = Integer.parseInt(dateParts[2]);
-        dateDatePicker.updateDate(year, month, day);
-        mileageEditText.setText(refueling.getMileage());
-
-        fuelTypeSpinner.setSelection(refueling.getFuelType().ordinal());
-        fuelFPSpinner.setSelection(refueling.getFuelFP().ordinal());
-        litersEditText.setText(refueling.getLiters());
-        amountEditText.setText(refueling.getAmount());
-        currencySpinner.setSelection(refueling.getCurrency().ordinal());
-        timeWornTextView.setText(refueling.getTimeworn());
-        notesEditText.setText(refueling.getNotes());
-
-    }
 
     private void clearFields() {
         vehicleEditText.setText("");
@@ -273,10 +264,13 @@ public class MainActivity extends AppCompatActivity {
         fuelFPSpinner.setSelection(0);
         litersEditText.setText("");
         amountEditText.setText("");
+        countrySpinner.setSelection(0);
         currencySpinner.setSelection(0);
         timeWornTextView.setText("");
         notesEditText.setText("");
-
+        poiEditText.setText("");
+        latEditText.setText("");
+        lngEditText.setText("");
     }
 
     private void retrieveRefuelings() {
@@ -338,8 +332,13 @@ public class MainActivity extends AppCompatActivity {
         final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
         final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
         final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
+        final Spinner countrySpinner = dialogView.findViewById(R.id.dialogCountrySpinner);
         final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
         final EditText notesEditText = dialogView.findViewById(R.id.dialogNotesEditText);
+        final EditText poiEditText = dialogView.findViewById(R.id.dialogPoiEditText);
+        final EditText latEditText = dialogView.findViewById(R.id.dialogLatEditText);
+        final EditText lngEditText = dialogView.findViewById(R.id.dialogLngEditText);
+
 
         // Set initial values for the dialog fields
         vehicleEditText.setText(refueling.getVehicle());
@@ -388,6 +387,23 @@ public class MainActivity extends AppCompatActivity {
         litersEditText.setText(refueling.getLiters());
         amountEditText.setText(refueling.getAmount());
 
+        List<Country> countryList = Arrays.asList(Country.values());
+        ArrayAdapter<Country> countryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countryList);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(countryAdapter);
+        Country refuelingCountry = refueling.getCountry();
+        if (refuelingCountry != null) {
+            int countrySelection = countryAdapter.getPosition(refuelingCountry);
+            if (countrySelection != Spinner.INVALID_POSITION) {
+                countrySpinner.setSelection(countrySelection);
+            } else {
+                // Handle the case where the fuel FP is not found in the adapter
+            }
+        } else {
+            // Handle the case where the fuel FP is null
+            // Set a default selection or perform any other desired action
+        }
+
         List<Currency> currencyList = Arrays.asList(Currency.values());
         ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, currencyList);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -405,6 +421,7 @@ public class MainActivity extends AppCompatActivity {
             // Set a default selection or perform any other desired action
         }
         notesEditText.setText(refueling.getNotes());
+        poiEditText.setText(refueling.getPoi());
 
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -412,19 +429,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // Get the updated values from the dialog fields
                 String updatedVehicle = vehicleEditText.getText().toString().trim();
-                int updatedDay = dateDatePicker.getDayOfMonth();
-                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
-                int updatedYear = dateDatePicker.getYear();
-                String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
+//                int updatedDay = dateDatePicker.getDayOfMonth();
+//                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
+//                int updatedYear = dateDatePicker.getYear();
+                String updatedDate = userDatePickerFormatDate();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
                 String updatedMileage = mileageEditText.getText().toString().trim();
 
                 FuelType updatedFuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
                 FuelFP updatedFuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
                 String updatedLiters = litersEditText.getText().toString().trim();
                 String updatedAmount = amountEditText.getText().toString().trim();
+                Country updateCountry = (Country) countrySpinner.getSelectedItem();
                 Currency updatedCurrency = (Currency) currencySpinner.getSelectedItem();
                 String updatedNotes = notesEditText.getText().toString().trim();
-
+                String updatePoi = poiEditText.getText().toString().trim();
+                String updateLat = latEditText.getText().toString().trim();
+                String updateLng = lngEditText.getText().toString().trim();
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
                 refueling.setDate(updatedDate);
@@ -434,8 +454,12 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setFuelFP(updatedFuelFP);
                 refueling.setLiters(updatedLiters);
                 refueling.setAmount(updatedAmount);
+                refueling.setCountry(updateCountry);
                 refueling.setCurrency(updatedCurrency);
                 refueling.setNotes(updatedNotes);
+                refueling.setPoi(updatePoi);
+                refueling.setLat(updateLat);
+                refueling.setLng(updateLng);
 
                 // Update the refueling in the Firebase database
                 refuelingsRef.child(refueling.getId()).setValue(refueling)
@@ -476,78 +500,20 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void showEditDialog(final Refueling refueling) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_edit_refueling, null);
-        builder.setView(dialogView);
-
-        final EditText vehicleEditText = dialogView.findViewById(R.id.dialogVehicleEditText);
-        final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
-        final EditText mileageEditText = dialogView.findViewById(R.id.dialogMileageEditText);
-        final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
-        final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
-        final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
-        final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
-        final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
-        final EditText notesEditText = dialogView.findViewById(R.id.dialogNotesEditText);
-
-        // Set initial values for the dialog views
-        vehicleEditText.setText(refueling.getVehicle());
-        // Set other views accordingly
-
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Retrieve the updated values from the dialog views
-                String updatedVehicle = vehicleEditText.getText().toString().trim();
-                // Retrieve other updated values accordingly
-                String updatedMileage = mileageEditText.getText().toString().trim();
-
-//todo
-                String updatedLiters = litersEditText.getText().toString().trim();
-                String updateAmount = amountEditText.getText().toString().trim();
-                String updateNotes = notesEditText.getText().toString().trim();
-
-
-                // Update the refueling object
-                refueling.setVehicle(updatedVehicle);
-                refueling.setLiters(updatedLiters);
-                refueling.setAmount(updateAmount);
-                refueling.setNotes(updateNotes);
-                // Update other fields accordingly
-
-                // Save the updated refueling object to the database
-                refuelingsRef.child(refueling.getId()).setValue(refueling)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(MainActivity.this, "Refueling updated", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this, "Failed to update refueling", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
-
-        builder.setNegativeButton("Cancel", null);
-
-        builder.create().show();
-    }
-
-
-
     private void updateTimeWorn() {
         int hours = np_number_hours.getValue();
         int minutes = np_number_minutes.getValue();
-
         String combinedValue = hours + ":" + minutes;
         timeWornTextView.setText(combinedValue);
     }
 
+    public String userDatePickerFormatDate() {
+        int updatedDay = dateDatePicker.getDayOfMonth();
+        int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
+        int updatedYear = dateDatePicker.getYear();
+        String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
+        return updatedDate;
+
+    }
 
 }
-

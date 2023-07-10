@@ -42,6 +42,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
     }
 
     public class RefuelingViewHolder extends RecyclerView.ViewHolder {
+        private TextView iDTextView;
         private TextView vehicleTextView;
         private TextView dateTextView;
         private TextView mileageTextView;
@@ -49,12 +50,16 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView fuelFPTextView;
         private TextView litersTextView;
         private TextView amountTextView;
+        private TextView countryTextView;
         private TextView currencyTextView;
         private TextView timeWornTextView;
         private TextView notesTextView;
-
+        private TextView poiTextView;
+        private TextView latTextView;
+        private TextView lngTextView;
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
+            iDTextView = itemView.findViewById(R.id.iDTextView);
             vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             mileageTextView = itemView.findViewById(R.id.mileageTextView);
@@ -62,10 +67,13 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             fuelFPTextView = itemView.findViewById(R.id.fuelFPTextView);
             litersTextView = itemView.findViewById(R.id.litersTextView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
+            countryTextView = itemView.findViewById(R.id.countryTextView);
             currencyTextView = itemView.findViewById(R.id.currencyTextView);
             timeWornTextView = itemView.findViewById(R.id.timeWornTextView);
             notesTextView = itemView.findViewById(R.id.notesTextView);
-
+            poiTextView = itemView.findViewById(R.id.poiTextView);
+            latTextView = itemView.findViewById(R.id.latTextView);
+            lngTextView = itemView.findViewById(R.id.lngTextView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,6 +86,11 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         }
 
         public void bind(Refueling refueling) {
+            if (refueling.getId() != null) {
+                iDTextView.setText(refueling.getId());
+            } else {
+                vehicleTextView.setText("");
+            }
             if (refueling.getVehicle() != null) {
                 vehicleTextView.setText(refueling.getVehicle());
             } else {
@@ -115,6 +128,12 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             } else {
                 amountTextView.setText("");
             }
+            Country country = refueling.getCountry();
+            if (country != null) {
+                countryTextView.setText(country.name());
+            } else {
+                countryTextView.setText("");
+            }
             Currency currency = refueling.getCurrency();
             if (currency != null) {
                 currencyTextView.setText(currency.name());
@@ -125,6 +144,21 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
                 notesTextView.setText(refueling.getNotes());
             } else {
                 notesTextView.setText("");
+            }
+            if (refueling.getPoi() != null) {
+                poiTextView.setText(refueling.getPoi());
+            } else {
+                poiTextView.setText("");
+            }
+            if (refueling.getLat() != null) {
+                latTextView.setText(refueling.getLat());
+            } else {
+                latTextView.setText("");
+            }
+            if (refueling.getLng() != null) {
+                lngTextView.setText(refueling.getLng());
+            } else {
+                lngTextView.setText("");
             }
         }
     }

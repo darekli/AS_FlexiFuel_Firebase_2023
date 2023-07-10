@@ -4,7 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
-
+    <TextView
+        android:id="@+id/iDTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="italic" />
     <TextView
         android:id="@+id/vehicleTextView"
         android:layout_width="match_parent"
@@ -47,6 +52,12 @@
         android:textSize="16sp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/countryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <TextView
         android:id="@+id/currencyTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,6 +71,24 @@
         android:textStyle="bold" />
     <TextView
         android:id="@+id/notesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/poiTextView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/latTextView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/lngTextView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:textSize="16sp"

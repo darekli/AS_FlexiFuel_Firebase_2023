@@ -4,11 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/dialogVehicleEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Vehicle" />
+    <EditText
+        android:id="@+id/dialogVehicleEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Vehicle" />
 
     <ScrollView
         android:id="@+id/scrollView3c"
@@ -26,43 +26,66 @@
             android:layout_height="wrap_content" />
     </ScrollView>
 
-        <Spinner
-            android:id="@+id/dialogFuelTypeSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/dialogFuelTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <Spinner
-            android:id="@+id/dialogFuelFPSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/dialogFuelFPSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/dialogMileageEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Mileage" />
+    <EditText
+        android:id="@+id/dialogMileageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mileage" />
 
-        <EditText
-            android:id="@+id/dialogLitersEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Liters" />
+    <EditText
+        android:id="@+id/dialogLitersEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Liters" />
 
-        <EditText
-            android:id="@+id/dialogAmountEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Amount" />
+    <EditText
+        android:id="@+id/dialogAmountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Amount" />
 
-        <Spinner
-            android:id="@+id/dialogCurrencySpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/dialogCountrySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/dialogCurrencySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
-        <EditText
-            android:id="@+id/dialogNotesEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Notes" />
+    <EditText
+        android:id="@+id/dialogNotesEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notes" />
+
+    <EditText
+        android:id="@+id/dialogPoiEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="POI" />
+
+    <EditText
+        android:id="@+id/dialogLatEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lat" />
+
+    <EditText
+        android:id="@+id/dialogLngEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lng" />
 </LinearLayout>

@@ -13,17 +13,20 @@ public class Refueling {
     private FuelFP fuelFP;
     private String liters;
     private String amount;
+    private Country country;
 
     private Currency currency;
     private String timeworn;
     private String notes;
-
+    private String poi;
+    private String lat;
+    private String lng;
 
     public Refueling() {
-        // Default constructor required for Firebase
+
     }
 
-    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Currency currency, String timeworn, String notes) {
+    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Country country, Currency currency, String timeworn, String notes, String poi, String lat, String lng) {
         this.id = id;
         this.vehicle = vehicle;
         this.date = date;
@@ -32,9 +35,13 @@ public class Refueling {
         this.fuelFP = fuelFP;
         this.liters = liters;
         this.amount = amount;
+        this.country = country;
         this.currency = currency;
         this.timeworn = timeworn;
         this.notes = notes;
+        this.poi = poi;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public String getId() {
@@ -101,6 +108,14 @@ public class Refueling {
         this.amount = amount;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     public Currency getCurrency() {
         return currency;
     }
@@ -123,6 +138,30 @@ public class Refueling {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getPoi() {
+        return poi;
+    }
+
+    public void setPoi(String poi) {
+        this.poi = poi;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }
 

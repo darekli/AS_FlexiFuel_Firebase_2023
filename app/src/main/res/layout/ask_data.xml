@@ -1,67 +1,246 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_ask_data"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/layout_ask_data">
+    android:orientation="vertical">
 
 
-<!--    <EditText-->
-<!--        android:id="@+id/dialogVehicleEditText"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Vehicle" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/dialogVehicleEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Vehicle" />-->
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Home page" />
 
     <DatePicker
         android:id="@+id/askDateDatePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_answer_01"
+        android:layout_height="100dp" />
+
+    <EditText
+        android:id="@+id/et_ask_vehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="answer..."
-        android:textSize="14dp" />
+        android:hint="Vehicle" />
+
+    <Spinner
+        android:id="@+id/ask_fuel_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/tv_answer_01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 01..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 02..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 03..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_04"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 04..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_05"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 05..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_06"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 06..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_07"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 07..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_08"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 08..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_09"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 09..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 10..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 11..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 12..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 13..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 14..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="-------SECOND----LAST----------------------"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 16..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 17..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 18..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 19..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 20..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_21"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 21..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_22"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 22..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_23"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 23..."
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/tv_answer_24"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 24..."
+            android:textSize="14dp" />
+
 
     <Button
         android:id="@+id/button_ask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ask" />
-<!--    <Spinner-->
-<!--        android:id="@+id/dialogFuelTypeSpinner"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
+        android:text="Ask" /><!--    <Spinner-->
+    <!--        android:id="@+id/dialogFuelTypeSpinner"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content" />-->
 
-<!--    <Spinner-->
-<!--        android:id="@+id/dialogFuelFPSpinner"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
-<!--    <EditText-->
+    <!--    <Spinner-->
+    <!--        android:id="@+id/dialogFuelFPSpinner"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content" />-->
+    <!--    <EditText-->
     <!--        android:id="@+id/askMileageEditText"-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="wrap_content"-->
     <!--        android:hint="Mileage" />-->
 
 
-
-
     <!--    <EditText-->
-<!--        android:id="@+id/dialogLitersEditText"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Liters" />-->
-<!--    <EditText-->
-<!--        android:id="@+id/dialogAmountEditText"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Amount" />-->
-<!--    <Spinner-->
-<!--        android:id="@+id/dialogCurrencySpinner"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
-<!--    <EditText-->
-<!--        android:id="@+id/dialogNotesEditText"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Notes" />-->
+    <!--        android:id="@+id/dialogLitersEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Liters" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/dialogAmountEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Amount" />-->
+    <!--    <Spinner-->
+    <!--        android:id="@+id/dialogCurrencySpinner"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/dialogNotesEditText"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:hint="Notes" />-->
 </LinearLayout>
