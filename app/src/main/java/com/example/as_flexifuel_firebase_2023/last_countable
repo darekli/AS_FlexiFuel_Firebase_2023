@@ -1,0 +1,72 @@
+buttonLastCountable.addClickListener(f -> {
+            value_dates_countable_between.setText(String.format("A1 " + editor.getFind_Date_FindSecondLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue())) + " : " + editor.getFind_Date_FindLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            value_countable_days.setText("A2 DAYS: " + editor.getDays_LastCountableOne(fueltype.getValue(), vehicleReg.getValue()));
+            // km from to: editor.getFind_Date_FindSecondLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            value_distanceKm_From_To.setText("A30 From: " + String.valueOf(editor.getFind_Km_FindSecondLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()) + "km to: " + String.valueOf(editor.getFind_Km_FindLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()))) + " km");
+
+            value_distanceKm.setText(("A3 DISTANCE " + (int) editor.getDistanceKmByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " km ");
+            value_refueledTotalByFueltype.setText("A40 LITERS: " + String.format("%.3f", editor.getLitersByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " L");
+            value_avg_fuelCons_per_100km_by_fuelType.setText("A4 AVERAGE: " + String.format("%.3f", editor.getAvgFuelConsumptionByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " l/100km " + fueltype.getValue());
+            value_avg_fuelCons_per_100km_by_fuelType_ALL_TIME.setText("A4b ALL TIME AVERAGE : " + String.format("%.3f", editor.getAvgFuelConsumptionByVehicleRegAndFuelType_ALL_TIME(fueltype.getValue(), vehicleReg.getValue())) + " l/100km " + fueltype.getValue());
+            value_avg_fuelCons_per_100km_by_fuelType_ALL_TIME_MIN.setText("A4c ALL TIME AVERAGE MIN todo!: " + String.format("%.3f", editor.getFuelConsumptionByVehicleRegAndFuelType_MIN_ALL_TIME(fueltype.getValue(), vehicleReg.getValue())) + " l/100km " + fueltype.getValue());
+            value_avg_fuelCons_per_100km_by_fuelType_ALL_TIME_MAX.setText("A4d ALL TIME AVERAGE MAX todo!: " + String.format("%.3f", editor.getFuelConsumptionByVehicleRegAndFuelType_MAX_ALL_TIME(fueltype.getValue(), vehicleReg.getValue())) + " l/100km " + fueltype.getValue());
+
+
+            value_km_perLiter_by_fuelType.setText("A41 KM PER 1L: " + String.format("%.3f", editor.getConsumptionPerLiter_100kmByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " km ");
+            //km per liter
+            labelExpensesAndCurrencies.setText("A5: " + String.valueOf(editor.getCurrency_And_Expenses_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())));
+            labelAvgSpeed.setText("A6 Speed: " + String.format("%.2f", editor.getAvgSpeedByVehicleRegAndFuelTypeAndTimeworn_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " km/h");
+            labelTimeTotal.setText("A7 Time: " + editor.getTimeWorn_H_Min_TotalByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            //
+// ALL FUEL TYPES
+//            value_countable_liters_total.setText("C61 ALL FUELS LITERS TOTAL: " + String.format("%.3f", editor.getFind_Fuel_AllFuelBetweenFuelfp_FULLAndVehicleRegToCalculateAvg(dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " l");
+//            value_avg_fuelConsumption.setText("C62 ALL FUELS AVERAGE CONSUMPTION: " + String.format("%.3f", editor.getAvgFuelConsumptionBetweenDatesAndByVehicleReg(dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " l");
+//            value_avg_fuelCons_KmsPerLiter.setText("C63 KILOMETERS PER LITER: " + String.format("%.3f", editor.getKilometresPerLiterFuelConsumptionBetweenDatesAndByVehicleReg(dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " km/l");
+//
+//            //SELECTED FUEL TYPE
+//            value_selected_fuel_type.setText("C70 FUEL SELECTED: " + fueltype.getValue());
+//            value_countable_kilometers_by_fuel_type.setText("C7 COUNTABLE KILOMETERS BY FUEL TYPE - FROM: " + (int) editor.getFind_Km_FindFirstIsFueledfp_FullBetweenDatesAndVehicleRegAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue()) + " KM TO: " + (int) editor.getFind_Km_FindLastIsFueledfp_FullBetweenDatesAndVehicleRegAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue()) + " KM " + "(" + fueltype.getValue() + ")");
+//            value_distanceKm_toCalculate_by_fuelType.setText(String.valueOf("C71 TOTAL KILOMETERS: " + (int) editor.getDistanceCountedBetweenDatesAndByVehicleRegAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " km. BY: " + fueltype.getValue());
+//            value_countable_liters_total_by_fuelType.setText("C72 LITERS TOTAL: " + String.format("%.3f", editor.getFind_Fuel_AllFuelBetweenFuelfp_FULLAndVehicleRegToCalculateAvgAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " l " + fueltype.getValue());
+//            value_countable_fuelLiters_by_fuelType.setText("C721 COUNTABLE FUEL LITERS: " + String.format("%.3f", editor.getTotalAmountInLitersBetweenDatesAndByVehicleRegAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " l " + fueltype.getValue());
+//
+//            value_avg_fuelCons_per_100km_by_fuelType.setText("C73 AVG CONS BY SELECTED FUEL: " + String.format("%.3f", editor.getFuelConsPer100KmBySelectedFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " l/100km " + fueltype.getValue());
+//            value_avg_fuelCons_KmsPerLiter_by_fuelType.setText("C74 KILOMETERS PER LITER: " + String.format("%.3f", editor.getKilometresPerLiterFuelConsumptionBetweenDatesAndByVehicleRegAndFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " km/l ");
+//            value_avg_fuelCons_KmsPerLiter_by_fuelType2.setText("C75 AVG DISTANCE PER 1 LITER " + String.format("%.3f", editor.getLitersPer100kmBySelectedFuelType(fueltype.getValue(), dateStart.getValue(), dateEnd.getValue(), vehicleReg.getValue())) + " km " + fueltype.getValue());
+//            enumsList.setText("C76 FUEL TYPES:  " + editor.getFindTotalNumberOfEnumsFuelType(fueltype.getValue()));
+
+            System.out.println("- FIND_LAST_ONE_COUNTABLE getFind_Km_FindLastIsFueledfp_FullAndVehicleRegAndFuelType: " + editor.getFind_Km_FindLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("-- FIND SECOND LAST KM " + editor.getFind_Km_FindSecondLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("-- FIND LAST KM " + editor.getFind_Km_FindLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+
+            System.out.println("--- FIND LAST LITERS getLitersByVehicleRegAndFuelType_LAST_COUNTABLE " + editor.getLitersByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("---- FIND LAST AVG LITERS getAvgFuelConsumptionByVehicleRegAndFuelType_LAST_COUNTABLE " + String.format("%.3f", editor.getAvgFuelConsumptionByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())));
+            System.out.println("----- FIND LAST COUNTABLE DISTANCE KM " + editor.getDistanceKmByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("------ FIND second LAST DATE " + editor.getFind_Date_FindSecondLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("------- FIND LAST DATE " + editor.getFind_Date_FindLastIsFueledfp_FullAndVehicleRegAndFuelType(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("-------- FIND DAYS: " + editor.getDays_LastCountableOne(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("--------- FIND TIMEWORN IS COUNTABLE: " + editor.getIsTimeWornCountable(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("---------- FIND IDS " + editor.getAll_IDs_ByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("------------ FIND CURRENCIES " + editor.getCurrencies_ByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("-------------FIND CURR TYPE " + editor.getCurrenciesType_ByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("------------- CURR / CURR TYPE " + editor.getCurrency_And_Expenses_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("------------- FIND AVSPEED: " + String.format("%.2f", editor.getAvgSpeedByVehicleRegAndFuelTypeAndTimeworn_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue())) + " km/h");
+            System.out.println("--- LIST A " + editor.getTimeWornMinutesTotalByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()) + " min");
+            System.out.println("-------------- TIME TOTAL: " + editor.getTimeWorn_H_Min_TotalByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()));
+            System.out.println("!!!!!!! FLEX FIRST COUNTABLE: " + editor.getFirstCountable_main(fueltype.getValue(), vehicleReg.getValue()));
+            ProgressBar progressBarMax = new ProgressBar();
+            progressBarMax.setValue(1);
+            progressBarMax.setWidth("400px");
+            // progressBarMax.setHeight("10");
+            Div div_progressBarMaxLabel = new Div();
+            div_progressBarMaxLabel.setText("Fuel consumption 100L ");
+            ProgressBar progressBarAvgLiters_OneCountable = new ProgressBar();
+            progressBarAvgLiters_OneCountable.setWidth("400px");
+            double avgL_oneCont = (editor.getAvgFuelConsumptionByVehicleRegAndFuelType_LAST_COUNTABLE(fueltype.getValue(), vehicleReg.getValue()) / 100.);
+            progressBarAvgLiters_OneCountable.setValue(avgL_oneCont);
+            Div div_AvgLiters_OneCountable = new Div();
+            div_AvgLiters_OneCountable.setText("Last countable average fuel consumption ");
+
+            add(progressBarAvgLiters_OneCountable, div_AvgLiters_OneCountable);
+            add(progressBarMax, div_progressBarMaxLabel);
+        });
