@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class Ask extends AppCompatActivity {
     public DatePicker askDateDatePicker;
-    public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15;
+    public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15,tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20, tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24;
     public Button buttonAsk, button_back_main;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
@@ -95,6 +95,17 @@ public class Ask extends AppCompatActivity {
         tv_answer_13 = findViewById(R.id.tv_answer_13);
         tv_answer_14 = findViewById(R.id.tv_answer_14);
         tv_answer_15 = findViewById(R.id.tv_answer_15);
+        tv_answer_16 = findViewById(R.id.tv_answer_16);
+        tv_answer_17 = findViewById(R.id.tv_answer_17);
+        tv_answer_18 = findViewById(R.id.tv_answer_18);
+        tv_answer_19 = findViewById(R.id.tv_answer_19);
+        tv_answer_20 = findViewById(R.id.tv_answer_20);
+        tv_answer_21 = findViewById(R.id.tv_answer_21);
+        tv_answer_22 = findViewById(R.id.tv_answer_22);
+        tv_answer_23 = findViewById(R.id.tv_answer_23);
+        tv_answer_24 = findViewById(R.id.tv_answer_24);
+
+
         askDateDatePicker = findViewById(R.id.askDateDatePicker);
 
         buttonAsk = findViewById(R.id.button_ask);
@@ -189,7 +200,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
 
-                        tv_answer_11.setText("11. liters-mileage: " + mileageLitersMap);
+                        tv_answer_11.setText("11. mileage-liters: " + mileageLitersMap);
 
                     }
 
@@ -211,11 +222,11 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
-                findAllMileageAmountCurrencyBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched(){
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
 
                     @Override
                     public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-                        tv_answer_14.setText("14. "+mileageAmountCurrencyList);
+                        tv_answer_14.setText("14. " + mileageAmountCurrencyList);
                     }
 
                     @Override
@@ -223,7 +234,30 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrency(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
 
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_15.setText("15. order by currency: " + mileageAmountCurrencyList);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencySumByCurrency(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_16.setText("16. order by currency: " + mileageAmountCurrencyList);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
                 findAllMileageIfFueledfp_FULLAndFuelTypeIsAndLastCountable(fuelTypeSpinner, vehicleEditText, new MileageListFetched() {
 
 
@@ -269,7 +303,7 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onLitersListFetched(List<Double> litersList) {
-                        tv_answer_09.setText("9. " + litersList.toString()+" ?");
+                        tv_answer_09.setText("9. " + litersList.toString() + " ?");
 
                     }
 
@@ -1106,7 +1140,8 @@ public class Ask extends AppCompatActivity {
             }
         });
     }
-    public void findAllMileageAmountCurrencyBetweenLastAndSecondLast(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLast(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
         getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
             @Override
             public void onLastIdFetched(String lastId) {
@@ -1133,21 +1168,25 @@ public class Ask extends AppCompatActivity {
                                             String litersStr = snapshot.child("liters").getValue(String.class);
 
                                             String amountStr = snapshot.child("amount").getValue(String.class);
-                                            String currency = snapshot.child("currency").getValue(String.class);
+                                            String currencyStr = snapshot.child("currency").getValue(String.class);
+                                            String dateStr = snapshot.child("date").getValue(String.class);
+
 
                                             if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
                                                     && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
                                                 int mileage = Integer.parseInt(mileageStr);
                                                 double liters = Double.parseDouble(litersStr);
                                                 double amount = Double.parseDouble(amountStr);
+                                                String date = dateStr;
 
-                                                if (mileage > secondLastMileage && mileage <= lastMileage && currency != null) {
+                                                if (mileage > secondLastMileage && mileage <= lastMileage && currencyStr != null) {
                                                     List<Object> entry = new ArrayList<>();
                                                     entry.add(mileage);
                                                     entry.add(liters);
                                                     entry.add(amount);
-                                                    entry.add(currency);
+                                                    entry.add(currencyStr);
                                                     mileageAmountCurrencyList.add(entry);
+                                                    entry.add(date);
                                                 }
                                             }
                                         }
@@ -1178,6 +1217,199 @@ public class Ask extends AppCompatActivity {
         });
     }
 
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrency(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+            @Override
+            public void onLastIdFetched(String lastId) {
+                if (lastId != null) {
+                    int lastMileage = Integer.parseInt(lastId);
+
+                    getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+                        @Override
+                        public void onLastIdFetched(String lastId) {
+                            if (lastId != null) {
+                                int secondLastMileage = Integer.parseInt(lastId);
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                            String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                            String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                            String litersStr = snapshot.child("liters").getValue(String.class);
+                                            String amountStr = snapshot.child("amount").getValue(String.class);
+                                            String currencyStr = snapshot.child("currency").getValue(String.class);
+                                            String dateStr = snapshot.child("date").getValue(String.class);
+
+                                            if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
+                                                    && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                                int mileage = Integer.parseInt(mileageStr);
+                                                double liters = Double.parseDouble(litersStr);
+                                                double amount = Double.parseDouble(amountStr);
+                                                String date = dateStr;
+
+                                                if (mileage > secondLastMileage && mileage <= lastMileage && currencyStr != null) {
+                                                    List<Object> entry = new ArrayList<>();
+                                                    entry.add(mileage);
+                                                    entry.add(liters);
+                                                    entry.add(amount);
+                                                    entry.add(currencyStr);
+                                                    entry.add(date);
+                                                    mileageAmountCurrencyList.add(entry);
+                                                }
+                                            }
+                                        }
+
+                                        // Separate the list by currency
+                                        Map<String, List<List<Object>>> mileageAmountCurrencyMap = new HashMap<>();
+                                        for (List<Object> entry : mileageAmountCurrencyList) {
+                                            String currency = (String) entry.get(3); // Assuming currency is stored at index 3
+                                            List<List<Object>> currencyList = mileageAmountCurrencyMap.get(currency);
+                                            if (currencyList == null) {
+                                                currencyList = new ArrayList<>();
+                                                mileageAmountCurrencyMap.put(currency, currencyList);
+                                            }
+                                            currencyList.add(entry);
+                                        }
+
+                                        // Extract the separated lists by currency
+                                       // List<List<Object>> separatedLists = new ArrayList<>(mileageAmountCurrencyMap.values());
+// Separate the list by currency
+                                       // Map<String, List<List<Object>>> mileageAmountCurrencyMap = new HashMap<>();
+                                        for (List<Object> entry : mileageAmountCurrencyList) {
+                                            String currency = (String) entry.get(3); // Assuming currency is stored at index 3
+                                            List<List<Object>> currencyList = mileageAmountCurrencyMap.get(currency);
+                                            if (currencyList == null) {
+                                                currencyList = new ArrayList<>();
+                                                mileageAmountCurrencyMap.put(currency, currencyList);
+                                            }
+                                            currencyList.add(entry);
+                                        }
+
+// Extract the separated lists by currency
+                                        List<List<Object>> separatedLists = new ArrayList<>();
+                                        for (String currency : mileageAmountCurrencyMap.keySet()) {
+                                            List<List<Object>> currencyList = mileageAmountCurrencyMap.get(currency);
+                                            separatedLists.add(Collections.singletonList(currencyList));
+                                        }
+
+// Pass the separated lists to the callback
+                                        callback.onMileageAmountCurrencyListFetched(separatedLists);
+
+                                        // Pass the separated lists to the callback
+                                        callback.onMileageAmountCurrencyListFetched(separatedLists);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        callback.onError(databaseError.getMessage());
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            callback.onError(errorMessage);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencySumByCurrency(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+            @Override
+            public void onLastIdFetched(String lastId) {
+                if (lastId != null) {
+                    int lastMileage = Integer.parseInt(lastId);
+
+                    getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+                        @Override
+                        public void onLastIdFetched(String lastId) {
+                            if (lastId != null) {
+                                int secondLastMileage = Integer.parseInt(lastId);
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        Map<String, Double> currencyAmountMap = new HashMap<>();
+
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                            String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                            String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                            String litersStr = snapshot.child("liters").getValue(String.class);
+                                            String amountStr = snapshot.child("amount").getValue(String.class);
+                                            String currencyStr = snapshot.child("currency").getValue(String.class);
+                                            String dateStr = snapshot.child("date").getValue(String.class);
+
+                                            if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
+                                                    && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                                int mileage = Integer.parseInt(mileageStr);
+                                                double liters = Double.parseDouble(litersStr);
+                                                double amount = Double.parseDouble(amountStr);
+                                                String date = dateStr;
+
+                                                if (mileage > secondLastMileage && mileage <= lastMileage && currencyStr != null) {
+                                                    double currentAmount = currencyAmountMap.getOrDefault(currencyStr, 0.0);
+                                                    currentAmount += amount;
+                                                    currencyAmountMap.put(currencyStr, currentAmount);
+                                                }
+                                            }
+                                        }
+
+                                        // Create a list to hold the summarized amounts by currency
+                                        List<List<Object>> summarizedAmountsByCurrency = new ArrayList<>();
+
+                                        // Iterate through the currencyAmountMap and create entries for each currency and its corresponding sum amount
+                                        for (Map.Entry<String, Double> entry : currencyAmountMap.entrySet()) {
+                                            String currency = entry.getKey();
+                                            double amount = entry.getValue();
+                                            List<Object> currencyEntry = new ArrayList<>();
+                                            currencyEntry.add(currency);
+                                            currencyEntry.add(amount);
+                                            summarizedAmountsByCurrency.add(currencyEntry);
+                                        }
+
+                                        // Pass the summarized amounts by currency to the callback
+                                        callback.onMileageAmountCurrencyListFetched(summarizedAmountsByCurrency);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        callback.onError(databaseError.getMessage());
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            callback.onError(errorMessage);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
 
 
 }

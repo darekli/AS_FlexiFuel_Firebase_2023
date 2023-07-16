@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         vehicleEditText = findViewById(R.id.vehicleEditText);
         dateDatePicker = findViewById(R.id.dateDatePicker);
         mileageEditText = findViewById(R.id.mileageEditText);
+        mileageEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         InputFilter mileageFilter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
                 String regex = "-?[0-9]+"; // Wyrażenie regularne dopasowujące tylko liczby całkowite, włączając wartości ujemne
@@ -166,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
         notesEditText = findViewById(R.id.notesEditText);
         poiEditText = findViewById(R.id.poiEditText);
+        latEditText = findViewById(R.id.latEditText);
+        lngEditText = findViewById(R.id.lngEditText);
         addButton = findViewById(R.id.addButton);
 
         // Initialize Firebase database reference
