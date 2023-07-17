@@ -22,6 +22,7 @@ import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.MainActivity;
 import com.example.as_flexifuel_firebase_2023.R;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCallback;
@@ -48,7 +49,9 @@ import java.util.Map;
 
 public class Ask extends AppCompatActivity {
     public DatePicker askDateDatePicker;
-    public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15,tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20, tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24;
+    public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
+    public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24,tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
+
     public Button buttonAsk, button_back_main;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
@@ -104,7 +107,16 @@ public class Ask extends AppCompatActivity {
         tv_answer_22 = findViewById(R.id.tv_answer_22);
         tv_answer_23 = findViewById(R.id.tv_answer_23);
         tv_answer_24 = findViewById(R.id.tv_answer_24);
-
+        tv_answer_25 = findViewById(R.id.tv_answer_25);
+        tv_answer_26 = findViewById(R.id.tv_answer_26);
+        tv_answer_27 = findViewById(R.id.tv_answer_27);
+        tv_answer_28 = findViewById(R.id.tv_answer_28);
+        tv_answer_29 = findViewById(R.id.tv_answer_29);
+        tv_answer_30 = findViewById(R.id.tv_answer_30);
+        tv_answer_31 = findViewById(R.id.tv_answer_31);
+        tv_answer_32 = findViewById(R.id.tv_answer_32);
+        tv_answer_33 = findViewById(R.id.tv_answer_33);
+        tv_answer_34 = findViewById(R.id.tv_answer_34);
 
         askDateDatePicker = findViewById(R.id.askDateDatePicker);
 
@@ -150,6 +162,61 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
+
+                findAllMileagesIfFueledfp_FULLAndFuelTypeIsPBAndVehicleIs(vehicleEditText, new MileageListFetched() {
+
+
+                    @Override
+                    public void onMileageListFetched(List<Integer> mileageList) {
+                        tv_answer_17.setText("17.all mileage PB full " + mileageList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onLastIdFetched(int finalResult) {
+
+                    }
+                });
+                findAllMileagesIfFueledfp_FULLAndFuelTypeIsLPGAndVehicleIs(vehicleEditText, new MileageListFetched() {
+
+
+                    @Override
+                    public void onMileageListFetched(List<Integer> mileageList) {
+                        tv_answer_18.setText("18.all mileage LPG full " + mileageList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onLastIdFetched(int finalResult) {
+
+                    }
+                });
+
+
+                findCommonMileagesIfFueledfp_FULLAndVehicleIs(vehicleEditText, new CommonMileagesFetched() {
+
+                    @Override
+                    public void onCommonMileagesFetched(List<Integer> commonMileages) {
+                        tv_answer_19.setText("1.all mileage PB==LPG full " + commonMileages);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
 
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
@@ -789,6 +856,129 @@ public class Ask extends AppCompatActivity {
         });
     }
 
+    /**
+     * FIND LAST MILEAGE WHERE FuelFP ==FULL and Pb and LPG has the same mileage
+     */
+    public void findAllMileagesIfFueledfp_FULLAndFuelTypeIsPBAndVehicleIs(EditText vehicleEditText, MileageListFetched callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+        // Query to filter by fuelFP and fuelType
+        Query query = ref.orderByChild("fuelFP").equalTo(FuelFP.FULL.toString());
+
+        // Get the filtered data
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Integer> mileageList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                        String mileageStr = snapshot.child("mileage").getValue(String.class);
+                        int mileage = Integer.parseInt(mileageStr);
+                        mileageList.add(mileage);
+                    }
+                }
+
+                // Invoke the callback with the mileageList
+                callback.onMileageListFetched(mileageList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error
+                callback.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    public void findAllMileagesIfFueledfp_FULLAndFuelTypeIsLPGAndVehicleIs(EditText vehicleEditText, MileageListFetched callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+        // Query to filter by fuelFP and fuelType
+        Query query = ref.orderByChild("fuelFP").equalTo(FuelFP.FULL.toString());
+
+        // Get the filtered data
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Integer> mileageList = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                        String mileageStr = snapshot.child("mileage").getValue(String.class);
+                        int mileage = Integer.parseInt(mileageStr);
+                        mileageList.add(mileage);
+                    }
+                }
+
+                // Invoke the callback with the mileageList
+                callback.onMileageListFetched(mileageList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error
+                callback.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    /**
+     * COMPARED LISTS WHERE FuelType.PB and FUEL.Type.LPG AND mileage is the same in BOTH
+     */
+    public void findCommonMileagesIfFueledfp_FULLAndVehicleIs(EditText vehicleEditText, CommonMileagesFetched callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+        // Query to filter by fuelFP
+        Query query = ref.orderByChild("fuelFP").equalTo(FuelFP.FULL.toString());
+
+        // Get the filtered data
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Integer> pbMileages = new ArrayList<>();
+                List<Integer> lpgMileages = new ArrayList<>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                    int mileage = Integer.parseInt(mileageStr);
+
+                    if (snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                        if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())) {
+                            pbMileages.add(mileage);
+                        } else if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())) {
+                            lpgMileages.add(mileage);
+                        }
+                    }
+                }
+
+                // Find the common mileages
+                List<Integer> commonMileages = new ArrayList<>();
+                for (Integer pbMileage : pbMileages) {
+                    if (lpgMileages.contains(pbMileage)) {
+                        commonMileages.add(pbMileage);
+                    }
+                }
+
+                // Invoke the callback with the commonMileages list
+                callback.onCommonMileagesFetched(commonMileages);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle the error
+                callback.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+
     public void getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(Spinner fuelTypeSpinner, EditText vehicleEditText, LastIdFetched callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
 
@@ -1278,9 +1468,9 @@ public class Ask extends AppCompatActivity {
                                         }
 
                                         // Extract the separated lists by currency
-                                       // List<List<Object>> separatedLists = new ArrayList<>(mileageAmountCurrencyMap.values());
+                                        // List<List<Object>> separatedLists = new ArrayList<>(mileageAmountCurrencyMap.values());
 // Separate the list by currency
-                                       // Map<String, List<List<Object>>> mileageAmountCurrencyMap = new HashMap<>();
+                                        // Map<String, List<List<Object>>> mileageAmountCurrencyMap = new HashMap<>();
                                         for (List<Object> entry : mileageAmountCurrencyList) {
                                             String currency = (String) entry.get(3); // Assuming currency is stored at index 3
                                             List<List<Object>> currencyList = mileageAmountCurrencyMap.get(currency);
@@ -1327,6 +1517,7 @@ public class Ask extends AppCompatActivity {
             }
         });
     }
+
     public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencySumByCurrency(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
         getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
             @Override
@@ -1408,7 +1599,9 @@ public class Ask extends AppCompatActivity {
             public void onError(String errorMessage) {
                 callback.onError(errorMessage);
             }
+
         });
+
     }
 
 

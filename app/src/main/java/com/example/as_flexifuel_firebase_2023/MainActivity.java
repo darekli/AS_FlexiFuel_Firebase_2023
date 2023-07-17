@@ -3,7 +3,12 @@ package com.example.as_flexifuel_firebase_2023;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.PatternMatcher;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
@@ -27,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.as_flexifuel_firebase_2023.adapter.Ask;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,18 +75,41 @@ public class MainActivity extends AppCompatActivity {
 //    private DatabaseReference databaseRef;
 
     public NumberPicker np_number_hours, np_number_minutes;
+    private TextView tvVersion;
+    private PackageUpdateReceiver receiver;
+    private String currentVersionName;
 
+    private Handler handler;
+    private Runnable versionCheckRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkForVersionUpdate();
+            handler.postDelayed(this, 1000); // Check for update every 1 second
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+/**
+ * CODE VERSION
+ */
+        tvVersion = findViewById(R.id.tv_version);
+
+        // Retrieve the initial version name
+        currentVersionName = getAppVersionName();
+        tvVersion.setText("Version " + currentVersionName);
+
+        // Start checking for version updates periodically
+        handler = new Handler();
+        handler.postDelayed(versionCheckRunnable, 1000); // Start checking after 1 second
+////
 
 
         /**
          * PAGE ASK
          */
-        buttonAskPage
-                = findViewById(R.id.button_ask_page);
+        buttonAskPage = findViewById(R.id.button_ask_page);
 
         buttonAskPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +228,12 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView refuelingsRecyclerView = findViewById(R.id.refuelingsRecyclerView);
         refuelingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         refuelingsRecyclerView.setAdapter(refuelingAdapter);
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        //reverse mode
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        refuelingsRecyclerView.setLayoutManager(layoutManager);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, country, currency, timeworn, notes, poi,lat,lng);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, country, currency, timeworn, notes, poi, lat, lng);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -518,6 +552,48 @@ public class MainActivity extends AppCompatActivity {
         String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
         return updatedDate;
 
+    }
+
+
+    private String getAppVersionName() {
+        PackageManager packageManager = getPackageManager();
+        String packageName = getPackageName();
+        String versionName = "";
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
+    }
+
+    private void checkForVersionUpdate() {
+        String newVersionName = getAppVersionName();
+        if (!currentVersionName.equals(newVersionName)) {
+            currentVersionName = newVersionName;
+            tvVersion.setText("Version " + currentVersionName);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop the version checking when the activity is destroyed
+        handler.removeCallbacks(versionCheckRunnable);
+    }
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        unregisterReceiver(receiver);
+//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+        }
     }
 
 }
