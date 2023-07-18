@@ -23,14 +23,19 @@ import com.example.as_flexifuel_firebase_2023.MainActivity;
 import com.example.as_flexifuel_firebase_2023.R;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageConsumptionRatioCallback;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMapFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +48,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +56,8 @@ import java.util.Map;
 public class Ask extends AppCompatActivity {
     public DatePicker askDateDatePicker;
     public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
-    public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24,tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
-
+    public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
+    public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44;
     public Button buttonAsk, button_back_main;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
@@ -117,7 +123,16 @@ public class Ask extends AppCompatActivity {
         tv_answer_32 = findViewById(R.id.tv_answer_32);
         tv_answer_33 = findViewById(R.id.tv_answer_33);
         tv_answer_34 = findViewById(R.id.tv_answer_34);
-
+        tv_answer_35 = findViewById(R.id.tv_answer_35);
+        tv_answer_36 = findViewById(R.id.tv_answer_36);
+        tv_answer_37 = findViewById(R.id.tv_answer_37);
+        tv_answer_38 = findViewById(R.id.tv_answer_38);
+        tv_answer_39 = findViewById(R.id.tv_answer_39);
+        tv_answer_40 = findViewById(R.id.tv_answer_40);
+        tv_answer_41 = findViewById(R.id.tv_answer_41);
+        tv_answer_42 = findViewById(R.id.tv_answer_42);
+        tv_answer_43 = findViewById(R.id.tv_answer_43);
+        tv_answer_44 = findViewById(R.id.tv_answer_44);
         askDateDatePicker = findViewById(R.id.askDateDatePicker);
 
         buttonAsk = findViewById(R.id.button_ask);
@@ -207,7 +222,9 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onCommonMileagesFetched(List<Integer> commonMileages) {
-                        tv_answer_19.setText("1.all mileage PB==LPG full " + commonMileages);
+                        tv_answer_19.setText("19.all mileage PB==LPG full " + commonMileages);
+                        int countable = commonMileages.size() - 1;
+                        tv_answer_20.setText("20. PB==LPG size " + commonMileages.size() + " countable: " + countable);
 
                     }
 
@@ -217,7 +234,191 @@ public class Ask extends AppCompatActivity {
                     }
                 });
 
+                findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
 
+                    @Override
+                    public void onHighestCommonMileageFetched(int highestMileage) {
+                        tv_answer_21.setText("21. PB==LPG mileage the highest " + highestMileage);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+
+
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        tv_answer_22.setText("22. PB==LPG mileage 2nd highest " + secondHighestMileage);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                findMileageDifferenceIfFueledfp_FULLAndVehicleIs(vehicleEditText, new MileageDifferenceFetched() {
+
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                findAllMileageLitersIfFuelTypeIsPB(vehicleEditText, new MileageLitersMapFetched() {
+
+                    @Override
+                    public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                        tv_answer_24.setText("24. PB mileage-liters: " + mileageLitersMap);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                });
+                findAllMileageLitersIfFuelTypeIsPB_RemoveFirstRefueling(vehicleEditText, new MileageLitersMapFetched() {
+
+                    @Override
+                    public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                        tv_answer_25.setText("25. PB mileage-liters:remove first " + mileageLitersMap);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                });
+                findAllMileageLitersIfFuelTypeIsLPG(vehicleEditText, new MileageLitersMapFetched() {
+
+                    @Override
+                    public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                        tv_answer_26.setText("26. LPG mileage-liters: " + mileageLitersMap);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                });
+                findAllMileageLitersIfFuelTypeIsLPG_RemoveFirstRefueling(vehicleEditText, new MileageLitersMapFetched() {
+
+                    @Override
+                    public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                        tv_answer_27.setText("27. LPG mileage-liters:remove first: " + mileageLitersMap);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+
+                });
+
+                sumAllLitersIfFuelTypeIsPB(vehicleEditText, new SumAllLitersCallback() {
+
+
+                    @Override
+                    public void onSumAllLiters(double sumLiters) {
+                        tv_answer_28.setText("28. PB sum liters: " + sumLiters);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                sumAllLitersIfFuelTypeIsLPG(vehicleEditText, new SumAllLitersCallback() {
+
+
+                    @Override
+                    public void onSumAllLiters(double sumLiters) {
+                        tv_answer_29.setText("29. LPG sum liters: " + sumLiters);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                calculateMileageConsumptionRatioPb(vehicleEditText, new MileageConsumptionRatioCallback() {
+
+
+                    @Override
+                    public void onMileageConsumptionRatioCalculated(double ratio) {
+                        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+                        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+                        String formattedSumLiters = decimalFormat.format(ratio);
+                        tv_answer_30.setText("30. PB avg fuel consumption: " + formattedSumLiters + " liters");
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                calculateMileageConsumptionRatioLpg(vehicleEditText, new MileageConsumptionRatioCallback() {
+
+
+                    @Override
+                    public void onMileageConsumptionRatioCalculated(double ratio) {
+                        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+                        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+                        String formattedSumLiters = decimalFormat.format(ratio);
+                        tv_answer_31.setText("31. LPG avg fuel consumption: " + formattedSumLiters + " liters");
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_32.setText("32. PB MileageAmountCurrencyDate: " + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_33.setText("33. LPG MileageAmountCurrencyDate: " + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
                     @Override
@@ -370,7 +571,7 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onLitersListFetched(List<Double> litersList) {
-                        tv_answer_09.setText("9. " + litersList.toString() + " ?");
+                        tv_answer_09.setText("9.all liters " + litersList.toString() + " ?");
 
                     }
 
@@ -974,6 +1175,98 @@ public class Ask extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Handle the error
                 callback.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    /**
+     * PB=LPG LAST_THE_HIGHEST MILEAGE
+     */
+    public void findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(EditText vehicleEditText, HighestCommonMileageFetched callback) {
+        findCommonMileagesIfFueledfp_FULLAndVehicleIs(vehicleEditText, new CommonMileagesFetched() {
+            @Override
+            public void onCommonMileagesFetched(List<Integer> commonMileages) {
+                int highestMileage = Integer.MIN_VALUE;
+
+                for (int mileage : commonMileages) {
+                    if (mileage > highestMileage) {
+                        highestMileage = mileage;
+                    }
+                }
+
+                // Invoke the callback with the highestMileage value
+                callback.onHighestCommonMileageFetched(highestMileage);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+
+    /**
+     * PB=LPG SECOND LAST MILEAGE
+     */
+    public void findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(EditText vehicleEditText, SecondHighestCommonMileageFetched callback) {
+        findCommonMileagesIfFueledfp_FULLAndVehicleIs(vehicleEditText, new CommonMileagesFetched() {
+            @Override
+            public void onCommonMileagesFetched(List<Integer> commonMileages) {
+                int highestMileage = Integer.MIN_VALUE;
+                int secondHighestMileage = Integer.MIN_VALUE;
+
+                for (int mileage : commonMileages) {
+                    if (mileage > highestMileage) {
+                        secondHighestMileage = highestMileage;
+                        highestMileage = mileage;
+                    } else if (mileage > secondHighestMileage && mileage < highestMileage) {
+                        secondHighestMileage = mileage;
+                    }
+                }
+
+                // Invoke the callback with the secondHighestMileage value
+                callback.onSecondHighestCommonMileageFetched(secondHighestMileage);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    /**
+     * LPG= PB DIFFERENCE
+     */
+
+    public void findMileageDifferenceIfFueledfp_FULLAndVehicleIs(EditText vehicleEditText, MileageDifferenceFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        int mileageDifference = highestMileage - secondHighestMileage;
+
+                        // Invoke the callback with the mileageDifference value
+                        callback.onMileageDifferenceFetched(mileageDifference);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Handle the error
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
             }
         });
     }
@@ -1604,5 +1897,577 @@ public class Ask extends AppCompatActivity {
 
     }
 
+    public void averageFuelConsumptionLastCountablePbLPG(AverageFuelConsumptionCallback callback) {
+        findAllLitersBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new LitersListFetched() {
+            @Override
+            public void onLitersListFetched(List<Double> litersList) {
+                double sumLiters = 0;
+                for (double liters : litersList) {
+                    sumLiters += liters;
+                }
+
+                double finalSumLiters = sumLiters;
+                findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+                    @Override
+                    public void onHighestCommonMileageFetched(int highestMileage) {
+                        findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                            @Override
+                            public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                                int difference;
+                                if (highestMileage > 0 && secondHighestMileage > 0) {
+                                    difference = Math.abs(highestMileage - secondHighestMileage);
+                                } else {
+                                    difference = 0;
+                                }
+                                double averageConsumption = (finalSumLiters / difference) * 100.0;
+
+                                // Check if averageConsumption is infinite
+                                if (Double.isInfinite(averageConsumption)) {
+                                    // Handle the infinity case
+                                    callback.onAverageFuelConsumptionCalculated(0.0); // or provide a custom value or message
+                                } else {
+                                    // Format the averageConsumption value
+                                    DecimalFormat decimalFormat = new DecimalFormat("#.###");
+                                    decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+                                    String formattedAverage = decimalFormat.format(averageConsumption);
+                                    callback.onAverageFuelConsumptionCalculated(Double.parseDouble(formattedAverage));
+                                }
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+                                callback.onError(errorMessage);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+
+            @Override
+            public void onLastIdFetched(int finalResult) {
+                // Handle the onLastIdFetched(int) method if required
+            }
+        });
+    }
+
+    /**
+     * FIND ALL liters-mileage BETWEEN if PB==LPG
+     */
+    public void findAllMileageLitersIfFuelTypeIsPB(EditText vehicleEditText, MileageLitersMapFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Integer, Double> mileageLitersMap = new HashMap<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                            mileageLitersMap.put(mileage, liters);
+                                        }
+                                    }
+                                }
+
+                                callback.onMileageLitersMapFetched(mileageLitersMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    /**
+     * FIND ALL liters-mileage BETWEEN if PB==LPG
+     */
+    public void findAllMileageLitersIfFuelTypeIsLPG(EditText vehicleEditText, MileageLitersMapFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Integer, Double> mileageLitersMap = new HashMap<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                            mileageLitersMap.put(mileage, liters);
+                                        }
+                                    }
+                                }
+
+                                callback.onMileageLitersMapFetched(mileageLitersMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void findAllMileageLitersIfFuelTypeIsPB_RemoveFirstRefueling(EditText vehicleEditText, MileageLitersMapFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Integer, Double> mileageLitersMap = new HashMap<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                            mileageLitersMap.put(mileage, liters);
+                                        }
+                                    }
+                                }
+
+                                // Find the lowest mileage
+                                int lowestMileage = Integer.MAX_VALUE;
+                                for (int mileage : mileageLitersMap.keySet()) {
+                                    if (mileage < lowestMileage) {
+                                        lowestMileage = mileage;
+                                    }
+                                }
+
+                                // Remove the lowest mileage from the map
+                                mileageLitersMap.remove(lowestMileage);
+
+                                callback.onMileageLitersMapFetched(mileageLitersMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void findAllMileageLitersIfFuelTypeIsLPG_RemoveFirstRefueling(EditText vehicleEditText, MileageLitersMapFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Integer, Double> mileageLitersMap = new HashMap<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                            mileageLitersMap.put(mileage, liters);
+                                        }
+                                    }
+                                }
+
+                                // Find the lowest mileage
+                                int lowestMileage = Integer.MAX_VALUE;
+                                for (int mileage : mileageLitersMap.keySet()) {
+                                    if (mileage < lowestMileage) {
+                                        lowestMileage = mileage;
+                                    }
+                                }
+
+                                // Remove the lowest mileage from the map
+                                mileageLitersMap.remove(lowestMileage);
+
+                                callback.onMileageLitersMapFetched(mileageLitersMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void sumAllLitersIfFuelTypeIsPB(EditText vehicleEditText, SumAllLitersCallback callback) {
+        findAllMileageLitersIfFuelTypeIsPB_RemoveFirstRefueling(vehicleEditText, new MileageLitersMapFetched() {
+            @Override
+            public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                double sumLiters = 0.0;
+
+                for (double liters : mileageLitersMap.values()) {
+                    sumLiters += liters;
+                }
+
+                callback.onSumAllLiters(sumLiters);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void sumAllLitersIfFuelTypeIsLPG(EditText vehicleEditText, SumAllLitersCallback callback) {
+        findAllMileageLitersIfFuelTypeIsLPG_RemoveFirstRefueling(vehicleEditText, new MileageLitersMapFetched() {
+            @Override
+            public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+                double sumLiters = 0.0;
+
+                for (double liters : mileageLitersMap.values()) {
+                    sumLiters += liters;
+                }
+
+                callback.onSumAllLiters(sumLiters);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void calculateMileageConsumptionRatioPb(EditText vehicleEditText, MileageConsumptionRatioCallback callback) {
+        findMileageDifferenceIfFueledfp_FULLAndVehicleIs(vehicleEditText, new MileageDifferenceFetched() {
+            @Override
+            public void onMileageDifferenceFetched(int mileageDifference) {
+                sumAllLitersIfFuelTypeIsPB(vehicleEditText, new SumAllLitersCallback() {
+                    @Override
+                    public void onSumAllLiters(double sumLiters) {
+                        // Calculate the mileage consumption ratio
+                        double ratio = mileageDifference / 100.0;
+                        if (sumLiters != 0) {
+                            sumLiters /= ratio;
+                        }
+
+                        callback.onMileageConsumptionRatioCalculated(sumLiters);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Handle the error
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void calculateMileageConsumptionRatioLpg(EditText vehicleEditText, MileageConsumptionRatioCallback callback) {
+        findMileageDifferenceIfFueledfp_FULLAndVehicleIs(vehicleEditText, new MileageDifferenceFetched() {
+            @Override
+            public void onMileageDifferenceFetched(int mileageDifference) {
+                sumAllLitersIfFuelTypeIsLPG(vehicleEditText, new SumAllLitersCallback() {
+                    @Override
+                    public void onSumAllLiters(double sumLiters) {
+                        // Calculate the mileage consumption ratio
+                        double ratio = mileageDifference / 100.0;
+                        if (sumLiters != 0) {
+                            sumLiters /= ratio;
+
+                        }
+
+                        callback.onMileageConsumptionRatioCalculated(sumLiters);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Handle the error
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
+            }
+        });
+
+    }
+
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyPB(EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+                                        double amount = Double.parseDouble(amountStr);
+                                        String currency = currencyStr;
+                                        String date = dateStr;
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
+                                            List<Object> entry = new ArrayList<>();
+                                            entry.add(mileage);
+                                            entry.add(liters);
+                                            entry.add(amount);
+                                            entry.add(currency);
+                                            entry.add(date);
+                                            mileageAmountCurrencyList.add(entry);
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Pass the sorted list to the callback
+                                callback.onMileageAmountCurrencyListFetched(mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyLPG(EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+                                        double amount = Double.parseDouble(amountStr);
+                                        String currency = currencyStr;
+                                        String date = dateStr;
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
+                                            List<Object> entry = new ArrayList<>();
+                                            entry.add(mileage);
+                                            entry.add(liters);
+                                            entry.add(amount);
+                                            entry.add(currency);
+                                            entry.add(date);
+                                            mileageAmountCurrencyList.add(entry);
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Pass the sorted list to the callback
+                                callback.onMileageAmountCurrencyListFetched(mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
 
 }
