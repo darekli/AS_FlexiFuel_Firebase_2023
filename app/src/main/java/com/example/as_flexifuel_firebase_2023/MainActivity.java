@@ -3,16 +3,13 @@ package com.example.as_flexifuel_firebase_2023;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PatternMatcher;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,12 +29,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.as_flexifuel_firebase_2023.adapter.Ask;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.BuildConfig;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -359,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Edit Refueling");
 
         // Inflate the layout for the dialog
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_edit_refueling, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.edit_refueling, null);
         builder.setView(dialogView);
 
         final EditText vehicleEditText = dialogView.findViewById(R.id.dialogVehicleEditText);

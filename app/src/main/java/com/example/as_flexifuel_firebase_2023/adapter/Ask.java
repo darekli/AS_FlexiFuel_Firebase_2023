@@ -36,6 +36,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListFetc
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
+import com.example.as_flexifuel_firebase_2023.nbp.NbpPage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,7 +59,7 @@ public class Ask extends AppCompatActivity {
     public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
     public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
     public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44;
-    public Button buttonAsk, button_back_main;
+    public Button buttonAsk, button_back_main, button_nbp_page;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
     public Spinner fuelTypeSpinner;
@@ -76,12 +77,21 @@ public class Ask extends AppCompatActivity {
  * BACK TO MAIN ACTIVITY
  */
         button_back_main = findViewById(R.id.button_back);
+
         button_back_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
+        button_nbp_page = findViewById(R.id.button_nbp_page);
+        button_nbp_page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), NbpPage.class));
+            }
+        });
+
 
         vehicleEditText = findViewById(R.id.et_ask_vehicle);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
