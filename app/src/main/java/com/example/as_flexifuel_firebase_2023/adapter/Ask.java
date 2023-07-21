@@ -36,7 +36,6 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListFetc
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
-import com.example.as_flexifuel_firebase_2023.nbp.NbpPage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -85,12 +84,12 @@ public class Ask extends AppCompatActivity {
             }
         });
         button_nbp_page = findViewById(R.id.button_nbp_page);
-        button_nbp_page.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NbpPage.class));
-            }
-        });
+//        button_nbp_page.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), NbpPage.class));
+//            }
+//        });
 
 
         vehicleEditText = findViewById(R.id.et_ask_vehicle);

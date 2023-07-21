@@ -14,8 +14,8 @@ public class Refueling {
     private String liters;
     private String amount;
     private Country country;
-
     private Currency currency;
+    private String currencyRate;
     private String timeworn;
     private String notes;
     private String poi;
@@ -26,7 +26,7 @@ public class Refueling {
 
     }
 
-    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Country country, Currency currency, String timeworn, String notes, String poi, String lat, String lng) {
+    public Refueling(String id, String vehicle, String date, String mileage, FuelType fuelType, FuelFP fuelFP, String liters, String amount, Country country, Currency currency, String currencyRate, String timeworn, String notes, String poi, String lat, String lng) {
         this.id = id;
         this.vehicle = vehicle;
         this.date = date;
@@ -37,6 +37,7 @@ public class Refueling {
         this.amount = amount;
         this.country = country;
         this.currency = currency;
+        this.currencyRate = currencyRate;
         this.timeworn = timeworn;
         this.notes = notes;
         this.poi = poi;
@@ -124,6 +125,14 @@ public class Refueling {
         this.currency = currency;
     }
 
+    public String getCurrencyRate() {
+        return currencyRate;
+    }
+
+    public void setCurrencyRate(String currencyRate) {
+        this.currencyRate = currencyRate;
+    }
+
     public String getTimeworn() {
         return timeworn;
     }
@@ -164,4 +173,5 @@ public class Refueling {
         this.lng = lng;
     }
 }
+
 

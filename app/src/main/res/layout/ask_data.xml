@@ -17,7 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Home page" />
-
+    <Button
+        android:id="@+id/button_nbp_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NBP page" />
     <DatePicker
         android:id="@+id/askDateDatePicker"
         android:layout_width="match_parent"
@@ -34,175 +38,343 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ScrollView
+        android:id="@+id/scrollView3c"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_answer_01"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 01..."
-            android:textSize="14dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_answer_02"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 02..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 01..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_03"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 03..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 02..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_04"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 04..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 03..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_05"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 05..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_04"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 04..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_06"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 06..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_05"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 05..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_07"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 07..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_06"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 06..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_08"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 08..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_07"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 07..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_09"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 09..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_08"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 08..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 10..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_09"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 09..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 11..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 10..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_12"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 12..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 11..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_13"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 13..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 12..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_14"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 14..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 13..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="-------SECOND----LAST----------------------"
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 14..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 16..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="-------SECOND----LAST----------------------"
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_17"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 17..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 16..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 18..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 17..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_19"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 19..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 18..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 20..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 19..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_21"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 21..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 20..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_22"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 22..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 21..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_23"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 23..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 22..."
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/tv_answer_24"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 24..."
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 23..."
+                android:textSize="14dp" />
 
+            <TextView
+                android:id="@+id/tv_answer_24"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 24..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 25..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 26..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 27..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 28..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 29..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 30..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_31"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 31..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 32..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_33"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 33..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_34"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 34..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_35"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 35..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_36"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 36..."
+                android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_37"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 37..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 38..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_39"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 39..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_40"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 40..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 41..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 42..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_43"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 43..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_44"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 44..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_45"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 45..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_46"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 46..."
+                android:textSize="14dp" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/button_ask"

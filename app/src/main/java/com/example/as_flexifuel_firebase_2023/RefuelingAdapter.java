@@ -53,6 +53,8 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView amountTextView;
         private TextView countryTextView;
         private TextView currencyTextView;
+        private TextView currencyRateTextView;
+
         private TextView timeWornTextView;
         private TextView notesTextView;
         private TextView poiTextView;
@@ -70,6 +72,8 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
             amountTextView = itemView.findViewById(R.id.amountTextView);
             countryTextView = itemView.findViewById(R.id.countryTextView);
             currencyTextView = itemView.findViewById(R.id.currencyTextView);
+            currencyRateTextView = itemView.findViewById(R.id.currencyRateTextView);
+
             timeWornTextView = itemView.findViewById(R.id.timeWornTextView);
             notesTextView = itemView.findViewById(R.id.notesTextView);
             poiTextView = itemView.findViewById(R.id.poiTextView);
@@ -140,6 +144,11 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
                 currencyTextView.setText(currency.name());
             } else {
                 currencyTextView.setText("");
+            }
+            if (refueling.getCurrencyRate() != null) {
+                currencyRateTextView.setText(refueling.getCurrencyRate());
+            } else {
+                currencyRateTextView.setText("");
             }
             if (refueling.getNotes() != null) {
                 notesTextView.setText(refueling.getNotes());

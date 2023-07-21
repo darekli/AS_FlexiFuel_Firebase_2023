@@ -1,10 +1,12 @@
 package com.example.as_flexifuel_firebase_2023;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -27,6 +29,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.as_flexifuel_firebase_2023.adapter.Ask;
+import com.example.as_flexifuel_firebase_2023.nbp.NbpApiService;
+import com.example.as_flexifuel_firebase_2023.nbp.Rate;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,15 +38,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     public EditText vehicleEditText;
     public DatePicker dateDatePicker;
+    public DatePicker editDatePicker;
     public EditText mileageEditText;
 
     public Spinner fuelTypeSpinner;
@@ -51,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     public EditText amountEditText;
     public Spinner countrySpinner;
     public Spinner currencySpinner;
+    public EditText currencyRateEditText;
+
     public TextView timeWornTextView;
     public EditText notesEditText;
     public EditText poiEditText;
@@ -59,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     public EditText lngEditText;
 
 
-    public Button addButton;
+    public Button addRefuelingButton;
 
     public DatabaseReference refuelingsRef;
     private List<Refueling> refuelingsList;
@@ -73,8 +93,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvVersion;
     private PackageUpdateReceiver receiver;
     private String currentVersionName;
+    //public NbpPage nbpPage;
+    private static final String BASE_URL = "https://api.nbp.pl/api/";
 
+    private NbpApiService apiService;
     private Handler handler;
+
+    //Button editAddCurrencyRateButton;
+
+
     private Runnable versionCheckRunnable = new Runnable() {
         @Override
         public void run() {
@@ -82,10 +109,30 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, 1000); // Check for update every 1 second
         }
     };
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //  editAddCurrencyRateButton = findViewById(R.id.updateButton_currency_rate);
+//        editAddCurrencyRateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fetchExchangeRate();
+//            }
+//        });
+        /**
+         * NBP API
+         */
+        Gson gson = new GsonBuilder().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        apiService = retrofit.create(NbpApiService.class);
 /**
  * CODE VERSION
  */
@@ -159,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         amountEditText.setFilters(new InputFilter[]{amountFilter});
         countrySpinner = findViewById(R.id.countrySpinner);
         currencySpinner = findViewById(R.id.currencySpinner);
-
+        currencyRateEditText = findViewById(R.id.currencyRateEditText);
         np_number_hours = findViewById(R.id.np_number_hours);
         np_number_hours.setMinValue(0);
         np_number_hours.setMaxValue(9);
@@ -194,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         poiEditText = findViewById(R.id.poiEditText);
         latEditText = findViewById(R.id.latEditText);
         lngEditText = findViewById(R.id.lngEditText);
-        addButton = findViewById(R.id.addButton);
+        addRefuelingButton = findViewById(R.id.addButton);
 
         // Initialize Firebase database reference
         refuelingsRef = FirebaseDatabase.getInstance().getReference("refuelings");
@@ -229,10 +276,14 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         refuelingsRecyclerView.setLayoutManager(layoutManager);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        addRefuelingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addRefueling();
+                fetchExchangeRate();
+                System.out.println("               fetchExchangeRate() " + fetchExchangeRate());
+
+
             }
         });
 
@@ -263,6 +314,8 @@ public class MainActivity extends AppCompatActivity {
         String amount = amountEditText.getText().toString().trim();
         Country country = (Country) countrySpinner.getSelectedItem();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
+        String currencyRate = fetchExchangeRate().trim();
+
         String timeworn = timeWornTextView.getText().toString().trim();
         String notes = notesEditText.getText().toString().trim();
         String poi = poiEditText.getText().toString().trim();
@@ -271,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
         String refuelingId = refuelingsRef.push().getKey();
         if (refuelingId != null) {
-            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, country, currency, timeworn, notes, poi, lat, lng);
+            Refueling refueling = new Refueling(refuelingId, vehicle, date, mileage, fuelType, fuelFP, liters, amount, country, currency, currencyRate, timeworn, notes, poi, lat, lng);
             refuelingsRef.child(refuelingId).setValue(refueling)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -299,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
         amountEditText.setText("");
         countrySpinner.setSelection(0);
         currencySpinner.setSelection(0);
+        currencyRateEditText.setText("");
         timeWornTextView.setText("");
         notesEditText.setText("");
         poiEditText.setText("");
@@ -349,49 +403,60 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * EDIT REFUELING
+     *
+     * @param refueling
+     */
     private void openEditDialog(final Refueling refueling) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Edit Refueling");
+
 
         // Inflate the layout for the dialog
         View dialogView = LayoutInflater.from(this).inflate(R.layout.edit_refueling, null);
         builder.setView(dialogView);
 
-        final EditText vehicleEditText = dialogView.findViewById(R.id.dialogVehicleEditText);
-        final DatePicker dateDatePicker = dialogView.findViewById(R.id.dialogDateDatePicker);
-        final EditText mileageEditText = dialogView.findViewById(R.id.dialogMileageEditText);
+        final EditText editVehicleEditText = dialogView.findViewById(R.id.updateVehicleEditText);
+        editDatePicker = dialogView.findViewById(R.id.updateDateDatePicker);
+        final EditText editMileageEditText = dialogView.findViewById(R.id.updateMileageEditText);
+        final Spinner editFuelTypeSpinner = dialogView.findViewById(R.id.updateFuelTypeSpinner);
+        final Spinner editFuelFPSpinner = dialogView.findViewById(R.id.updateFuelFPSpinner);
+        final EditText editLitersEditText = dialogView.findViewById(R.id.updateLitersEditText);
+        final EditText editAmountEditText = dialogView.findViewById(R.id.updateAmountEditText);
+        final Spinner editCountrySpinner = dialogView.findViewById(R.id.updateCountrySpinner);
+        final Spinner editCurrencySpinner = dialogView.findViewById(R.id.updateCurrencySpinner);
+        final EditText editCurrencyRateEditText = dialogView.findViewById(R.id.updateCurrencyRateEditText);
 
-        final Spinner fuelTypeSpinner = dialogView.findViewById(R.id.dialogFuelTypeSpinner);
-        final Spinner fuelFPSpinner = dialogView.findViewById(R.id.dialogFuelFPSpinner);
-        final EditText litersEditText = dialogView.findViewById(R.id.dialogLitersEditText);
-        final EditText amountEditText = dialogView.findViewById(R.id.dialogAmountEditText);
-        final Spinner countrySpinner = dialogView.findViewById(R.id.dialogCountrySpinner);
-        final Spinner currencySpinner = dialogView.findViewById(R.id.dialogCurrencySpinner);
-        final EditText notesEditText = dialogView.findViewById(R.id.dialogNotesEditText);
-        final EditText poiEditText = dialogView.findViewById(R.id.dialogPoiEditText);
-        final EditText latEditText = dialogView.findViewById(R.id.dialogLatEditText);
-        final EditText lngEditText = dialogView.findViewById(R.id.dialogLngEditText);
+        final EditText editNotesEditText = dialogView.findViewById(R.id.updateNotesEditText);
+        final EditText editPoiEditText = dialogView.findViewById(R.id.updatePoiEditText);
+        final EditText editLatEditText = dialogView.findViewById(R.id.updateLatEditText);
+        final EditText editLngEditText = dialogView.findViewById(R.id.updateLngEditText);
 
 
         // Set initial values for the dialog fields
-        vehicleEditText.setText(refueling.getVehicle());
-        String[] dateParts = refueling.getDate().split("/");
-        int day = Integer.parseInt(dateParts[0]);
-        int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
-        int year = Integer.parseInt(dateParts[2]);
-        dateDatePicker.updateDate(year, month, day);
-        mileageEditText.setText(refueling.getMileage());
+        // String updatedDate = userDatePickerFormatDate();
+        editVehicleEditText.setText(refueling.getVehicle());
+        //  String[] dateParts = refueling.getDate().split("/");
+//        int day = Integer.parseInt(dateParts[0]);
+//        int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
+//        int year = Integer.parseInt(dateParts[2]);
+//        refueling.setDate(updatedDate);
+//        dateDatePicker.setD(updatedDate);
+        String updateDate = userDatePickerFormatDate();
+        //editDatePicker.setDa
+        editMileageEditText.setText(refueling.getMileage());
 
         // Create the fuel type adapter and set the selection
         List<FuelType> fuelTypeList = Arrays.asList(FuelType.values());
         ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fuelTypeList);
         fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fuelTypeSpinner.setAdapter(fuelTypeAdapter);
+        editFuelTypeSpinner.setAdapter(fuelTypeAdapter);
         FuelType refuelingFuelType = refueling.getFuelType();
         if (refuelingFuelType != null) {
             int fuelTypeSelection = fuelTypeAdapter.getPosition(refuelingFuelType);
             if (fuelTypeSelection != Spinner.INVALID_POSITION) {
-                fuelTypeSpinner.setSelection(fuelTypeSelection);
+                editFuelTypeSpinner.setSelection(fuelTypeSelection);
             } else {
                 // Handle the case where the fuel type is not found in the adapter
             }
@@ -404,12 +469,12 @@ public class MainActivity extends AppCompatActivity {
         List<FuelFP> fuelFPList = Arrays.asList(FuelFP.values());
         ArrayAdapter<FuelFP> fuelFPAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fuelFPList);
         fuelFPAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fuelFPSpinner.setAdapter(fuelFPAdapter);
+        editFuelFPSpinner.setAdapter(fuelFPAdapter);
         FuelFP refuelingFuelFP = refueling.getFuelFP();
         if (refuelingFuelFP != null) {
             int fuelFPSelection = fuelFPAdapter.getPosition(refuelingFuelFP);
             if (fuelFPSelection != Spinner.INVALID_POSITION) {
-                fuelFPSpinner.setSelection(fuelFPSelection);
+                editFuelFPSpinner.setSelection(fuelFPSelection);
             } else {
                 // Handle the case where the fuel FP is not found in the adapter
             }
@@ -417,18 +482,18 @@ public class MainActivity extends AppCompatActivity {
             // Handle the case where the fuel FP is null
             // Set a default selection or perform any other desired action
         }
-        litersEditText.setText(refueling.getLiters());
-        amountEditText.setText(refueling.getAmount());
+        editLitersEditText.setText(refueling.getLiters());
+        editAmountEditText.setText(refueling.getAmount());
 
         List<Country> countryList = Arrays.asList(Country.values());
         ArrayAdapter<Country> countryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, countryList);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        countrySpinner.setAdapter(countryAdapter);
+        editCountrySpinner.setAdapter(countryAdapter);
         Country refuelingCountry = refueling.getCountry();
         if (refuelingCountry != null) {
             int countrySelection = countryAdapter.getPosition(refuelingCountry);
             if (countrySelection != Spinner.INVALID_POSITION) {
-                countrySpinner.setSelection(countrySelection);
+                editCountrySpinner.setSelection(countrySelection);
             } else {
                 // Handle the case where the fuel FP is not found in the adapter
             }
@@ -440,12 +505,12 @@ public class MainActivity extends AppCompatActivity {
         List<Currency> currencyList = Arrays.asList(Currency.values());
         ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, currencyList);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        currencySpinner.setAdapter(currencyAdapter);
+        editCurrencySpinner.setAdapter(currencyAdapter);
         Currency refuelingCurrency = refueling.getCurrency();
         if (refuelingCurrency != null) {
             int currencySelection = currencyAdapter.getPosition(refuelingCurrency);
             if (currencySelection != Spinner.INVALID_POSITION) {
-                currencySpinner.setSelection(currencySelection);
+                editCurrencySpinner.setSelection(currencySelection);
             } else {
                 // Handle the case where the fuel FP is not found in the adapter
             }
@@ -453,31 +518,45 @@ public class MainActivity extends AppCompatActivity {
             // Handle the case where the fuel FP is null
             // Set a default selection or perform any other desired action
         }
-        notesEditText.setText(refueling.getNotes());
-        poiEditText.setText(refueling.getPoi());
+
+        editCurrencyRateEditText.setText(refueling.getCurrencyRate());
+        /**
+         * CURRENCY RATE
+         */
 
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        editNotesEditText.setText(refueling.getNotes());
+        editPoiEditText.setText(refueling.getPoi());
+
+
+        /**
+         *  SAVE
+         */
+        builder.setPositiveButton("Savex", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Get the updated values from the dialog fields
-                String updatedVehicle = vehicleEditText.getText().toString().trim();
+                String updatedVehicle = editVehicleEditText.getText().toString().trim();
 //                int updatedDay = dateDatePicker.getDayOfMonth();
 //                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
 //                int updatedYear = dateDatePicker.getYear();
                 String updatedDate = userDatePickerFormatDate();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
-                String updatedMileage = mileageEditText.getText().toString().trim();
+                String updatedMileage = editMileageEditText.getText().toString().trim();
 
-                FuelType updatedFuelType = (FuelType) fuelTypeSpinner.getSelectedItem();
-                FuelFP updatedFuelFP = (FuelFP) fuelFPSpinner.getSelectedItem();
-                String updatedLiters = litersEditText.getText().toString().trim();
-                String updatedAmount = amountEditText.getText().toString().trim();
-                Country updateCountry = (Country) countrySpinner.getSelectedItem();
-                Currency updatedCurrency = (Currency) currencySpinner.getSelectedItem();
-                String updatedNotes = notesEditText.getText().toString().trim();
-                String updatePoi = poiEditText.getText().toString().trim();
-                String updateLat = latEditText.getText().toString().trim();
-                String updateLng = lngEditText.getText().toString().trim();
+                FuelType updatedFuelType = (FuelType) editFuelTypeSpinner.getSelectedItem();
+                FuelFP updatedFuelFP = (FuelFP) editFuelFPSpinner.getSelectedItem();
+                String updatedLiters = editLitersEditText.getText().toString().trim();
+                String updatedAmount = editAmountEditText.getText().toString().trim();
+                Country updateCountry = (Country) editCountrySpinner.getSelectedItem();
+                Currency updatedCurrency = (Currency) editCurrencySpinner.getSelectedItem();
+                String updatedCurrencyRate = editCurrencyRateEditText.getText().toString().trim();
+
+
+                String updatedNotes = editNotesEditText.getText().toString().trim();
+                String updatePoi = editPoiEditText.getText().toString().trim();
+                String updateLat = editLatEditText.getText().toString().trim();
+                String updateLng = editLngEditText.getText().toString().trim();
                 // Update the refueling object
                 refueling.setVehicle(updatedVehicle);
                 refueling.setDate(updatedDate);
@@ -489,6 +568,7 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setAmount(updatedAmount);
                 refueling.setCountry(updateCountry);
                 refueling.setCurrency(updatedCurrency);
+                refueling.setCurrencyRate(updatedCurrencyRate);
                 refueling.setNotes(updatedNotes);
                 refueling.setPoi(updatePoi);
                 refueling.setLat(updateLat);
@@ -544,11 +624,19 @@ public class MainActivity extends AppCompatActivity {
         int updatedDay = dateDatePicker.getDayOfMonth();
         int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
         int updatedYear = dateDatePicker.getYear();
-        String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
+        String updatedDate = String.format("%04d-%02d-%02d", updatedYear, updatedMonth, updatedDay);
         return updatedDate;
 
     }
 
+//    public String userUpdateDatePickerFormatDate() {
+//        int updatedDay = editDatePicker.getDayOfMonth();
+//        int updatedMonth = editDatePicker.getMonth() + 1; // Months are zero-based
+//        int updatedYear = editDatePicker.getYear();
+//        String updatedDate = String.format("%04d-%02d-%02d", updatedYear, updatedMonth, updatedDay);
+//
+//        return updatedDate;
+//    }
 
     private String getAppVersionName() {
         PackageManager packageManager = getPackageManager();
@@ -578,7 +666,7 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(versionCheckRunnable);
     }
 
-//    @Override
+    //    @Override
 //    protected void onPause() {
 //        super.onPause();
 //        unregisterReceiver(receiver);
@@ -591,4 +679,127 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * EXCHANGE RATE NBP API
+     */
+    private String fetchExchangeRate() {
+        String table = "a";
+        String currency = getSelectedCurrency();
+        Date selectedDate = getDateFromDatePicker(dateDatePicker);
+        String selectedDateString = formatDate(selectedDate);
+        System.out.println("User date: " + selectedDateString);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(selectedDate);
+
+        ArrayList<String> rateStrings = new ArrayList<>();
+        boolean rateFound = false;
+
+        for (int i = 0; i < 5; i++) {
+            Date currentDate = calendar.getTime();
+
+            String currentDateString = formatDate(currentDate);
+            FetchExchangeRateTask task = new FetchExchangeRateTask();
+            task.execute(table, currency, currentDateString);
+
+            try {
+                String result = task.get(); // Wait for the task to complete and get the result
+                if (result != null && !result.isEmpty()) {
+                    if (result.equals("Failed")) {
+                        System.out.println("! Failed to fetch exchange rate data for " + currentDateString);
+                    } else {
+                        double rate = Double.parseDouble(result);
+                        if (rate > 0) {
+                            rateStrings.add(String.valueOf(rate));
+                            rateFound = true;
+                            break; // Stop fetching rates if a valid rate is found
+                        }
+                    }
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            // Move to the previous date
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        Double rate = null;
+
+        try {
+            Date currentDate = calendar.getTime();
+            String currentDateString = formatDate(currentDate);
+            String rateString = rateStrings.get(0);
+            // String rateFinal = rateString.substring(1, rateString.length() - 1);
+
+
+            if (rateFound) {
+                System.out.println("Rates: " + rateStrings + " for " + currentDateString);
+                System.out.println("RATE to db " + rateStrings);
+                String resultString = rateString.replace("[", "").replace("]", "");
+
+                return String.valueOf(resultString);
+                // Get the first (and only) string element
+                //exchangeRateTv.setText("date: " + currentDateString + ", rate: " + String.valueOf(rate) + " " + currency);
+                // Display or process the rates as needed
+            } else {
+                System.out.println("No valid rates found.");
+                rate = 0.0;
+                //exchangeRateTv.setText("invalid rate. " + rate + " " + currency);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            rate = null;
+            //exchangeRateTv.setText("invalid rate. " + rate + " " + currency);
+
+        }
+        return null;
+    }
+
+    private class FetchExchangeRateTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String table = params[0];
+            String currency = params[1];
+            String date = params[2];
+
+            Call<Rate> call = apiService.getExchangeRate(table, currency, date);
+
+            try {
+                Response<Rate> response = call.execute();
+                if (response.isSuccessful() && response.body() != null) {
+                    Rate exchangeRate = response.body();
+                    List<Rate> rates = exchangeRate.getRates();
+                    if (rates.size() >= 1) {
+                        double rate = rates.get(0).getMid();
+                        return String.valueOf(rate);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return "Failed";
+        }
+    }
+
+
+    private Date getDateFromDatePicker(DatePicker datePicker) {
+        int year = datePicker.getYear();
+        int month = datePicker.getMonth();
+        int dayOfMonth = datePicker.getDayOfMonth();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        return calendar.getTime();
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    private String getSelectedCurrency() {
+        Spinner currencySpinner = findViewById(R.id.currencySpinner);
+        return currencySpinner.getSelectedItem().toString();
+    }
 }
