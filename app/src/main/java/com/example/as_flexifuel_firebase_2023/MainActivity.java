@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     public EditText vehicleEditText;
     public DatePicker dateDatePicker;
-    public DatePicker editDatePicker;
+    //public DatePicker editDatePicker;
     public EditText mileageEditText;
 
     public Spinner fuelTypeSpinner;
@@ -314,8 +314,14 @@ public class MainActivity extends AppCompatActivity {
         String amount = amountEditText.getText().toString().trim();
         Country country = (Country) countrySpinner.getSelectedItem();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
-        String currencyRate = fetchExchangeRate().trim();
-
+        String currencyRate;
+        if (fetchExchangeRate() != null) {
+            currencyRate = fetchExchangeRate().trim();
+        } else {
+            // Handle the case where fetchExchangeRate() returns null
+            // For example, you can set a default value or display an error message.
+            currencyRate = "N/A"; // Default value
+        }
         String timeworn = timeWornTextView.getText().toString().trim();
         String notes = notesEditText.getText().toString().trim();
         String poi = poiEditText.getText().toString().trim();
@@ -418,7 +424,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(dialogView);
 
         final EditText editVehicleEditText = dialogView.findViewById(R.id.updateVehicleEditText);
-        editDatePicker = dialogView.findViewById(R.id.updateDateDatePicker);
+
+        final EditText editDateEditText = dialogView.findViewById(R.id.updateDateEt);
         final EditText editMileageEditText = dialogView.findViewById(R.id.updateMileageEditText);
         final Spinner editFuelTypeSpinner = dialogView.findViewById(R.id.updateFuelTypeSpinner);
         final Spinner editFuelFPSpinner = dialogView.findViewById(R.id.updateFuelFPSpinner);
@@ -437,14 +444,36 @@ public class MainActivity extends AppCompatActivity {
         // Set initial values for the dialog fields
         // String updatedDate = userDatePickerFormatDate();
         editVehicleEditText.setText(refueling.getVehicle());
-        //  String[] dateParts = refueling.getDate().split("/");
-//        int day = Integer.parseInt(dateParts[0]);
-//        int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
-//        int year = Integer.parseInt(dateParts[2]);
-//        refueling.setDate(updatedDate);
-//        dateDatePicker.setD(updatedDate);
-        String updateDate = userDatePickerFormatDate();
-        //editDatePicker.setDa
+        // String dateString = dateTextView.getText().toString();
+
+// Split the date string into year, month, and day values
+        editDateEditText.setText(refueling.getDate());
+//       String dateString = editDateEditText.getText().toString();
+//        if (!dateString.isEmpty()) {
+//            // Split the date string into year, month, and day values
+//            String[] dateParts = dateString.split("-");
+//
+//            // Check if the date has all three parts (year, month, day)
+//            if (dateParts.length == 3) {
+//                int year = Integer.parseInt(dateParts[0]);
+//                int month = Integer.parseInt(dateParts[1]) - 1; // Months are zero-based
+//                int day = Integer.parseInt(dateParts[2]);
+//
+//                // Find the DatePicker in your layout (assuming its id is datePicker)
+//                DatePicker datePicker = findViewById(R.id.updateDatePicker);
+//
+//                // Set the initial date of the DatePicker
+//                datePicker.updateDate(year, month, day);
+//            } else {
+//                // Handle invalid date format in the TextView
+//                // For example, show an error message or use a default date
+//            }
+//        } else {
+//            // Handle empty date string in the TextView
+//            // For example, show an error message or use a default date
+//        }
+
+
         editMileageEditText.setText(refueling.getMileage());
 
         // Create the fuel type adapter and set the selection
@@ -541,7 +570,7 @@ public class MainActivity extends AppCompatActivity {
 //                int updatedDay = dateDatePicker.getDayOfMonth();
 //                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
 //                int updatedYear = dateDatePicker.getYear();
-                String updatedDate = userDatePickerFormatDate();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
+                String updatedDate = editDateEditText.getText().toString().trim();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
                 String updatedMileage = editMileageEditText.getText().toString().trim();
 
                 FuelType updatedFuelType = (FuelType) editFuelTypeSpinner.getSelectedItem();
@@ -630,7 +659,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    public String userUpdateDatePickerFormatDate() {
-//        int updatedDay = editDatePicker.getDayOfMonth();
+//        int updatedDay = eddate.getDayOfMonth();
 //        int updatedMonth = editDatePicker.getMonth() + 1; // Months are zero-based
 //        int updatedYear = editDatePicker.getYear();
 //        String updatedDate = String.format("%04d-%02d-%02d", updatedYear, updatedMonth, updatedDay);
