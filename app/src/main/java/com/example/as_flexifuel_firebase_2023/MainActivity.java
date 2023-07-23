@@ -42,6 +42,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvVersion;
     private PackageUpdateReceiver receiver;
     private String currentVersionName;
+
+
+    String  updatedDate;
     //public NbpPage nbpPage;
     private static final String BASE_URL = "https://api.nbp.pl/api/";
 
@@ -316,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         Currency currency = (Currency) currencySpinner.getSelectedItem();
         String currencyRate;
         if (fetchExchangeRate() != null) {
-            currencyRate = fetchExchangeRate().trim();
+            currencyRate = fetchExchangeRateEdit(date).trim();
         } else {
             // Handle the case where fetchExchangeRate() returns null
             // For example, you can set a default value or display an error message.
@@ -570,7 +574,7 @@ public class MainActivity extends AppCompatActivity {
 //                int updatedDay = dateDatePicker.getDayOfMonth();
 //                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
 //                int updatedYear = dateDatePicker.getYear();
-                String updatedDate = editDateEditText.getText().toString().trim();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
+              updatedDate = editDateEditText.getText().toString().trim();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
                 String updatedMileage = editMileageEditText.getText().toString().trim();
 
                 FuelType updatedFuelType = (FuelType) editFuelTypeSpinner.getSelectedItem();
@@ -579,8 +583,10 @@ public class MainActivity extends AppCompatActivity {
                 String updatedAmount = editAmountEditText.getText().toString().trim();
                 Country updateCountry = (Country) editCountrySpinner.getSelectedItem();
                 Currency updatedCurrency = (Currency) editCurrencySpinner.getSelectedItem();
-                String updatedCurrencyRate = editCurrencyRateEditText.getText().toString().trim();
-
+             String updatedCurrencyRate = editCurrencyRateEditText.getText().toString().trim();
+              String curr= fetchExchangeRateEdit(editDateEditText.getText().toString());
+                //String updatedCurrencyRate = curr.trim();
+                System.out.println(">>>CURR "+updatedDate.toString());
 
                 String updatedNotes = editNotesEditText.getText().toString().trim();
                 String updatePoi = editPoiEditText.getText().toString().trim();
@@ -782,7 +788,77 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+    private String fetchExchangeRateEdit(String date) {
+        String table = "a";
+        String currency = getSelectedCurrency();
+      //  Date selectedDate = getDateFromDatePicker(date);
+      //  String selectedDateString = formatDate(selectedDate);
+        System.out.println("User date: " + date);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(convertStringToDate(updatedDate));
+
+        ArrayList<String> rateStrings = new ArrayList<>();
+        boolean rateFound = false;
+
+        for (int i = 0; i < 5; i++) {
+            Date currentDate = calendar.getTime();
+
+            String currentDateString = formatDate(currentDate);
+            FetchExchangeRateTask task = new FetchExchangeRateTask();
+            task.execute(table, currency, currentDateString);
+
+            try {
+                String result = task.get(); // Wait for the task to complete and get the result
+                if (result != null && !result.isEmpty()) {
+                    if (result.equals("Failed")) {
+                        System.out.println("! Failed to fetch exchange rate data for " + currentDateString);
+                    } else {
+                        double rate = Double.parseDouble(result);
+                        if (rate > 0) {
+                            rateStrings.add(String.valueOf(rate));
+                            rateFound = true;
+                            break; // Stop fetching rates if a valid rate is found
+                        }
+                    }
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            // Move to the previous date
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        Double rate = null;
+
+        try {
+            Date currentDate = calendar.getTime();
+            String currentDateString = formatDate(currentDate);
+            String rateString = rateStrings.get(0);
+            // String rateFinal = rateString.substring(1, rateString.length() - 1);
+
+
+            if (rateFound) {
+                System.out.println("Rates: " + rateStrings + " for " + currentDateString);
+                System.out.println("RATE to db " + rateStrings);
+                String resultString = rateString.replace("[", "").replace("]", "");
+
+                return String.valueOf(resultString);
+                // Get the first (and only) string element
+                //exchangeRateTv.setText("date: " + currentDateString + ", rate: " + String.valueOf(rate) + " " + currency);
+                // Display or process the rates as needed
+            } else {
+                System.out.println("No valid rates found.");
+                rate = 0.0;
+                //exchangeRateTv.setText("invalid rate. " + rate + " " + currency);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            rate = null;
+            //exchangeRateTv.setText("invalid rate. " + rate + " " + currency);
+
+        }
+        return null;
+    }
     private class FetchExchangeRateTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -830,5 +906,16 @@ public class MainActivity extends AppCompatActivity {
     private String getSelectedCurrency() {
         Spinner currencySpinner = findViewById(R.id.currencySpinner);
         return currencySpinner.getSelectedItem().toString();
+    }
+    private static Date convertStringToDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            // Parse the dateString to create a Date object
+            Date date = dateFormat.parse(dateString);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
