@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     public EditText amountEditText;
     public Spinner countrySpinner;
     public Spinner currencySpinner;
-    public EditText currencyRateEditText;
+    public TextView currencyRateEditText;
 
     public TextView timeWornTextView;
     public EditText notesEditText;
@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity {
     private String currentVersionName;
 
 
-    String  updatedDate;
+    String updatedDate;
+    Currency updatedCurrency;
+    String updatedCurrencyRate;
     //public NbpPage nbpPage;
     private static final String BASE_URL = "https://api.nbp.pl/api/";
 
@@ -318,14 +320,17 @@ public class MainActivity extends AppCompatActivity {
         String amount = amountEditText.getText().toString().trim();
         Country country = (Country) countrySpinner.getSelectedItem();
         Currency currency = (Currency) currencySpinner.getSelectedItem();
-        String currencyRate;
-        if (fetchExchangeRate() != null) {
-            currencyRate = fetchExchangeRateEdit(date).trim();
-        } else {
-            // Handle the case where fetchExchangeRate() returns null
-            // For example, you can set a default value or display an error message.
-            currencyRate = "N/A"; // Default value
-        }
+        String currencyRate = currencyRateEditText.getText().toString().trim();
+        //todo error treat
+        //String currencyRate;
+//
+//        if (fetchExchangeRate() != null) {
+//            currencyRate = fetchExchangeRateEdit(date).trim();
+//        } else {
+//            // Handle the case where fetchExchangeRate() returns null
+//            // For example, you can set a default value or display an error message.
+//            currencyRate = "N/A"; // Default value
+//        }
         String timeworn = timeWornTextView.getText().toString().trim();
         String notes = notesEditText.getText().toString().trim();
         String poi = poiEditText.getText().toString().trim();
@@ -437,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText editAmountEditText = dialogView.findViewById(R.id.updateAmountEditText);
         final Spinner editCountrySpinner = dialogView.findViewById(R.id.updateCountrySpinner);
         final Spinner editCurrencySpinner = dialogView.findViewById(R.id.updateCurrencySpinner);
-        final EditText editCurrencyRateEditText = dialogView.findViewById(R.id.updateCurrencyRateEditText);
+        final TextView editCurrencyRateTextView = dialogView.findViewById(R.id.updateCurrencyRateEditText);
 
         final EditText editNotesEditText = dialogView.findViewById(R.id.updateNotesEditText);
         final EditText editPoiEditText = dialogView.findViewById(R.id.updatePoiEditText);
@@ -552,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
             // Set a default selection or perform any other desired action
         }
 
-        editCurrencyRateEditText.setText(refueling.getCurrencyRate());
+        editCurrencyRateTextView.setText(refueling.getCurrencyRate());
         /**
          * CURRENCY RATE
          */
@@ -574,7 +579,7 @@ public class MainActivity extends AppCompatActivity {
 //                int updatedDay = dateDatePicker.getDayOfMonth();
 //                int updatedMonth = dateDatePicker.getMonth() + 1; // Months are zero-based
 //                int updatedYear = dateDatePicker.getYear();
-              updatedDate = editDateEditText.getText().toString().trim();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
+                updatedDate = editDateEditText.getText().toString().trim();//updatedDay + "/" + updatedMonth + "/" + updatedYear;
                 String updatedMileage = editMileageEditText.getText().toString().trim();
 
                 FuelType updatedFuelType = (FuelType) editFuelTypeSpinner.getSelectedItem();
@@ -582,11 +587,14 @@ public class MainActivity extends AppCompatActivity {
                 String updatedLiters = editLitersEditText.getText().toString().trim();
                 String updatedAmount = editAmountEditText.getText().toString().trim();
                 Country updateCountry = (Country) editCountrySpinner.getSelectedItem();
-                Currency updatedCurrency = (Currency) editCurrencySpinner.getSelectedItem();
-             String updatedCurrencyRate = editCurrencyRateEditText.getText().toString().trim();
-              String curr= fetchExchangeRateEdit(editDateEditText.getText().toString());
-                //String updatedCurrencyRate = curr.trim();
-                System.out.println(">>>CURR "+updatedDate.toString());
+                updatedCurrency = (Currency) editCurrencySpinner.getSelectedItem();
+                updatedCurrencyRate = fetchExchangeRateEdit(editCurrencyRateTextView.getText().toString());
+                // String updatedCurrencyRate = updateCurrencyRateEdit.trim();
+                //  System.out.println(">>>CURR " + updatedDate.toString());
+                System.out.println("curr " + updatedCurrencyRate);
+                //String updatedCurrencyRate = fetchExchangeRateEdit(updatedDate).trim();
+                // System.out.println("updatedCurrencyRate " + updatedCurrencyRate);
+
 
                 String updatedNotes = editNotesEditText.getText().toString().trim();
                 String updatePoi = editPoiEditText.getText().toString().trim();
@@ -788,11 +796,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
     private String fetchExchangeRateEdit(String date) {
         String table = "a";
-        String currency = getSelectedCurrency();
-      //  Date selectedDate = getDateFromDatePicker(date);
-      //  String selectedDateString = formatDate(selectedDate);
+        String currency = String.valueOf(updatedCurrency);
+        //  Date selectedDate = getDateFromDatePicker(date);
+        //  String selectedDateString = formatDate(selectedDate);
         System.out.println("User date: " + date);
 
         Calendar calendar = Calendar.getInstance();
@@ -859,6 +868,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
     private class FetchExchangeRateTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -907,15 +917,37 @@ public class MainActivity extends AppCompatActivity {
         Spinner currencySpinner = findViewById(R.id.currencySpinner);
         return currencySpinner.getSelectedItem().toString();
     }
-    private static Date convertStringToDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    //    private static Date convertStringToDate(String dateString) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//        try {
+//            // Parse the dateString to create a Date object
+//            Date date = dateFormat.parse(dateString);
+//            return date;
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
+    public static Date convertStringToDate(String dateString) {
+        SimpleDateFormat inputDateFormat1 = new SimpleDateFormat("MM/dd/yy");
+        SimpleDateFormat inputDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+
         try {
-            // Parse the dateString to create a Date object
-            Date date = dateFormat.parse(dateString);
+            // Try parsing with the first input date format
+            Date date = inputDateFormat1.parse(dateString);
             return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+        } catch (ParseException e1) {
+            try {
+                // Try parsing with the second input date format
+                Date date = inputDateFormat2.parse(dateString);
+                return date;
+            } catch (ParseException e2) {
+                // Return null if the date format is not recognized by any of the formats
+                return null;
+            }
         }
     }
+
 }
