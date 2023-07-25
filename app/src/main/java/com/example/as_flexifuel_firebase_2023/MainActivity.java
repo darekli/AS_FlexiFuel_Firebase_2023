@@ -229,7 +229,8 @@ public class MainActivity extends AppCompatActivity {
         int minutes = np_number_minutes.getValue();
         int totalMinutes = hours * 60 + minutes;
         timeWornTextView = findViewById(R.id.timeWornTextView);
-        // timeWornTextView.setText(totalMinutes);
+        //todo
+       timeWornTextView.setText(String.valueOf(totalMinutes));
         np_number_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -443,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
         final Spinner editCountrySpinner = dialogView.findViewById(R.id.updateCountrySpinner);
         final Spinner editCurrencySpinner = dialogView.findViewById(R.id.updateCurrencySpinner);
         final TextView editCurrencyRateTextView = dialogView.findViewById(R.id.updateCurrencyRateEditText);
+        final EditText editTimeWornEditText = dialogView.findViewById(R.id.updateTimeWornEditText);
 
         final EditText editNotesEditText = dialogView.findViewById(R.id.updateNotesEditText);
         final EditText editPoiEditText = dialogView.findViewById(R.id.updatePoiEditText);
@@ -558,10 +560,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         editCurrencyRateTextView.setText(refueling.getCurrencyRate());
-        /**
-         * CURRENCY RATE
-         */
-
+        editTimeWornEditText.setText(refueling.getTimeworn());
 
         editNotesEditText.setText(refueling.getNotes());
         editPoiEditText.setText(refueling.getPoi());
@@ -595,7 +594,7 @@ public class MainActivity extends AppCompatActivity {
                 //String updatedCurrencyRate = fetchExchangeRateEdit(updatedDate).trim();
                 // System.out.println("updatedCurrencyRate " + updatedCurrencyRate);
 
-
+                String updateTimeWorn = editTimeWornEditText.getText().toString().trim();
                 String updatedNotes = editNotesEditText.getText().toString().trim();
                 String updatePoi = editPoiEditText.getText().toString().trim();
                 String updateLat = editLatEditText.getText().toString().trim();
@@ -612,6 +611,7 @@ public class MainActivity extends AppCompatActivity {
                 refueling.setCountry(updateCountry);
                 refueling.setCurrency(updatedCurrency);
                 refueling.setCurrencyRate(updatedCurrencyRate);
+                refueling.setTimeworn(updateTimeWorn);
                 refueling.setNotes(updatedNotes);
                 refueling.setPoi(updatePoi);
                 refueling.setLat(updateLat);

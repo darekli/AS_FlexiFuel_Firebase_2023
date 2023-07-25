@@ -64,6 +64,11 @@
             android:layout_height="wrap_content"
             android:hint="Currency rate" />
 
+        <EditText
+            android:id="@+id/updateTimeWornEditText"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:hint="Time worn" />
 
     </LinearLayout>
 
