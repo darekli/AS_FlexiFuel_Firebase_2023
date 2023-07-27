@@ -40,6 +40,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCo
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -529,12 +530,12 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
-                countFinalFinalSumPB_PLN(vehicleEditText, new AmountCurrencyRateMapFetched() {
+                countFinalFinalSumPB_PLN(vehicleEditText, new TotalSumCalculated2() {
 
 
                     @Override
-                    public void onAmountCurrencyRateMapFetched(Map<Double, Double> amountCurrencyRateMap) {
-                        tv_answer_41.setText("41. 38. PB=PLN" + amountCurrencyRateMap);
+                    public void onTotalSumCalculated(String totalSum) {
+                        tv_answer_41.setText("41. 38. PB=PLN" + totalSum);
 
                     }
 
@@ -557,7 +558,20 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
+                countFinalFinalSumLPG_PLN(vehicleEditText, new TotalSumCalculated2() {
 
+
+                    @Override
+                    public void onTotalSumCalculated(String totalSum) {
+                        tv_answer_43.setText("43.  LPG=PLN: " + totalSum);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
 
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
@@ -2798,6 +2812,7 @@ public class Ask extends AppCompatActivity {
                                                 }
 
                                                 amountCurrencyRateMap.put(amount, currencyRate);
+
                                             }
                                         } catch (NumberFormatException e) {
                                             // Handle the exception if parsing mileage, amount, or currency rate fails
@@ -2823,19 +2838,7 @@ public class Ask extends AppCompatActivity {
                         });
                     }
 
-                    public String calculateTotalSumByMultiplyingKeysWithValues(Map<Double, Double> amountCurrencyRateMap) {
-                        double totalSum = 0.0;
 
-                        for (Map.Entry<Double, Double> entry : amountCurrencyRateMap.entrySet()) {
-                            double amount = entry.getKey();
-                            double currencyRate = entry.getValue();
-                            double result = amount * currencyRate;
-                            totalSum += result;
-                        }
-                        System.out.println("SUM PB "+totalSum);
-                        // Convert the total sum to a string and return it
-                        return String.format("%.2f", totalSum);
-                    }
 
                     @Override
                     public void onError(String errorMessage) {
@@ -2852,7 +2855,102 @@ public class Ask extends AppCompatActivity {
         });
     }
 
-    public void countFinalFinalSumPB_PLN(EditText vehicleEditText, AmountCurrencyRateMapFetched callback) {
+    public void countFinalFinalSumPB_PLN(EditText vehicleEditText, TotalSumCalculated2 callback) {
+            if (vehicleEditText == null) {
+                callback.onError("vehicleEditText is null");
+                return;
+            }
+
+            findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+                @Override
+                public void onHighestCommonMileageFetched(int highestMileage) {
+                    findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                        @Override
+                        public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Map<Double, Double> amountCurrencyRateMap = new HashMap<>();
+                                    int lowestMileage = Integer.MAX_VALUE;
+                                    DataSnapshot lowestMileageSnapshot = null;
+
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                        String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                        String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                        String litersStr = snapshot.child("liters").getValue(String.class);
+                                        String amountStr = snapshot.child("amount").getValue(String.class);
+                                        String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
+                                        if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                                && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                                && mileageStr != null && litersStr != null && amountStr != null && currencyRateStr != null) {
+
+                                            try {
+                                                int mileage = Integer.parseInt(mileageStr);
+                                                double amount = Double.parseDouble(amountStr);
+                                                String currRate = currencyRateStr;
+
+                                                if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                    if (mileage < lowestMileage) {
+                                                        lowestMileage = mileage;
+                                                        lowestMileageSnapshot = snapshot;
+                                                    }
+
+                                                    double currencyRate = 1.0; // Default value for currRate if NA
+                                                    if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                        currencyRate = Double.parseDouble(currRate);
+                                                    }
+
+                                                    amountCurrencyRateMap.put(amount, currencyRate);
+                                                }
+                                            } catch (NumberFormatException e) {
+                                                // Handle the exception if parsing mileage, amount, or currency rate fails
+                                                // You can log the error if needed or skip the entry
+                                            }
+                                        }
+                                    }
+
+                                    // Remove the entry with the lowest mileage from the map
+                                    if (lowestMileageSnapshot != null) {
+                                        String amountStr = lowestMileageSnapshot.child("amount").getValue(String.class);
+                                        double amountToRemove = Double.parseDouble(amountStr);
+                                        amountCurrencyRateMap.remove(amountToRemove);
+                                    }
+
+                                    // Calculate the total sum by multiplying keys (amounts) with values (currency rates)
+                                    double totalSum = calculateTotalSumByMultiplyingKeysWithValues(amountCurrencyRateMap);
+
+                                    // Convert the total sum to a formatted string
+                                    String totalSumString = String.format("%.2f", totalSum);
+
+                                    // Call the callback to return the totalSum as a string
+                                    callback.onTotalSumCalculated(totalSumString);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    callback.onError(databaseError.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            callback.onError(errorMessage);
+                        }
+                    });
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    callback.onError(errorMessage);
+                }
+            });
+        }
+    public void countFinalFinalSumLPG_PLN(EditText vehicleEditText, TotalSumCalculated2 callback) {
         if (vehicleEditText == null) {
             callback.onError("vehicleEditText is null");
             return;
@@ -2874,7 +2972,40 @@ public class Ask extends AppCompatActivity {
                                 DataSnapshot lowestMileageSnapshot = null;
 
                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    // ... (rest of the previous code remains unchanged)
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyRateStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currRate = currencyRateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                if (mileage < lowestMileage) {
+                                                    lowestMileage = mileage;
+                                                    lowestMileageSnapshot = snapshot;
+                                                }
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                amountCurrencyRateMap.put(amount, currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
                                 }
 
                                 // Remove the entry with the lowest mileage from the map
@@ -2884,16 +3015,14 @@ public class Ask extends AppCompatActivity {
                                     amountCurrencyRateMap.remove(amountToRemove);
                                 }
 
-                                // Calculate the total sum and convert it to a string
-                                String totalSumString = String.valueOf(calculateTotalSumByMultiplyingKeysWithValues(amountCurrencyRateMap));
+                                // Calculate the total sum by multiplying keys (amounts) with values (currency rates)
+                                double totalSum = calculateTotalSumByMultiplyingKeysWithValues(amountCurrencyRateMap);
 
-                                // Call the original callback to return the amountCurrencyRateMap
-                                callback.onAmountCurrencyRateMapFetched(amountCurrencyRateMap);
+                                // Convert the total sum to a formatted string
+                                String totalSumString = String.format("%.2f", totalSum);
 
-                                // Call the new callback to return the totalSum as a string
-                                if (callback instanceof TotalSumCalculated) {
-                                    ((TotalSumCalculated) callback).onTotalSumCalculated(Double.parseDouble(totalSumString));
-                                }
+                                // Call the callback to return the totalSum as a string
+                                callback.onTotalSumCalculated(totalSumString);
                             }
 
                             @Override
@@ -2918,7 +3047,8 @@ public class Ask extends AppCompatActivity {
     }
 
 
-    // Method to calculate the total sum by multiplying keys (amounts) with values (currency rates)
+
+        // Method to calculate the total sum by multiplying keys (amounts) with values (currency rates)
     private double calculateTotalSumByMultiplyingKeysWithValues(Map<Double, Double> amountCurrencyRateMap) {
         double totalSum = 0.0;
 
@@ -3654,4 +3784,5 @@ public class Ask extends AppCompatActivity {
         });
 
     }
+
 }
