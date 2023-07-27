@@ -21,6 +21,7 @@ import com.example.as_flexifuel_firebase_2023.FuelFP;
 import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.MainActivity;
 import com.example.as_flexifuel_firebase_2023.R;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
@@ -29,6 +30,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencySumFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageConsumptionRatioCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListCallback;
@@ -36,6 +38,8 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListFetc
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -428,6 +432,133 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
+
+                findTotalAmountOfMoneySpendLastCountableByFuelTypePB(vehicleEditText, new MileageAmountCurrencySumFetched() {
+
+
+                    @Override
+                    public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                        tv_answer_34.setText("34.Amount of money last countable PB" + sum);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                findTotalAmountOfMoneySpendLastCountableByFuelTypeLPG(vehicleEditText, new MileageAmountCurrencySumFetched() {
+
+
+                    @Override
+                    public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                        tv_answer_35.setText("35. Amount of money last countable LPG" + sum);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyPB_RemoveLowestMileage(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_36.setText("36. 34. removed first where mileage is the lowestPB" + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+                findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyLPG_RemoveLowestMileage(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+                        tv_answer_37.setText("37. 35. removed first where mileage is the lowestLPG" + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                findTotalAmountOfMoneySpendLastCountableByFuelTypePB_PLN(vehicleEditText, new MileageAmountCurrencySumFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                        tv_answer_38.setText("38. 36. PB=PLN" + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                findTotalAmountOfMoneySpendLastCountableByFuelTypeLPG_PLN(vehicleEditText, new MileageAmountCurrencySumFetched() {
+
+                    @Override
+                    public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                        tv_answer_39.setText("39. 37. LPG=PLN" + mileageAmountCurrencyList);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                countFinalSumPB_PLN(vehicleEditText, new AmountCurrencyRateMapFetched() {
+
+
+                    @Override
+                    public void onAmountCurrencyRateMapFetched(Map<Double, Double> amountCurrencyRateMap) {
+                        tv_answer_40.setText("40. 38. PB=PLN" + amountCurrencyRateMap);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                countFinalFinalSumPB_PLN(vehicleEditText, new AmountCurrencyRateMapFetched() {
+
+
+                    @Override
+                    public void onAmountCurrencyRateMapFetched(Map<Double, Double> amountCurrencyRateMap) {
+                        tv_answer_41.setText("41. 38. PB=PLN" + amountCurrencyRateMap);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                countFinalSumLPG_PLN(vehicleEditText, new AmountCurrencyRateMapFetched() {
+
+
+                    @Override
+                    public void onAmountCurrencyRateMapFetched(Map<Double, Double> amountCurrencyRateMap) {
+                        tv_answer_42.setText("42. 39. LPG=PLN" + amountCurrencyRateMap);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
                     @Override
@@ -2344,6 +2475,7 @@ public class Ask extends AppCompatActivity {
                                     String litersStr = snapshot.child("liters").getValue(String.class);
                                     String amountStr = snapshot.child("amount").getValue(String.class);
                                     String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
                                     String dateStr = snapshot.child("date").getValue(String.class);
 
                                     if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
@@ -2352,6 +2484,7 @@ public class Ask extends AppCompatActivity {
                                         double liters = Double.parseDouble(litersStr);
                                         double amount = Double.parseDouble(amountStr);
                                         String currency = currencyStr;
+                                        String currRate = currencyRateStr;
                                         String date = dateStr;
 
                                         if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
@@ -2360,6 +2493,7 @@ public class Ask extends AppCompatActivity {
                                             entry.add(liters);
                                             entry.add(amount);
                                             entry.add(currency);
+                                            entry.add(currRate);
                                             entry.add(date);
                                             mileageAmountCurrencyList.add(entry);
                                         }
@@ -2378,6 +2512,718 @@ public class Ask extends AppCompatActivity {
 
                                 // Pass the sorted list to the callback
                                 callback.onMileageAmountCurrencyListFetched(mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    //remove last where mileage is the lowest
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyPB_RemoveLowestMileage(EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                List<Object> lowestMileageEntry = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+                                        double amount = Double.parseDouble(amountStr);
+                                        String currency = currencyStr;
+                                        String currRate = currencyRateStr;
+                                        String date = dateStr;
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
+                                            List<Object> entry = new ArrayList<>();
+                                            entry.add(mileage);
+                                            entry.add(liters);
+                                            entry.add(amount);
+                                            entry.add(currency);
+                                            entry.add(currRate);
+                                            entry.add(date);
+                                            mileageAmountCurrencyList.add(entry);
+
+                                            // Update the lowest mileage value and its corresponding entry
+                                            if (mileage < lowestMileage) {
+                                                lowestMileage = mileage;
+                                                lowestMileageEntry = entry;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Remove the entry with the lowest mileage from the list
+                                if (lowestMileageEntry != null) {
+                                    mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Pass the sorted list to the callback
+                                callback.onMileageAmountCurrencyListFetched(mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    //total cost PB=PLN
+    public void findTotalAmountOfMoneySpendLastCountableByFuelTypePB_PLN(EditText vehicleEditText, MileageAmountCurrencySumFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                double finalSum = 0.0;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double liters = Double.parseDouble(litersStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currency = currencyStr;
+                                            String currRate = currencyRateStr;
+                                            String date = dateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                List<Object> entry = new ArrayList<>();
+                                                entry.add(mileage);
+                                                entry.add(liters);
+                                                entry.add(amount);
+                                                entry.add(currency);
+                                                entry.add(currRate);
+                                                entry.add(date);
+                                                mileageAmountCurrencyList.add(entry);
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                finalSum += (amount * currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, liters, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Remove the entry with the lowest mileage from the list
+                                int lowestMileage = Integer.MAX_VALUE;
+                                List<Object> lowestMileageEntry = null;
+                                for (List<Object> entry : mileageAmountCurrencyList) {
+                                    int mileage = (int) entry.get(0); // Assuming mileage is stored at index 0
+                                    if (mileage < lowestMileage) {
+                                        lowestMileage = mileage;
+                                        lowestMileageEntry = entry;
+                                    }
+                                }
+
+                                if (lowestMileageEntry != null) {
+                                    mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                }
+
+                                callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    //count final sum PB=PLN
+
+    public void countFinalSumPB_PLN(EditText vehicleEditText, AmountCurrencyRateMapFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Double, Double> amountCurrencyRateMap = new HashMap<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                DataSnapshot lowestMileageSnapshot = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyRateStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currRate = currencyRateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                if (mileage < lowestMileage) {
+                                                    lowestMileage = mileage;
+                                                    lowestMileageSnapshot = snapshot;
+                                                }
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                amountCurrencyRateMap.put(amount, currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Remove the entry with the lowest mileage from the map
+                                if (lowestMileageSnapshot != null) {
+                                    String amountStr = lowestMileageSnapshot.child("amount").getValue(String.class);
+                                    double amountToRemove = Double.parseDouble(amountStr);
+                                    amountCurrencyRateMap.remove(amountToRemove);
+                                }
+
+                                callback.onAmountCurrencyRateMapFetched(amountCurrencyRateMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    public String calculateTotalSumByMultiplyingKeysWithValues(Map<Double, Double> amountCurrencyRateMap) {
+                        double totalSum = 0.0;
+
+                        for (Map.Entry<Double, Double> entry : amountCurrencyRateMap.entrySet()) {
+                            double amount = entry.getKey();
+                            double currencyRate = entry.getValue();
+                            double result = amount * currencyRate;
+                            totalSum += result;
+                        }
+                        System.out.println("SUM PB "+totalSum);
+                        // Convert the total sum to a string and return it
+                        return String.format("%.2f", totalSum);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void countFinalFinalSumPB_PLN(EditText vehicleEditText, AmountCurrencyRateMapFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Double, Double> amountCurrencyRateMap = new HashMap<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                DataSnapshot lowestMileageSnapshot = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    // ... (rest of the previous code remains unchanged)
+                                }
+
+                                // Remove the entry with the lowest mileage from the map
+                                if (lowestMileageSnapshot != null) {
+                                    String amountStr = lowestMileageSnapshot.child("amount").getValue(String.class);
+                                    double amountToRemove = Double.parseDouble(amountStr);
+                                    amountCurrencyRateMap.remove(amountToRemove);
+                                }
+
+                                // Calculate the total sum and convert it to a string
+                                String totalSumString = String.valueOf(calculateTotalSumByMultiplyingKeysWithValues(amountCurrencyRateMap));
+
+                                // Call the original callback to return the amountCurrencyRateMap
+                                callback.onAmountCurrencyRateMapFetched(amountCurrencyRateMap);
+
+                                // Call the new callback to return the totalSum as a string
+                                if (callback instanceof TotalSumCalculated) {
+                                    ((TotalSumCalculated) callback).onTotalSumCalculated(Double.parseDouble(totalSumString));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+
+    // Method to calculate the total sum by multiplying keys (amounts) with values (currency rates)
+    private double calculateTotalSumByMultiplyingKeysWithValues(Map<Double, Double> amountCurrencyRateMap) {
+        double totalSum = 0.0;
+
+        for (Map.Entry<Double, Double> entry : amountCurrencyRateMap.entrySet()) {
+            double amount = entry.getKey();
+            double currencyRate = entry.getValue();
+            double result = amount * currencyRate;
+            totalSum += result;
+        }
+
+        return totalSum;
+    }
+
+
+//count final sum LPG=PLN
+
+    public void countFinalSumLPG_PLN(EditText vehicleEditText, AmountCurrencyRateMapFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Double, Double> amountCurrencyRateMap = new HashMap<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                DataSnapshot lowestMileageSnapshot = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyRateStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currRate = currencyRateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                if (mileage < lowestMileage) {
+                                                    lowestMileage = mileage;
+                                                    lowestMileageSnapshot = snapshot;
+                                                }
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                amountCurrencyRateMap.put(amount, currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Remove the entry with the lowest mileage from the map
+                                if (lowestMileageSnapshot != null) {
+                                    String amountStr = lowestMileageSnapshot.child("amount").getValue(String.class);
+                                    double amountToRemove = Double.parseDouble(amountStr);
+                                    amountCurrencyRateMap.remove(amountToRemove);
+                                }
+
+                                callback.onAmountCurrencyRateMapFetched(amountCurrencyRateMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void findTotalSumByMultiplyingKeysWithValues(Map<Double, Double> amountCurrencyRateMap, SumCalculated callback) {
+        if (amountCurrencyRateMap == null || amountCurrencyRateMap.isEmpty()) {
+            callback.onSumCalculated(0.0); // Return 0 if the map is null or empty
+            return;
+        }
+
+        double totalSum = 0.0;
+
+        for (Map.Entry<Double, Double> entry : amountCurrencyRateMap.entrySet()) {
+            double amount = entry.getKey();
+            double currencyRate = entry.getValue();
+            double result = amount * currencyRate;
+            totalSum += result;
+        }
+
+        callback.onSumCalculated(totalSum);
+    }
+
+    public void findAmountCurrencyRateMapByFuelTypePB_PLN(EditText vehicleEditText, AmountCurrencyRateMapFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Map<Double, Double> amountCurrencyRateMap = new HashMap<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                DataSnapshot lowestMileageSnapshot = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyRateStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currRate = currencyRateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                if (mileage < lowestMileage) {
+                                                    lowestMileage = mileage;
+                                                    lowestMileageSnapshot = snapshot;
+                                                }
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                amountCurrencyRateMap.put(amount, currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Remove the entry with the lowest mileage from the map
+                                if (lowestMileageSnapshot != null) {
+                                    String amountStr = lowestMileageSnapshot.child("amount").getValue(String.class);
+                                    double amountToRemove = Double.parseDouble(amountStr);
+                                    amountCurrencyRateMap.remove(amountToRemove);
+                                }
+
+                                callback.onAmountCurrencyRateMapFetched(amountCurrencyRateMap);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+
+    public void findTotalAmountOfMoneySpendLastCountableByFuelTypeLPG_PLN(EditText vehicleEditText, MileageAmountCurrencySumFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                double finalSum = 0.0;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double liters = Double.parseDouble(litersStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currency = currencyStr;
+                                            String currRate = currencyRateStr;
+                                            String date = dateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                List<Object> entry = new ArrayList<>();
+                                                entry.add(mileage);
+                                                entry.add(liters);
+                                                entry.add(amount);
+                                                entry.add(currency);
+                                                entry.add(currRate);
+                                                entry.add(date);
+                                                mileageAmountCurrencyList.add(entry);
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                finalSum += (amount * currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, liters, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Remove the entry with the lowest mileage from the list
+                                int lowestMileage = Integer.MAX_VALUE;
+                                List<Object> lowestMileageEntry = null;
+                                for (List<Object> entry : mileageAmountCurrencyList) {
+                                    int mileage = (int) entry.get(0); // Assuming mileage is stored at index 0
+                                    if (mileage < lowestMileage) {
+                                        lowestMileage = mileage;
+                                        lowestMileageEntry = entry;
+                                    }
+                                }
+
+                                if (lowestMileageEntry != null) {
+                                    mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                }
+
+                                callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
                             }
 
                             @Override
@@ -2422,6 +3268,7 @@ public class Ask extends AppCompatActivity {
                                     String litersStr = snapshot.child("liters").getValue(String.class);
                                     String amountStr = snapshot.child("amount").getValue(String.class);
                                     String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
                                     String dateStr = snapshot.child("date").getValue(String.class);
 
                                     if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
@@ -2430,6 +3277,7 @@ public class Ask extends AppCompatActivity {
                                         double liters = Double.parseDouble(litersStr);
                                         double amount = Double.parseDouble(amountStr);
                                         String currency = currencyStr;
+                                        String currRate = currencyRateStr;
                                         String date = dateStr;
 
                                         if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
@@ -2438,6 +3286,7 @@ public class Ask extends AppCompatActivity {
                                             entry.add(liters);
                                             entry.add(amount);
                                             entry.add(currency);
+                                            entry.add(currRate);
                                             entry.add(date);
                                             mileageAmountCurrencyList.add(entry);
                                         }
@@ -2479,4 +3328,330 @@ public class Ask extends AppCompatActivity {
         });
     }
 
+    //remove last where mileage is the lowest when LPG
+    public void findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyLPG_RemoveLowestMileage(EditText vehicleEditText, MileageAmountCurrencyListFetched callback) {
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                int lowestMileage = Integer.MAX_VALUE;
+                                List<Object> lowestMileageEntry = null;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
+                                        int mileage = Integer.parseInt(mileageStr);
+                                        double liters = Double.parseDouble(litersStr);
+                                        double amount = Double.parseDouble(amountStr);
+                                        String currency = currencyStr;
+                                        String currRate = currencyRateStr;
+                                        String date = dateStr;
+
+                                        if (mileage > secondHighestMileage && mileage <= highestMileage && currency != null) {
+                                            List<Object> entry = new ArrayList<>();
+                                            entry.add(mileage);
+                                            entry.add(liters);
+                                            entry.add(amount);
+                                            entry.add(currency);
+                                            entry.add(currRate);
+                                            entry.add(date);
+                                            mileageAmountCurrencyList.add(entry);
+
+                                            // Update the lowest mileage value and its corresponding entry
+                                            if (mileage < lowestMileage) {
+                                                lowestMileage = mileage;
+                                                lowestMileageEntry = entry;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Remove the entry with the lowest mileage from the list
+                                if (lowestMileageEntry != null) {
+                                    mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                // Pass the sorted list to the callback
+                                callback.onMileageAmountCurrencyListFetched(mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public double calculateSumWithCurrencyRatesFixedNA(List<List<Object>> mileageAmountCurrencyList) {
+        double sum = 0.0;
+
+        for (List<Object> entry : mileageAmountCurrencyList) {
+            String currency = (String) entry.get(3); // Assuming currency is stored at index 3
+            double currRate = 0.0;
+            double amount = 0.0;
+
+            try {
+                currRate = Double.parseDouble((String) entry.get(4)); // Assuming currency rate is stored at index 4
+                String amountStr = String.valueOf(entry.get(2));
+                if (!amountStr.equalsIgnoreCase("NA")) {
+                    amount = Double.parseDouble(amountStr); // Assuming amount is stored at index 2
+                } else {
+                    amount = 1.0; // Treat "NA" as 1
+                }
+            } catch (NumberFormatException e) {
+                // Handle the exception when "NA" or invalid number format is encountered
+                continue; // Skip this entry and continue with the loop
+            }
+
+            double currencyValue = currRate * amount;
+            sum += currencyValue;
+            double totalSum = calculateSumWithCurrencyRatesFixedNA(mileageAmountCurrencyList);
+            System.out.println("Total Sum: " + totalSum);
+        }
+
+        return sum;
+    }
+
+    public void findTotalAmountOfMoneySpendLastCountableByFuelTypePB(EditText vehicleEditText, MileageAmountCurrencySumFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                double finalSum = 0.0;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double liters = Double.parseDouble(litersStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currency = currencyStr;
+                                            String currRate = currencyRateStr;
+                                            String date = dateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                List<Object> entry = new ArrayList<>();
+                                                entry.add(mileage);
+                                                entry.add(liters);
+                                                entry.add(amount);
+                                                entry.add(currency);
+                                                entry.add(currRate);
+                                                entry.add(date);
+                                                mileageAmountCurrencyList.add(entry);
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                finalSum += (amount * currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, liters, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+
+    }
+
+    public void findTotalAmountOfMoneySpendLastCountableByFuelTypeLPG(EditText vehicleEditText, MileageAmountCurrencySumFetched callback) {
+        if (vehicleEditText == null) {
+            callback.onError("vehicleEditText is null");
+            return;
+        }
+
+        findHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new HighestCommonMileageFetched() {
+            @Override
+            public void onHighestCommonMileageFetched(int highestMileage) {
+                findSecondHighestCommonMileageIfFueledfp_FULLAndVehicleIs(vehicleEditText, new SecondHighestCommonMileageFetched() {
+                    @Override
+                    public void onSecondHighestCommonMileageFetched(int secondHighestMileage) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                double finalSum = 0.0;
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                    String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                    String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                    String litersStr = snapshot.child("liters").getValue(String.class);
+                                    String amountStr = snapshot.child("amount").getValue(String.class);
+                                    String currencyStr = snapshot.child("currency").getValue(String.class);
+                                    String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                    String dateStr = snapshot.child("date").getValue(String.class);
+
+                                    if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.LPG.toString())
+                                            && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                            && mileageStr != null && litersStr != null && amountStr != null && currencyStr != null) {
+
+                                        try {
+                                            int mileage = Integer.parseInt(mileageStr);
+                                            double liters = Double.parseDouble(litersStr);
+                                            double amount = Double.parseDouble(amountStr);
+                                            String currency = currencyStr;
+                                            String currRate = currencyRateStr;
+                                            String date = dateStr;
+
+                                            if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                List<Object> entry = new ArrayList<>();
+                                                entry.add(mileage);
+                                                entry.add(liters);
+                                                entry.add(amount);
+                                                entry.add(currency);
+                                                entry.add(currRate);
+                                                entry.add(date);
+                                                mileageAmountCurrencyList.add(entry);
+
+                                                double currencyRate = 1.0; // Default value for currRate if NA
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA")) {
+                                                    currencyRate = Double.parseDouble(currRate);
+                                                }
+
+                                                finalSum += (amount * currencyRate);
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            // Handle the exception if parsing mileage, liters, amount, or currency rate fails
+                                            // You can log the error if needed or skip the entry
+                                        }
+                                    }
+                                }
+
+                                // Sort the list by currency
+                                mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                    @Override
+                                    public int compare(List<Object> entry1, List<Object> entry2) {
+                                        String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                        String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                        return currency1.compareTo(currency2);
+                                    }
+                                });
+
+                                callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                callback.onError(databaseError.getMessage());
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+
+    }
 }
