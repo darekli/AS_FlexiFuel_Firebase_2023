@@ -12,12 +12,14 @@ import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,16 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
     public EditText latEditText;
     public EditText lngEditText;
-
-
-    public Button addRefuelingButton;
-
     public DatabaseReference refuelingsRef;
     private List<Refueling> refuelingsList;
     private RefuelingAdapter refuelingAdapter;
 
     //    private TextView tv_answer_01;
-    private Button buttonAsk, buttonAskPage;
+    private Button addRefuelingButton, buttonAskPage;
 //    private DatabaseReference databaseRef;
 
     public NumberPicker np_number_hours, np_number_minutes;
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
 
     //Button editAddCurrencyRateButton;
-
+    Button buttonAddNewRefueling;
 
     private Runnable versionCheckRunnable = new Runnable() {
         @Override
@@ -128,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
 //                fetchExchangeRate();
 //            }
 //        });
+        buttonAddNewRefueling = findViewById(R.id.button_add_refueling);
+
         /**
          * NBP API
          */
@@ -153,7 +154,19 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(versionCheckRunnable, 1000); // Start checking after 1 second
 ////
 
+/**
+ * BUTTON ADD REFUELING
+ */
+        LinearLayoutCompat linearLayoutAddRefueling =findViewById(R.id.layout_add_refueling);
+        linearLayoutAddRefueling.setVisibility(View.GONE);
 
+        buttonAddNewRefueling.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                linearLayoutAddRefueling.setVisibility(View.VISIBLE);
+            }
+        });
         /**
          * PAGE ASK
          */
@@ -230,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         int totalMinutes = hours * 60 + minutes;
         timeWornTextView = findViewById(R.id.timeWornTextView);
         //todo
-       timeWornTextView.setText(String.valueOf(totalMinutes));
+        timeWornTextView.setText(String.valueOf(totalMinutes));
         np_number_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -288,9 +301,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addRefueling();
                 fetchExchangeRate();
-                System.out.println("               fetchExchangeRate() " + fetchExchangeRate());
+                System.out.println("fetchExchangeRate() " + fetchExchangeRate());
 
 
+                if (!TextUtils.isEmpty(vehicleEditText.getText())) {
+                    linearLayoutAddRefueling.setVisibility(View.GONE);
+                } else {
+                    linearLayoutAddRefueling.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -308,9 +326,9 @@ public class MainActivity extends AppCompatActivity {
     private void addRefueling() {
         String vehicle = vehicleEditText.getText().toString().trim();
         String date = userDatePickerFormatDate();
-
         if (vehicle.isEmpty() || date.isEmpty()) {
             Toast.makeText(this, "Please enter vehicle and date", Toast.LENGTH_SHORT).show();
+
             return;
         }
         String mileage = mileageEditText.getText().toString().trim();
@@ -641,20 +659,39 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void deleteRefueling(final Refueling refueling) {
-        refuelingsRef.child(refueling.getId()).removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(MainActivity.this, "Refueling deleted", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Failed to delete refueling", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Confirm Deletion");
+        alertDialogBuilder.setMessage("Are you sure you want to delete this refueling?");
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User confirmed deletion, proceed with removal
+                refuelingsRef.child(refueling.getId()).removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(MainActivity.this, "Refueling deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this, "Failed to delete refueling", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User cancelled deletion, do nothing
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
+
 
     private void updateTimeWorn() {
         int hours = np_number_hours.getValue();
