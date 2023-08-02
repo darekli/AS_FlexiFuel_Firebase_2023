@@ -6,5 +6,8 @@ import java.util.Map;
 public interface SumCalculated {
     // Method to be called when the sum is calculated
     public void onSumCalculated(double totalSum);
+
+
+    void onError(String errorMessage);
 }
 

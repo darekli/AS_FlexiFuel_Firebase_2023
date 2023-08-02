@@ -373,6 +373,50 @@
                 android:layout_height="wrap_content"
                 android:hint="answer 46..."
                 android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_47"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 47..."
+                android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_48"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 48..."
+                android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_49"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 49..."
+                android:textSize="14dp" />    <TextView
+            android:id="@+id/tv_answer_50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 50..."
+            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/tv_answer_51"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 51..."
+                android:textSize="14dp" />    <TextView
+            android:id="@+id/tv_answer_52"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 52..."
+            android:textSize="14dp" />    <TextView
+            android:id="@+id/tv_answer_53"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 53..."
+            android:textSize="14dp" />    <TextView
+            android:id="@+id/tv_answer_54"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="answer 54..."
+            android:textSize="14dp" />
         </LinearLayout>
     </ScrollView>
 
