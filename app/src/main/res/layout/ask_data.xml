@@ -17,15 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Home page" />
+
     <Button
         android:id="@+id/button_nbp_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NBP page" />
-    <DatePicker
-        android:id="@+id/askDateDatePicker"
-        android:layout_width="match_parent"
-        android:layout_height="100dp" />
 
     <EditText
         android:id="@+id/et_ask_vehicle"
@@ -304,6 +301,7 @@
                 android:layout_height="wrap_content"
                 android:hint="answer 36..."
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_answer_37"
                 android:layout_width="match_parent"
@@ -373,58 +371,123 @@
                 android:layout_height="wrap_content"
                 android:hint="answer 46..."
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_answer_47"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="answer 47..."
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_answer_48"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="answer 48..."
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_answer_49"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="answer 49..."
-                android:textSize="14dp" />    <TextView
-            android:id="@+id/tv_answer_50"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 50..."
-            android:textSize="14dp" />
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 50..."
+                android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/tv_answer_51"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="answer 51..."
-                android:textSize="14dp" />    <TextView
-            android:id="@+id/tv_answer_52"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 52..."
-            android:textSize="14dp" />    <TextView
-            android:id="@+id/tv_answer_53"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 53..."
-            android:textSize="14dp" />    <TextView
-            android:id="@+id/tv_answer_54"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="answer 54..."
-            android:textSize="14dp" />
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_52"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 52..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_53"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 53..."
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_answer_54"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="answer 54..."
+                android:textSize="14dp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/constraintLahyout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/wizard_background"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </LinearLayout>
+
     </ScrollView>
 
     <Button
         android:id="@+id/button_ask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ask" /><!--    <Spinner-->
+        android:text="Ask" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/l_cons_last_pb"
+                layout="@layout/gauge_fuel_cons"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/l_cons_last_lpg"
+                layout="@layout/gauge_fuel_cons"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </HorizontalScrollView>
+    <!--    <Spinner-->
     <!--        android:id="@+id/dialogFuelTypeSpinner"-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="wrap_content" />-->

@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.as_flexifuel_firebase_2023.adapter.Ask;
+import com.example.as_flexifuel_firebase_2023.adapter.GradeGaugeView;
 import com.example.as_flexifuel_firebase_2023.nbp.NbpApiService;
 import com.example.as_flexifuel_firebase_2023.nbp.Rate;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
     //Button editAddCurrencyRateButton;
     Button buttonAddNewRefueling;
 
+
+
     private Runnable versionCheckRunnable = new Runnable() {
         @Override
         public void run() {
@@ -127,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
 //                fetchExchangeRate();
 //            }
 //        });
+
+
+
+
         buttonAddNewRefueling = findViewById(R.id.button_add_refueling);
 
         /**

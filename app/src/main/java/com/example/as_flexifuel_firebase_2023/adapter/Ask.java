@@ -4,11 +4,9 @@ import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Ask extends AppCompatActivity {
-    public DatePicker askDateDatePicker;
     public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
     public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
     public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44, tv_answer_45, tv_answer_46, tv_answer_47, tv_answer_48, tv_answer_49;
@@ -71,6 +68,7 @@ public class Ask extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
+    GradeGaugeView gaugeView_avg_l_cons_last_pb,gaugeView_avg_l_cons_last_lpg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +155,6 @@ public class Ask extends AppCompatActivity {
         tv_answer_52 = findViewById(R.id.tv_answer_52);
         tv_answer_53 = findViewById(R.id.tv_answer_53);
         tv_answer_54 = findViewById(R.id.tv_answer_54);
-        askDateDatePicker = findViewById(R.id.askDateDatePicker);
 
         buttonAsk = findViewById(R.id.button_ask);
         ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
@@ -170,6 +167,23 @@ public class Ask extends AppCompatActivity {
         buttonAsk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /**
+                 * GAUGE
+                 */
+
+                //shifting gauge to new page
+               // setContentView(R.layout.gauge_fuel_cons);
+//pb
+                gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview);
+                gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
+                gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.Adapter4Test());
+//lpg
+                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview2);
+                gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
+                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter4Test());
+
+
                 String vehicle = vehicleEditText.getText().toString();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(VEHICLE_PREF_KEY, vehicle);
@@ -177,11 +191,8 @@ public class Ask extends AppCompatActivity {
 
 
                 tv_answer_15.setText("------------SECOND---LAST-------------------------");
-                lastMileageBySelectedDate(v);
                 tv_answer_01.setText("click!");
-                System.out.println(">>> userDatePickerFormatDate: " + userDatePickerFormatDate());
                 System.out.println(">>> todayFormatDate: " + todayFormatDate());
-                tv_answer_02.setText(">>> userDatePickerFormatDate: " + userDatePickerFormatDate());
                 tv_answer_03.setText(">>> todayFormatDate: " + todayFormatDate());
 
                 getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
@@ -392,6 +403,8 @@ public class Ask extends AppCompatActivity {
                         String formattedSumLiters = decimalFormat.format(ratio);
                         tv_answer_30.setText("30. PB avg fuel consumption: " + formattedSumLiters + " liters");
 
+                        //gauge
+                        gaugeView_avg_l_cons_last_pb.setCurrent(Float.parseFloat(formattedSumLiters));
                     }
 
                     @Override
@@ -408,6 +421,8 @@ public class Ask extends AppCompatActivity {
                         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
                         String formattedSumLiters = decimalFormat.format(ratio);
                         tv_answer_31.setText("31. LPG avg fuel consumption: " + formattedSumLiters + " liters");
+                       //gauge
+                        gaugeView_avg_l_cons_last_pb.setCurrent(Float.parseFloat(formattedSumLiters));
 
                     }
 
@@ -598,7 +613,7 @@ public class Ask extends AppCompatActivity {
                 sumTotalAmountOfMoneySpentByFuelTypeForBothPBAndLpgLastCountable(vehicleEditText, new SumCalculated() {
                     @Override
                     public void onSumCalculated(double totalSum) {
-                        tv_answer_45.setText("45.(34.+35.) Final in PLN Pb+LPG: " + totalSum+" PLN");
+                        tv_answer_45.setText("45.(34.+35.) Final in PLN Pb+LPG: " + totalSum + " PLN");
 
                     }
 
@@ -610,7 +625,7 @@ public class Ask extends AppCompatActivity {
                 calculateRatioAndSumForLastCountablePbLPG(vehicleEditText, new SumCalculated() {
                     @Override
                     public void onSumCalculated(double totalSum) {
-                        tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum+" PLN/100km");
+                        tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
 
                     }
 
@@ -683,7 +698,7 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onAverageFuelConsumptionCalculated(double averageFuelConsumption) {
-                        tv_answer_13.setText("13. avg cons. L last countable: " + String.valueOf(averageFuelConsumption+" L"));
+                        tv_answer_13.setText("13. avg cons. L last countable: " + String.valueOf(averageFuelConsumption + " L"));
                     }
 
                     @Override
@@ -832,38 +847,8 @@ public class Ask extends AppCompatActivity {
     }
 
 
-    public void lastMileageBySelectedDate(View view) {
-        databaseRef = FirebaseDatabase.getInstance().getReference("refuelings");
-        Query query = databaseRef.orderByChild("date").equalTo(userDatePickerFormatDate()).limitToFirst(1);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String kilometers = snapshot.child("mileage").getValue(String.class);
-                        tv_answer_01.setText("todo probably wrong: " + kilometers);
-                        break;  // Only retrieve the first result
-                    }
-                } else {
-                    tv_answer_01.setText("No data found for the given date");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Firebase", "Query canceled with error: " + databaseError.getMessage());
-            }
-        });
-    }
     //todo lastMileageFromTodayIfFueledFPIsFull(View view) {
 
-    public String userDatePickerFormatDate() {
-        int updatedDay = askDateDatePicker.getDayOfMonth();
-        int updatedMonth = askDateDatePicker.getMonth() + 1; // Months are zero-based
-        int updatedYear = askDateDatePicker.getYear();
-        String updatedDate = updatedDay + "/" + updatedMonth + "/" + updatedYear;
-        return updatedDate;
-    }
 
     public String todayFormatDate() {
         Calendar c = Calendar.getInstance();
