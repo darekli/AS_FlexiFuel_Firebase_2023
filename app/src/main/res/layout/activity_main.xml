@@ -211,7 +211,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="longitude" />
-
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Refueling" />
 
             <ScrollView
                 android:id="@+id/scrollView3c"
@@ -230,16 +234,12 @@
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Refueling" />
+
 
     <Button
         android:id="@+id/button_ask_page"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ask page" />
+        android:text="Stats" />
 </LinearLayout>
 

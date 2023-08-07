@@ -4,22 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:context=".MainActivity">
 
     <com.example.as_flexifuel_firebase_2023.adapter.GradeGaugeView
-        android:id="@+id/gaugeview"
+        android:id="@+id/gaugeview_fuel_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="left|top"/>
-    <com.example.as_flexifuel_firebase_2023.adapter.GradeGaugeView
-        android:id="@+id/gaugeview2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="right|top"/>
-
-
-
-
-
+        android:gravity="right|top" />
 </androidx.appcompat.widget.LinearLayoutCompat>

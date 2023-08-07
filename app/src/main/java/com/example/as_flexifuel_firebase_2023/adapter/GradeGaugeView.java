@@ -518,7 +518,7 @@ public class GradeGaugeView extends View {
     public static class Adapter4Test extends Adapter {
         private static final String[] TITLES = {"6", "7", "8", "9"};
         private static final float[][] SCALES = {
-                {5f, 6.5f}, {6.5f, 7.5f}, {7.5f, 8.5f}, {8.5f, 9.5f}
+                {0f, 6.5f}, {6.5f, 7.5f}, {7.5f, 8.5f}, {8.5f, 9.5f}
         };
         private static final int[] COLORS = {
                 Color.parseColor("#7cffb2"),
@@ -553,5 +553,42 @@ public class GradeGaugeView extends View {
         }
     }
 
+    public static class Adapter5Test extends Adapter {
+        private static final String[] TITLES = {"low", "mid",  "high"};
+        private static final float[][] SCALES = {
+                {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
+        };
+        private static final int[] COLORS = {
+                Color.GREEN,
+               // Color.BLUE,
+                Color.YELLOW,
+                Color.RED
+        };
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public CharSequence getTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public float getMinValue(int position) {
+            return SCALES[position][0];
+        }
+
+        @Override
+        public float getMaxValue(int position) {
+            return SCALES[position][1];
+        }
+
+        @Override
+        public int getColor(int position) {
+            return COLORS[position];
+        }
+    }
 
 }

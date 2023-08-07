@@ -55,12 +55,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Ask extends AppCompatActivity {
+public class AskLast extends AppCompatActivity {
     public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
     public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
     public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44, tv_answer_45, tv_answer_46, tv_answer_47, tv_answer_48, tv_answer_49;
     public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54;
-    public Button buttonAsk, button_back_main, button_nbp_page;
+    public Button buttonLast,button3Last,buttonLastAll, button_back_main, button_nbp_page;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
     public Spinner fuelTypeSpinner;
@@ -69,11 +69,14 @@ public class Ask extends AppCompatActivity {
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
     GradeGaugeView gaugeView_avg_l_cons_last_pb,gaugeView_avg_l_cons_last_lpg;
-
+    TextView tvDistance,tvCost100km;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ask_data);
+
+        tvDistance = findViewById(R.id.tv_distance);
+        tvCost100km = findViewById(R.id.tv_cost_100km);
 
 /**
  * BACK TO MAIN ACTIVITY
@@ -156,7 +159,10 @@ public class Ask extends AppCompatActivity {
         tv_answer_53 = findViewById(R.id.tv_answer_53);
         tv_answer_54 = findViewById(R.id.tv_answer_54);
 
-        buttonAsk = findViewById(R.id.button_ask);
+        buttonLast = findViewById(R.id.button_last);
+        button3Last = findViewById(R.id.button_3last);
+        buttonLastAll = findViewById(R.id.button_last_all);
+
         ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
         fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fuelTypeSpinner.setAdapter(fuelTypeAdapter);
@@ -164,7 +170,7 @@ public class Ask extends AppCompatActivity {
 
         //tv_answer_01 = findViewById(R.id.tv_answer_01);
         //   buttonAsk = findViewById(R.id.button_ask);
-        buttonAsk.setOnClickListener(new View.OnClickListener() {
+        buttonLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -175,13 +181,13 @@ public class Ask extends AppCompatActivity {
                 //shifting gauge to new page
                // setContentView(R.layout.gauge_fuel_cons);
 //pb
-                gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview);
+                gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview_fuel_1);
                 gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.Adapter4Test());
 //lpg
-                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview2);
+                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview_fuel_2);
                 gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
-                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter4Test());
+                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter5Test());
 
 
                 String vehicle = vehicleEditText.getText().toString();
@@ -301,7 +307,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
                         tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
-
+tvDistance.setText(mileageDifference+ " km");
                     }
 
                     @Override
@@ -422,7 +428,7 @@ public class Ask extends AppCompatActivity {
                         String formattedSumLiters = decimalFormat.format(ratio);
                         tv_answer_31.setText("31. LPG avg fuel consumption: " + formattedSumLiters + " liters");
                        //gauge
-                        gaugeView_avg_l_cons_last_pb.setCurrent(Float.parseFloat(formattedSumLiters));
+                        gaugeView_avg_l_cons_last_lpg.setCurrent(Float.parseFloat(formattedSumLiters));
 
                     }
 
@@ -626,7 +632,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onSumCalculated(double totalSum) {
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
-
+tvCost100km.setText(totalSum+" PLN/100km");
                     }
 
                     @Override

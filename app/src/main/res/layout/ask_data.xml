@@ -35,10 +35,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Last" />
+
+        <Button
+            android:id="@+id/button_3last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Last three" />
+
+        <Button
+            android:id="@+id/button_last_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="All" />
+
+    </GridLayout>
+
     <ScrollView
         android:id="@+id/scrollView3c"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="180dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -70,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:hint="answer 03..."
                 android:textSize="14dp" />
+
 
             <TextView
                 android:id="@+id/tv_answer_04"
@@ -354,7 +386,7 @@
             <TextView
                 android:id="@+id/tv_answer_44"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:hint="answer 44..."
                 android:textSize="14dp" />
 
@@ -444,25 +476,21 @@
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/button_ask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ask" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/wizard_2"
             android:orientation="horizontal">
 
             <include
                 android:id="@+id/l_cons_last_pb"
-                layout="@layout/gauge_fuel_cons"
+                layout="@layout/gauge_fuel_1_cons"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_marginLeft="0dp"
@@ -475,7 +503,7 @@
 
             <include
                 android:id="@+id/l_cons_last_lpg"
-                layout="@layout/gauge_fuel_cons"
+                layout="@layout/gauge_fuel_2_cons"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_marginLeft="0dp"
@@ -485,8 +513,54 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </HorizontalScrollView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wizard_2"
+        >
+
+
+        <include
+            android:id="@+id/l_cons_last_slpg"
+            layout="@layout/card_design_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wizard_2"
+        >
+        <include
+            android:id="@+id/l_cons_last_sflpg"
+            layout="@layout/card_design_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
     <!--    <Spinner-->
     <!--        android:id="@+id/dialogFuelTypeSpinner"-->
     <!--        android:layout_width="match_parent"-->
