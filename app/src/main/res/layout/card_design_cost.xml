@@ -38,7 +38,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_code"
+                android:src="@drawable/ic_money"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/white" />

@@ -604,43 +604,4 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-
-
-
-    <!--    <Spinner-->
-    <!--        android:id="@+id/dialogFuelTypeSpinner"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content" />-->
-
-    <!--    <Spinner-->
-    <!--        android:id="@+id/dialogFuelFPSpinner"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content" />-->
-    <!--    <EditText-->
-    <!--        android:id="@+id/askMileageEditText"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:hint="Mileage" />-->
-
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/dialogLitersEditText"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:hint="Liters" />-->
-    <!--    <EditText-->
-    <!--        android:id="@+id/dialogAmountEditText"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:hint="Amount" />-->
-    <!--    <Spinner-->
-    <!--        android:id="@+id/dialogCurrencySpinner"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content" />-->
-    <!--    <EditText-->
-    <!--        android:id="@+id/dialogNotesEditText"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:hint="Notes" />-->
 </LinearLayout>

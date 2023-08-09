@@ -30,7 +30,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.as_flexifuel_firebase_2023.adapter.AskLast;
+import com.example.as_flexifuel_firebase_2023.adapter.Ask;
 import com.example.as_flexifuel_firebase_2023.nbp.NbpApiService;
 import com.example.as_flexifuel_firebase_2023.nbp.Rate;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAskPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AskLast.class));
+                startActivity(new Intent(MainActivity.this, Ask.class));
             }
         });
 
