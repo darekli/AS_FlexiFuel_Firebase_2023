@@ -97,7 +97,7 @@ public class AskLast extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-        button_nbp_page = findViewById(R.id.button_nbp_page);
+       // button_nbp_page = findViewById(R.id.button_nbp_page);
 //        button_nbp_page.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

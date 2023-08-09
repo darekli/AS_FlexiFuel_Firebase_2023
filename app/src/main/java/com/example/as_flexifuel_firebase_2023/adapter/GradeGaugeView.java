@@ -516,15 +516,18 @@ public class GradeGaugeView extends View {
     }
 
     public static class Adapter4Test extends Adapter {
-        private static final String[] TITLES = {"6", "7", "8", "9"};
+        private static final String[] TITLES = {"low", "mid",  "high"};
         private static final float[][] SCALES = {
-                {0f, 6.5f}, {6.5f, 7.5f}, {7.5f, 8.5f}, {8.5f, 9.5f}
+                {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
         };
         private static final int[] COLORS = {
-                Color.parseColor("#7cffb2"),
-                Color.parseColor("#58d9f9"),
-                Color.parseColor("#fddd60"),
-                Color.parseColor("#ff6e76")
+//                Color.parseColor("#7cffb2"),
+//                Color.parseColor("#58d9f9"),
+//                Color.parseColor("#fddd60"),
+//                Color.parseColor("#ff6e76")
+                Color.GREEN,
+                Color.YELLOW,
+                Color.RED
         };
 
         @Override
