@@ -29,6 +29,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCall
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencySumFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageCalculationCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageConsumptionRatioCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListCallback;
@@ -60,7 +61,7 @@ public class AskLast extends AppCompatActivity {
     public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
     public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44, tv_answer_45, tv_answer_46, tv_answer_47, tv_answer_48, tv_answer_49;
     public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54;
-    public Button buttonLast,button3Last,buttonLastAll, button_back_main, button_nbp_page;
+    public Button buttonLast, button3Last, buttonLastAll, button_back_main, button_nbp_page;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
     public Spinner fuelTypeSpinner;
@@ -68,9 +69,11 @@ public class AskLast extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
-    GradeGaugeView gaugeView_avg_l_cons_last_pb,gaugeView_avg_l_cons_last_lpg;
-    TextView tvDistance,tvCost100km;
-    TextView tvDistanceOnce,tvCost100kmOnce;;
+    GradeGaugeView gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
+    TextView tvDistance, tvCost100km;
+    TextView tvDistanceOnce, tvCost100kmOnce;
+    ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,9 +185,9 @@ public class AskLast extends AppCompatActivity {
                  */
 
                 //shifting gauge to new page
-               // setContentView(R.layout.gauge_fuel_cons);
+                // setContentView(R.layout.gauge_fuel_cons);
                 //only Pb, lpg or on
-                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview_fuel_0);
+                gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gaugeview_fuel_0);
                 gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter0Test());
 
@@ -193,7 +196,7 @@ public class AskLast extends AppCompatActivity {
                 gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.Adapter4Test());
 //lpg
-                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview_fuel_2);
+                gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gaugeview_fuel_2);
                 gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter5Test());
 
@@ -315,7 +318,7 @@ public class AskLast extends AppCompatActivity {
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
                         tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
-tvDistance.setText(mileageDifference+ " km");
+                        tvDistance.setText(mileageDifference + " km");
                     }
 
                     @Override
@@ -435,7 +438,7 @@ tvDistance.setText(mileageDifference+ " km");
                         decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
                         String formattedSumLiters = decimalFormat.format(ratio);
                         tv_answer_31.setText("31. LPG avg fuel consumption: " + formattedSumLiters + " liters");
-                       //gauge
+                        //gauge
                         gaugeView_avg_l_cons_last_lpg.setCurrent(Float.parseFloat(formattedSumLiters));
 
                     }
@@ -640,7 +643,7 @@ tvDistance.setText(mileageDifference+ " km");
                     @Override
                     public void onSumCalculated(double totalSum) {
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
-tvCost100km.setText(totalSum+" PLN/100km");
+                        tvCost100km.setText(totalSum + " PLN/100km");
                     }
 
                     @Override
@@ -648,6 +651,35 @@ tvCost100km.setText(totalSum+" PLN/100km");
 
                     }
                 });
+
+                findTotalAmountOfMoneySpendLastCountableByFuelTypexxx(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencySumFetched() {
+
+
+                    @Override
+                    public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                        tv_answer_47.setText("47. " + mileageAmountCurrencyList + " PLN/100km" + " >>> sum: " + sum);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                calculateLastPln100kmOnce(fuelTypeSpinner, vehicleEditText, new MileageCalculationCallback() {
+
+                    @Override
+                    public void onMileageCalculationComplete(double sum, double difference, double result) {
+                        tv_answer_48.setText("48. " + difference + " kms" + " >>> sum: " + sum + "PLN; cons. l/100km: " + result+ " PLN");
+
+                    }
+
+                    @Override
+                    public void onMileageCalculationError(String errorMessage) {
+
+                    }
+                });
+
 
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
@@ -776,7 +808,17 @@ tvCost100km.setText(totalSum+" PLN/100km");
 
                     }
                 });
+                calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new MileageDifferenceFetched() {
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        tv_answer_08.setText("8. " + String.valueOf(mileageDifference));
+                    }
 
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
 
                 getLastCountableMileageDistance(fuelTypeSpinner, vehicleEditText, new MileageListFetched() {
                     @Override
@@ -1614,8 +1656,8 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                 }
 
                                 // Print the difference
-                                tv_answer_08.setText("8. Difference between last and second last mileage: " + difference);
-                                tvDistanceOnce.setText(difference+ " km");
+                                //tv_answer_08.setText("8xxx. Difference between last and second last mileage: " + difference);
+                                tvDistanceOnce.setText(difference + " km");
                                 System.out.println("Difference between last and second last mileage: " + difference);
                             }
                         }
@@ -1634,6 +1676,47 @@ tvCost100km.setText(totalSum+" PLN/100km");
             }
         });
 
+    }
+
+    public void calculateDifferenceBetweenLastAndSecondLastMileage(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageDifferenceFetched callback) {
+        getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+            @Override
+            public void onLastIdFetched(String lastId) {
+                if (lastId != null) {
+                    int lastMileage = Integer.parseInt(lastId);
+
+                    getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+                        @Override
+                        public void onLastIdFetched(String lastId) {
+                            if (lastId != null) {
+                                int secondLastMileage = Integer.parseInt(lastId);
+
+                                // Calculate the difference between the last and second last mileage
+                                int difference = 0;
+                                if (lastMileage > 0 && secondLastMileage > 0) {
+                                    difference = Math.abs(lastMileage - secondLastMileage);
+                                }
+
+                                // Invoke the callback with the difference value
+                                callback.onMileageDifferenceFetched(difference);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            // Handle the error
+                            callback.onError(errorMessage);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onError(errorMessage);
+            }
+        });
     }
 
     public void findAllLitersBetweenLastAndSecondLastMileage(Spinner fuelTypeSpinner, EditText vehicleEditText, LitersListFetched callback) {
@@ -1852,6 +1935,8 @@ tvCost100km.setText(totalSum+" PLN/100km");
 
                                             String amountStr = snapshot.child("amount").getValue(String.class);
                                             String currencyStr = snapshot.child("currency").getValue(String.class);
+                                            String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+
                                             String dateStr = snapshot.child("date").getValue(String.class);
 
 
@@ -1868,6 +1953,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                     entry.add(liters);
                                                     entry.add(amount);
                                                     entry.add(currencyStr);
+                                                    entry.add(currencyRateStr);
                                                     mileageAmountCurrencyList.add(entry);
                                                     entry.add(date);
                                                 }
@@ -2746,7 +2832,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 mileageAmountCurrencyList.add(entry);
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -2855,7 +2941,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 }
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -2947,7 +3033,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 }
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -3043,7 +3129,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 }
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -3194,7 +3280,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 }
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -3301,7 +3387,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 }
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -3399,7 +3485,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
                                                 mileageAmountCurrencyList.add(entry);
 
                                                 double currencyRate = 1.0; // Default value for currRate if NA
-                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("NA")) {
+                                                if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
                                                     currencyRate = Double.parseDouble(currRate);
                                                 }
 
@@ -3926,6 +4012,174 @@ tvCost100km.setText(totalSum+" PLN/100km");
             public void onError(String errorMessage) {
                 // Handle the error
                 callback.onError(errorMessage);
+            }
+        });
+    }
+
+    public void findTotalAmountOfMoneySpendLastCountableByFuelTypexxx(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageAmountCurrencySumFetched callback) {
+        if (fuelTypeSpinner == null || vehicleEditText == null) {
+            callback.onError("fuelTypeSpinner or vehicleEditText is null");
+            return;
+        }
+
+        // Define a callback for the first query
+        LastIdFetched firstQueryCallback = new LastIdFetched() {
+            @Override
+            public void onLastIdFetched(String lastId) {
+                if (lastId != null) {
+                    int highestMileage = Integer.parseInt(lastId);
+
+                    // Define a callback for the second query
+                    LastIdFetched secondQueryCallback = new LastIdFetched() {
+                        @Override
+                        public void onLastIdFetched(String lastId) {
+                            if (lastId != null) {
+                                int secondHighestMileage = Integer.parseInt(lastId);
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        List<List<Object>> mileageAmountCurrencyList = new ArrayList<>();
+                                        double finalSum = 0.0;
+
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                            String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                            String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                            String litersStr = snapshot.child("liters").getValue(String.class);
+                                            String amountStr = snapshot.child("amount").getValue(String.class);
+                                            String currencyStr = snapshot.child("currency").getValue(String.class);
+                                            String currencyRateStr = snapshot.child("currencyRate").getValue(String.class);
+                                            String dateStr = snapshot.child("date").getValue(String.class);
+
+                                            if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
+                                                    && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                                    && mileageStr != null && litersStr != null && amountStr != null && currencyStr != null) {
+
+                                                try {
+                                                    int mileage = Integer.parseInt(mileageStr);
+                                                    double liters = Double.parseDouble(litersStr);
+                                                    double amount = Double.parseDouble(amountStr);
+                                                    String currency = currencyStr;
+                                                    String currRate = currencyRateStr;
+                                                    String date = dateStr;
+
+                                                    if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                        List<Object> entry = new ArrayList<>();
+                                                        entry.add(mileage);
+                                                        entry.add(liters);
+                                                        entry.add(amount);
+                                                        entry.add(currency);
+                                                        entry.add(currRate);
+                                                        entry.add(date);
+                                                        mileageAmountCurrencyList.add(entry);
+
+                                                        double currencyRate = 1.0; // Default value for currRate if NA
+                                                        if (currRate != null && !currRate.equalsIgnoreCase("NA") && !currRate.equalsIgnoreCase("")) {
+                                                            currencyRate = Double.parseDouble(currRate);
+                                                        }
+
+                                                        finalSum += (amount * currencyRate);
+                                                    }
+                                                } catch (NumberFormatException e) {
+                                                    // Handle the exception if parsing mileage, liters, amount, or currency rate fails
+                                                    // You can log the error if needed or skip the entry
+                                                }
+                                            }
+                                        }
+
+                                        // Sort the list by currency
+                                        mileageAmountCurrencyList.sort(new Comparator<List<Object>>() {
+                                            @Override
+                                            public int compare(List<Object> entry1, List<Object> entry2) {
+                                                String currency1 = (String) entry1.get(3); // Assuming currency is stored at index 3
+                                                String currency2 = (String) entry2.get(3); // Assuming currency is stored at index 3
+                                                return currency1.compareTo(currency2);
+                                            }
+                                        });
+
+                                        // Remove the entry with the lowest mileage from the list
+                                        int lowestMileage = Integer.MAX_VALUE;
+                                        List<Object> lowestMileageEntry = null;
+                                        for (List<Object> entry : mileageAmountCurrencyList) {
+                                            int mileage = (int) entry.get(0); // Assuming mileage is stored at index 0
+                                            if (mileage < lowestMileage) {
+                                                lowestMileage = mileage;
+                                                lowestMileageEntry = entry;
+                                            }
+                                        }
+
+                                        if (lowestMileageEntry != null) {
+                                           // mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                        }
+
+                                        callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        callback.onError(databaseError.getMessage());
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            callback.onError(errorMessage);
+                        }
+                    };
+
+                    // Call the second query method
+                    getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, secondQueryCallback);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        };
+
+        // Call the first query method
+        getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, firstQueryCallback);
+    }
+
+    public void calculateLastPln100kmOnce(Spinner fuelTypeSpinner, EditText vehicleEditText, MileageCalculationCallback callback) {
+        // Calculate the sum value
+        findTotalAmountOfMoneySpendLastCountableByFuelTypexxx(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencySumFetched() {
+            @Override
+            public void onMileageAmountCurrencySumFetched(List<List<Object>> mileageAmountCurrencyList, double sum) {
+                // Calculate the difference value
+                calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new MileageDifferenceFetched() {
+                    @Override
+                    public void onMileageDifferenceFetched(int difference) {
+                        // Divide the sum by the difference and invoke the callback
+                        if (difference != 0) {
+                            double result = sum / difference*100.;
+                            callback.onMileageCalculationComplete(sum, difference, result);
+                            String resultS = String.format("%.2f",(result));
+                            tvCost100kmOnce.setText(resultS+ " PLN/100km");
+                        } else {
+                            // Handle the case where difference is zero (to avoid division by zero)
+                            callback.onMileageCalculationError("Difference is zero, cannot divide by zero.");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Handle the error
+                        callback.onMileageCalculationError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle the error
+                callback.onMileageCalculationError(errorMessage);
             }
         });
     }
