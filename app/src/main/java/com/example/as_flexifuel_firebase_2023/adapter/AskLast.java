@@ -27,6 +27,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencySumFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageCalculationCallback;
@@ -38,6 +39,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMa
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +71,7 @@ public class AskLast extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
-    GradeGaugeView gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
+    GradeGaugeView gaugeView_avg_l_cons_once,gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
     TextView tvDistance, tvCost100km;
     TextView tvDistanceOnce, tvCost100kmOnce;
     ;
@@ -187,9 +189,9 @@ public class AskLast extends AppCompatActivity {
                 //shifting gauge to new page
                 // setContentView(R.layout.gauge_fuel_cons);
                 //only Pb, lpg or on
-                gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gaugeview_fuel_0);
-                gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
-                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter0Test());
+                gaugeView_avg_l_cons_once = findViewById(R.id.gaugeview_fuel_0);
+                gaugeView_avg_l_cons_once.setLabel("l/100km");
+                gaugeView_avg_l_cons_once.setAdapter(new GradeGaugeView.Adapter0Test());
 
 //pb
                 gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview_fuel_1);
@@ -670,7 +672,7 @@ public class AskLast extends AppCompatActivity {
 
                     @Override
                     public void onMileageCalculationComplete(double sum, double difference, double result) {
-                        tv_answer_48.setText("48. " + difference + " kms" + " >>> sum: " + sum + "PLN; cons. l/100km: " + result+ " PLN");
+                        tv_answer_48.setText("48. " + difference + " kms" + " >>> sum: " + sum + "PLN; cons. l/100km: " + result + " PLN");
 
                     }
 
@@ -680,6 +682,33 @@ public class AskLast extends AppCompatActivity {
                     }
                 });
 
+                calculateTotalLitersSpentLastCountableByFuelType(fuelTypeSpinner, vehicleEditText, new TotalLitersFetched() {
+
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_49.setText("49. " + totalLiters + " l; liters total");
+
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+                calculateLitersPerMileage(fuelTypeSpinner, vehicleEditText, new LitersPerMileageFetched() {
+
+                    @Override
+                    public void onLiterPerMileageFetched(String literPerMileage) {
+                        tv_answer_50.setText("50. " + literPerMileage + " liters/100km");
+                        gaugeView_avg_l_cons_once.setCurrent(Float.parseFloat(literPerMileage));
+
+                    }
+
+                    @Override
+                    public void onLiterPerMileageError(String errorMessage) {
+
+                    }
+                });
 
                 getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
 
@@ -4112,7 +4141,7 @@ public class AskLast extends AppCompatActivity {
                                         }
 
                                         if (lowestMileageEntry != null) {
-                                           // mileageAmountCurrencyList.remove(lowestMileageEntry);
+                                            // mileageAmountCurrencyList.remove(lowestMileageEntry);
                                         }
 
                                         callback.onMileageAmountCurrencySumFetched(mileageAmountCurrencyList, finalSum);
@@ -4158,10 +4187,10 @@ public class AskLast extends AppCompatActivity {
                     public void onMileageDifferenceFetched(int difference) {
                         // Divide the sum by the difference and invoke the callback
                         if (difference != 0) {
-                            double result = sum / difference*100.;
+                            double result = sum / difference * 100.;
                             callback.onMileageCalculationComplete(sum, difference, result);
-                            String resultS = String.format("%.2f",(result));
-                            tvCost100kmOnce.setText(resultS+ " PLN/100km");
+                            String resultS = String.format("%.2f", (result));
+                            tvCost100kmOnce.setText(resultS + " PLN/100km");
                         } else {
                             // Handle the case where difference is zero (to avoid division by zero)
                             callback.onMileageCalculationError("Difference is zero, cannot divide by zero.");
@@ -4183,6 +4212,121 @@ public class AskLast extends AppCompatActivity {
             }
         });
     }
+
+    public void calculateTotalLitersSpentLastCountableByFuelType(Spinner fuelTypeSpinner, EditText vehicleEditText, TotalLitersFetched callback) {
+        if (fuelTypeSpinner == null || vehicleEditText == null) {
+            callback.onTotalLitersFetchedError("fuelTypeSpinner or vehicleEditText is null");
+            return;
+        }
+
+        // Define a callback for the first query
+        LastIdFetched firstQueryCallback = new LastIdFetched() {
+            @Override
+            public void onLastIdFetched(String lastId) {
+                if (lastId != null) {
+                    int highestMileage = Integer.parseInt(lastId);
+
+                    // Define a callback for the second query
+                    LastIdFetched secondQueryCallback = new LastIdFetched() {
+                        @Override
+                        public void onLastIdFetched(String lastId) {
+                            if (lastId != null) {
+                                int secondHighestMileage = Integer.parseInt(lastId);
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("refuelings");
+
+                                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        double totalLiters = 0.0;
+
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
+                                            String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
+                                            String mileageStr = snapshot.child("mileage").getValue(String.class);
+                                            String litersStr = snapshot.child("liters").getValue(String.class);
+
+                                            if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
+                                                    && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())
+                                                    && mileageStr != null && litersStr != null) {
+
+                                                try {
+                                                    int mileage = Integer.parseInt(mileageStr);
+                                                    double liters = Double.parseDouble(litersStr);
+
+                                                    if (mileage > secondHighestMileage && mileage <= highestMileage) {
+                                                        totalLiters += liters;
+                                                    }
+                                                } catch (NumberFormatException e) {
+                                                    // Handle the exception if parsing mileage or liters fails
+                                                    // You can log the error if needed or skip the entry
+                                                }
+                                            }
+                                        }
+
+                                        callback.onTotalLitersFetched(totalLiters);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        callback.onTotalLitersFetchedError(databaseError.getMessage());
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            callback.onTotalLitersFetchedError(errorMessage);
+                        }
+                    };
+
+                    // Call the second query method
+                    getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, secondQueryCallback);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onTotalLitersFetchedError(errorMessage);
+            }
+        };
+
+        // Call the first query method
+        getFindLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, firstQueryCallback);
+    }
+
+    public void calculateLitersPerMileage(Spinner fuelTypeSpinner, EditText vehicleEditText, LitersPerMileageFetched callback) {
+        calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new MileageDifferenceFetched() {
+            @Override
+            public void onMileageDifferenceFetched(int difference) {
+                calculateTotalLitersSpentLastCountableByFuelType(fuelTypeSpinner, vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        if (difference != 0) {
+                            double litersPerMileage = totalLiters / difference * 100.0;
+                            String lpmFormatted = String.format("%.3f", litersPerMileage);
+
+                            callback.onLiterPerMileageFetched(lpmFormatted);
+                        } else {
+                            callback.onLiterPerMileageError("Difference is zero, cannot divide by zero.");
+                        }
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+                        callback.onLiterPerMileageError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onLiterPerMileageError(errorMessage);
+            }
+        });
+    }
+
 
 
 }

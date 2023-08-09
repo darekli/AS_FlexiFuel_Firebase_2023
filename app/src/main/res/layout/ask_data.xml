@@ -477,7 +477,9 @@
     </ScrollView>
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorDT_Dark"
+    >
     <include
         android:id="@+id/l_cons_last_pb"
         layout="@layout/gauge_fuel_0_cons"
@@ -495,6 +497,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorDT_Dark"
         android:orientation="horizontal">
         <include
             android:id="@+id/l_cons_last_sldpg"
