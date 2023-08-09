@@ -70,6 +70,7 @@ public class AskLast extends AppCompatActivity {
 
     GradeGaugeView gaugeView_avg_l_cons_last_pb,gaugeView_avg_l_cons_last_lpg;
     TextView tvDistance,tvCost100km;
+    TextView tvDistanceOnce,tvCost100kmOnce;;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,8 @@ public class AskLast extends AppCompatActivity {
 
         tvDistance = findViewById(R.id.tv_distance);
         tvCost100km = findViewById(R.id.tv_cost_100km);
+        tvDistanceOnce = findViewById(R.id.tv_distance_once);
+        tvCost100kmOnce = findViewById(R.id.tv_cost_100km_once);
 
 /**
  * BACK TO MAIN ACTIVITY
@@ -180,6 +183,11 @@ public class AskLast extends AppCompatActivity {
 
                 //shifting gauge to new page
                // setContentView(R.layout.gauge_fuel_cons);
+                //only Pb, lpg or on
+                gaugeView_avg_l_cons_last_lpg= findViewById(R.id.gaugeview_fuel_0);
+                gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
+                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter0Test());
+
 //pb
                 gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview_fuel_1);
                 gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
@@ -1607,7 +1615,7 @@ tvCost100km.setText(totalSum+" PLN/100km");
 
                                 // Print the difference
                                 tv_answer_08.setText("8. Difference between last and second last mileage: " + difference);
-
+                                tvDistanceOnce.setText(difference+ " km");
                                 System.out.println("Difference between last and second last mileage: " + difference);
                             }
                         }
