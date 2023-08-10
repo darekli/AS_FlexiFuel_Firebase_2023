@@ -18,7 +18,10 @@ import com.example.as_flexifuel_firebase_2023.FuelFP;
 import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.MainActivity;
 import com.example.as_flexifuel_firebase_2023.R;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountPerMileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetchedString;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
@@ -57,7 +60,9 @@ public class Ask extends AppCompatActivity {
     public TextView tv_answer_01, tv_answer_02, tv_answer_03, tv_answer_04, tv_answer_05, tv_answer_06, tv_answer_07, tv_answer_08, tv_answer_09, tv_answer_10, tv_answer_11, tv_answer_12, tv_answer_13, tv_answer_14, tv_answer_15, tv_answer_16, tv_answer_17, tv_answer_18, tv_answer_19, tv_answer_20;
     public TextView tv_answer_21, tv_answer_22, tv_answer_23, tv_answer_24, tv_answer_25, tv_answer_26, tv_answer_27, tv_answer_28, tv_answer_29, tv_answer_30, tv_answer_31, tv_answer_32, tv_answer_33, tv_answer_34;
     public TextView tv_answer_35, tv_answer_36, tv_answer_37, tv_answer_38, tv_answer_39, tv_answer_40, tv_answer_41, tv_answer_42, tv_answer_43, tv_answer_44, tv_answer_45, tv_answer_46, tv_answer_47, tv_answer_48, tv_answer_49;
-    public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54;
+    public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54, tv_answer_55, tv_answer_56, tv_answer_57, tv_answer_58, tv_answer_59;
+    public TextView tv_answer_60, tv_answer_61, tv_answer_62, tv_answer_63, tv_answer_64, tv_answer_65, tv_answer_66, tv_answer_67, tv_answer_68, tv_answer_69;
+    public TextView tv_answer_70, tv_answer_71, tv_answer_72, tv_answer_73, tv_answer_74;
     public Button buttonLast, button3Last, buttonLastAll, button_back_main, button_nbp_page;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
@@ -66,10 +71,11 @@ public class Ask extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
-    GradeGaugeView gaugeView_avg_l_cons_once,gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
+    GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
     TextView tvDistance, tvCost100km;
     TextView tvDistanceOnce, tvCost100kmOnce;
     private Last last;
+    private All all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,7 @@ public class Ask extends AppCompatActivity {
         setContentView(R.layout.ask_data);
 
         last = new Last();
+        all = new All();
 
         tvDistance = findViewById(R.id.tv_distance);
         tvCost100km = findViewById(R.id.tv_cost_100km);
@@ -94,7 +101,7 @@ public class Ask extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-       // button_nbp_page = findViewById(R.id.button_nbp_page);
+        // button_nbp_page = findViewById(R.id.button_nbp_page);
 //        button_nbp_page.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -163,6 +170,26 @@ public class Ask extends AppCompatActivity {
         tv_answer_52 = findViewById(R.id.tv_answer_52);
         tv_answer_53 = findViewById(R.id.tv_answer_53);
         tv_answer_54 = findViewById(R.id.tv_answer_54);
+        tv_answer_55 = findViewById(R.id.tv_answer_55);
+        tv_answer_56 = findViewById(R.id.tv_answer_56);
+        tv_answer_57 = findViewById(R.id.tv_answer_57);
+        tv_answer_58 = findViewById(R.id.tv_answer_58);
+        tv_answer_59 = findViewById(R.id.tv_answer_59);
+        tv_answer_60 = findViewById(R.id.tv_answer_60);
+        tv_answer_61 = findViewById(R.id.tv_answer_61);
+        tv_answer_62 = findViewById(R.id.tv_answer_62);
+        tv_answer_63 = findViewById(R.id.tv_answer_63);
+        tv_answer_64 = findViewById(R.id.tv_answer_64);
+        tv_answer_65 = findViewById(R.id.tv_answer_65);
+        tv_answer_66 = findViewById(R.id.tv_answer_66);
+        tv_answer_67 = findViewById(R.id.tv_answer_67);
+        tv_answer_68 = findViewById(R.id.tv_answer_68);
+        tv_answer_69 = findViewById(R.id.tv_answer_69);
+        tv_answer_70 = findViewById(R.id.tv_answer_70);
+        tv_answer_71 = findViewById(R.id.tv_answer_71);
+        tv_answer_72 = findViewById(R.id.tv_answer_72);
+        tv_answer_73 = findViewById(R.id.tv_answer_73);
+        tv_answer_74 = findViewById(R.id.tv_answer_74);
 
         buttonLast = findViewById(R.id.button_last);
         button3Last = findViewById(R.id.button_3last);
@@ -707,18 +734,14 @@ public class Ask extends AppCompatActivity {
                     }
                 });
 
-                last.getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new LastIdFetched() {
+                tv_answer_51.setText("-------ALL--------------");
+
+
+                all.findLowestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
 
                     @Override
                     public void onLastIdFetched(String lastId) {
-                        if (lastId != null) {
-                            tv_answer_05.setText("5. second last: " + lastId);
-                            lastCountableKm = lastId;
-
-
-                        } else {
-
-                        }
+                        tv_answer_52.setText("52. all, first smallest mileage: " + lastId + " kms");
                     }
 
                     @Override
@@ -726,38 +749,11 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
-                last.findAllLitersBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new LitersListFetched() {
-                    @Override
-                    public void onLitersListFetched(List<Double> litersList) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (double liters : litersList) {
-                            stringBuilder.append(liters).append(", ");
-                        }
-                        String litersString = stringBuilder.toString();
-                        // Remove the trailing comma and space
-                        if (litersString.length() > 2) {
-                            litersString = litersString.substring(0, litersString.length() - 2);
-                        }
-                        tv_answer_10.setText("10. total L last countable: " + litersString);
-
-                    }
+                all.findHighestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
 
                     @Override
-                    public void onError(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onLastIdFetched(int finalResult) {
-
-                    }
-                });
-                last.findAllMileageLitersBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new MileageLitersMapFetched() {
-                    @Override
-                    public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
-
-                        tv_answer_11.setText("11. mileage-liters: " + mileageLitersMap);
-
+                    public void onLastIdFetched(String lastId) {
+                        tv_answer_53.setText("53. all, last highest mileage: " + lastId + " kms");
                     }
 
                     @Override
@@ -765,79 +761,12 @@ public class Ask extends AppCompatActivity {
 
                     }
                 });
-                last.averageFuelConsumptionLastCountable(fuelTypeSpinner, vehicleEditText, new AverageFuelConsumptionCallback() {
+                all.calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
 
-
-                    @Override
-                    public void onAverageFuelConsumptionCalculated(double averageFuelConsumption) {
-                        tv_answer_13.setText("13. avg cons. L last countable: " + String.valueOf(averageFuelConsumption + " L"));
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
-
-                    @Override
-                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-                        tv_answer_14.setText("14. " + mileageAmountCurrencyList);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrency(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
-
-                    @Override
-                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-                        tv_answer_15.setText("15. order by currency: " + mileageAmountCurrencyList);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencySumByCurrency(fuelTypeSpinner, vehicleEditText, new MileageAmountCurrencyListFetched() {
-
-                    @Override
-                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-                        tv_answer_16.setText("16. order by currency: " + mileageAmountCurrencyList);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                last.findAllMileageIfFueledfp_FULLAndFuelTypeIsAndLastCountable(fuelTypeSpinner, vehicleEditText, new MileageListFetched() {
-
-
-                    @Override
-                    public void onMileageListFetched(List<Integer> mileageList) {
-                        tv_answer_06.setText("6.All FULL in DB " + mileageList.toString());
-                        tv_answer_07.setText("7. " + String.valueOf(mileageList.size()));
-                        // tv_answer_08.setText("." + String.valueOf(mileageList.get(1)));
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onLastIdFetched(int finalResult) {
-
-                    }
-                });
-                last.calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new MileageDifferenceFetched() {
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
-                        tv_answer_08.setText("8. " + String.valueOf(mileageDifference));
+                        tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
+
                     }
 
                     @Override
@@ -846,10 +775,61 @@ public class Ask extends AppCompatActivity {
                     }
                 });
 
-                last.getLastCountableMileageDistance(fuelTypeSpinner, vehicleEditText, new MileageListFetched() {
+                all.findRecordsBetweenLowestAndHighestMileageForPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
                     @Override
-                    public void onMileageListFetched(List<Integer> mileageList) {
-                        tv_answer_12.setText(String.valueOf("12. " + mileageList));
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+
+                        tv_answer_55.setText("55.pb 1st record is removed  " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findRecordsBetweenLowestAndHighestMileageForLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+
+                        tv_answer_56.setText("56.lpg 1st record is removed " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingPB(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_57.setText("57. pb " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingLPG(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_58.setText("58. lpg " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeTotalAdjustedAmountPB(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        tv_answer_59.setText("59. PB PLN total: " + adjustedAmount);
 
                     }
 
@@ -857,19 +837,28 @@ public class Ask extends AppCompatActivity {
                     public void onError(String errorMessage) {
 
                     }
+                });
+                all.computeTotalAdjustedAmountLPG(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        String pln = String.format("%.2f", (adjustedAmount));
+                        tv_answer_60.setText("60. LPG PLN total: " + pln);
+                    }
 
                     @Override
-                    public void onLastIdFetched(int finalResult) {
+                    public void onError(String errorMessage) {
 
                     }
                 });
 
-                last.findAllLitersIfFueledfp_FULLAndFuelTypeIsAndLastCountable(fuelTypeSpinner, vehicleEditText, new LitersListFetched() {
 
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
 
                     @Override
-                    public void onLitersListFetched(List<Double> litersList) {
-                        tv_answer_09.setText("9.all liters " + litersList.toString() + " ?");
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_61.setText("61. PB total PLN/100km: " + pln100km);
 
                     }
 
@@ -877,12 +866,261 @@ public class Ask extends AppCompatActivity {
                     public void onError(String errorMessage) {
 
                     }
+                });
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
 
                     @Override
-                    public void onLastIdFetched(int finalResult) {
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_62.setText("62. PB total PLN/100km: " + pln100km);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
 
                     }
                 });
+                all.computeTotalAmountPerMileage(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_63.setText("63. PB+LPG total PLN/100km "+pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_61.setText("61. for PB total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_62.setText("62. for LPG total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+
+
+                last.getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new
+
+                        LastIdFetched() {
+
+                            @Override
+                            public void onLastIdFetched(String lastId) {
+                                if (lastId != null) {
+                                    tv_answer_05.setText("5. second last: " + lastId);
+                                    lastCountableKm = lastId;
+
+
+                                } else {
+
+                                }
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.findAllLitersBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new
+
+                        LitersListFetched() {
+                            @Override
+                            public void onLitersListFetched(List<Double> litersList) {
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (double liters : litersList) {
+                                    stringBuilder.append(liters).append(", ");
+                                }
+                                String litersString = stringBuilder.toString();
+                                // Remove the trailing comma and space
+                                if (litersString.length() > 2) {
+                                    litersString = litersString.substring(0, litersString.length() - 2);
+                                }
+                                tv_answer_10.setText("10. total L last countable: " + litersString);
+
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+
+                            @Override
+                            public void onLastIdFetched(int finalResult) {
+
+                            }
+                        });
+                last.findAllMileageLitersBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageLitersMapFetched() {
+                            @Override
+                            public void onMileageLitersMapFetched(Map<Integer, Double> mileageLitersMap) {
+
+                                tv_answer_11.setText("11. mileage-liters: " + mileageLitersMap);
+
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.averageFuelConsumptionLastCountable(fuelTypeSpinner, vehicleEditText, new
+
+                        AverageFuelConsumptionCallback() {
+
+
+                            @Override
+                            public void onAverageFuelConsumptionCalculated(double averageFuelConsumption) {
+                                tv_answer_13.setText("13. avg cons. L last countable: " + String.valueOf(averageFuelConsumption + " L"));
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageAmountCurrencyListFetched() {
+
+                            @Override
+                            public void onMileageAmountCurrencyListFetched
+                                    (List<List<Object>> mileageAmountCurrencyList) {
+                                tv_answer_14.setText("14. " + mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrency(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageAmountCurrencyListFetched() {
+
+                            @Override
+                            public void onMileageAmountCurrencyListFetched
+                                    (List<List<Object>> mileageAmountCurrencyList) {
+                                tv_answer_15.setText("15. order by currency: " + mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencySumByCurrency(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageAmountCurrencyListFetched() {
+
+                            @Override
+                            public void onMileageAmountCurrencyListFetched
+                                    (List<List<Object>> mileageAmountCurrencyList) {
+                                tv_answer_16.setText("16. order by currency: " + mileageAmountCurrencyList);
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+                last.findAllMileageIfFueledfp_FULLAndFuelTypeIsAndLastCountable(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageListFetched() {
+
+
+                            @Override
+                            public void onMileageListFetched(List<Integer> mileageList) {
+                                tv_answer_06.setText("6.All FULL in DB " + mileageList.toString());
+                                tv_answer_07.setText("7. " + String.valueOf(mileageList.size()));
+                                // tv_answer_08.setText("." + String.valueOf(mileageList.get(1)));
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+
+                            @Override
+                            public void onLastIdFetched(int finalResult) {
+
+                            }
+                        });
+                last.calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageDifferenceFetched() {
+                            @Override
+                            public void onMileageDifferenceFetched(int mileageDifference) {
+                                tv_answer_08.setText("8. " + String.valueOf(mileageDifference));
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
+
+                last.getLastCountableMileageDistance(fuelTypeSpinner, vehicleEditText, new
+
+                        MileageListFetched() {
+                            @Override
+                            public void onMileageListFetched(List<Integer> mileageList) {
+                                tv_answer_12.setText(String.valueOf("12. " + mileageList));
+
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+
+                            @Override
+                            public void onLastIdFetched(int finalResult) {
+
+                            }
+                        });
+
+                last.findAllLitersIfFueledfp_FULLAndFuelTypeIsAndLastCountable(fuelTypeSpinner, vehicleEditText, new
+
+                        LitersListFetched() {
+
+
+                            @Override
+                            public void onLitersListFetched(List<Double> litersList) {
+                                tv_answer_09.setText("9.all liters " + litersList.toString() + " ?");
+
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+
+                            @Override
+                            public void onLastIdFetched(int finalResult) {
+
+                            }
+                        });
 
                 last.getFindLastIdIsFueledfp_FULLAndFuelTypeIs(String.valueOf(fuelTypeSpinner), new
 
@@ -909,18 +1147,20 @@ public class Ask extends AppCompatActivity {
                             }
                         });
 
-                last.getMileageBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new MileageListCallback() {
+                last.getMileageBetweenLastAndSecondLast(fuelTypeSpinner, vehicleEditText, new
 
-                    @Override
-                    public void onMileageListFetched(List<Integer> ids) {
+                        MileageListCallback() {
 
-                    }
+                            @Override
+                            public void onMileageListFetched(List<Integer> ids) {
 
-                    @Override
-                    public void onError(String errorMessage) {
+                            }
 
-                    }
-                });
+                            @Override
+                            public void onError(String errorMessage) {
+
+                            }
+                        });
 
                 last.calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText);
 
@@ -1016,8 +1256,6 @@ public class Ask extends AppCompatActivity {
             }
         });
     }
-
-
 
 
 }
