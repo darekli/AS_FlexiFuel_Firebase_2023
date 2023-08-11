@@ -29,6 +29,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastMileageCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileageDifferenceCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencySumFetched;
@@ -71,9 +72,9 @@ public class Ask extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
-    GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg;
-    TextView tvDistance, tvCost100km;
-    TextView tvDistanceOnce, tvCost100kmOnce;
+    GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg, gaugeView_avg_l_cons_all_pb, gaugeView_avg_l_cons_all_lpg;
+    TextView tvDistanceOnce, tvCost100kmOnce,tvDistanceLast, tvCost100kmLast,tvDistanceAll, tvCost100kmAll;
+
     private Last last;
     private All all;
 
@@ -85,10 +86,13 @@ public class Ask extends AppCompatActivity {
         last = new Last();
         all = new All();
 
-        tvDistance = findViewById(R.id.tv_distance);
-        tvCost100km = findViewById(R.id.tv_cost_100km);
+        tvDistanceLast = findViewById(R.id.tv_distance_last);
+        tvCost100kmLast = findViewById(R.id.tv_cost_100km_last);
         tvDistanceOnce = findViewById(R.id.tv_distance_once);
         tvCost100kmOnce = findViewById(R.id.tv_cost_100km_once);
+        tvDistanceAll = findViewById(R.id.tv_distance_all);
+        tvCost100kmAll = findViewById(R.id.tv_cost_100km_all);
+
 
 /**
  * BACK TO MAIN ACTIVITY
@@ -217,14 +221,24 @@ public class Ask extends AppCompatActivity {
                 gaugeView_avg_l_cons_once.setLabel("l/100km");
                 gaugeView_avg_l_cons_once.setAdapter(new GradeGaugeView.Adapter0Test());
 
-//pb
+//pb last
                 gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview_fuel_1);
                 gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.Adapter4Test());
-//lpg
+//lpg last
                 gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gaugeview_fuel_2);
                 gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
                 gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter5Test());
+
+//pb all
+                gaugeView_avg_l_cons_all_pb = findViewById(R.id.gaugeview_fuel_all_1);
+                gaugeView_avg_l_cons_all_pb.setLabel("l/100km");
+                gaugeView_avg_l_cons_all_pb.setAdapter(new GradeGaugeView.AdapterAll1());
+//lpg all
+                gaugeView_avg_l_cons_all_lpg = findViewById(R.id.gaugeview_fuel_all_2);
+                gaugeView_avg_l_cons_all_lpg.setLabel("l/100km");
+                gaugeView_avg_l_cons_all_lpg.setAdapter(new GradeGaugeView.AdapterAll2());
+
 
 
                 String vehicle = vehicleEditText.getText().toString();
@@ -344,7 +358,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
                         tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
-                        tvDistance.setText(mileageDifference + " km");
+                        tvDistanceLast.setText(mileageDifference + " km");
                     }
 
                     @Override
@@ -669,7 +683,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onSumCalculated(double totalSum) {
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
-                        tvCost100km.setText(totalSum + " PLN/100km");
+                        tvCost100kmLast.setText(totalSum + " PLN/100km");
                     }
 
                     @Override
@@ -766,6 +780,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
                         tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
+                        tvDistanceAll.setText(mileageDifference + " km");
 
                     }
 
@@ -887,6 +902,7 @@ public class Ask extends AppCompatActivity {
                     public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
                         String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
                         tv_answer_63.setText("63. PB+LPG total PLN/100km "+pln100km);
+                       tvCost100kmAll.setText(pln100km + " PLN/100km");
                     }
 
                     @Override
@@ -906,6 +922,61 @@ public class Ask extends AppCompatActivity {
                     public void onError(String errorMessage) {
                     }
                 });
+                all.computeTotalLitersBetweenMileagesForPB(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_64.setText("64. PB "+String.valueOf(totalLiters)+" l total liters all PB");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalLitersBetweenMileagesForLPG(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_65.setText("65. LPG "+String.valueOf(totalLiters)+" l total liters all LPG");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeLitersPer100kmDifferencePB(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_66.setText("66. PB "+String.valueOf(adjustedAmountPerLiter)+" l/100km");
+                        String l100km = String.format("%.3f",(adjustedAmountPerLiter));
+                        //gauge
+                       gaugeView_avg_l_cons_all_pb.setCurrent(Float.parseFloat(l100km));
+                    }
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeLitersPer100kmDifferenceLPG(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_67.setText("67. LPG "+String.valueOf(adjustedAmountPerLiter)+" l/100km");
+                        String l100km = String.format("%.3f",(adjustedAmountPerLiter));
+                        //gauge
+                       gaugeView_avg_l_cons_all_lpg.setCurrent(Float.parseFloat(l100km));
+
+                    }
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+
+
+
                 all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
 
                     @Override
@@ -1072,6 +1143,7 @@ public class Ask extends AppCompatActivity {
                             @Override
                             public void onMileageDifferenceFetched(int mileageDifference) {
                                 tv_answer_08.setText("8. " + String.valueOf(mileageDifference));
+                                tvDistanceOnce.setText((mileageDifference+" km"));
                             }
 
                             @Override

@@ -1,38 +1,20 @@
 package com.example.as_flexifuel_firebase_2023.adapter;
 
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
-import com.example.as_flexifuel_firebase_2023.Currency;
 import com.example.as_flexifuel_firebase_2023.FuelFP;
 import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountPerMileageDifferenceFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetchedString;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersListFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileageFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileageDifferenceCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetchedString;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencySumFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageCalculationCallback;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageConsumptionRatioCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageDifferenceFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListCallback;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageListFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageLitersMapFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SecondHighestCommonMileageFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCallback;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,14 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -779,6 +758,154 @@ public class All {
             }
         });
     }
+
+    public void computeTotalLitersPB(EditText vehicleEditText, TotalLitersFetched callback) {
+        findAmountToCurrencyRateMappingPB(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+
+            @Override
+            public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+                double totalLiters = 0.0;
+
+                for (Map.Entry<String, String> entry : amountToCurrencyRateMap.entrySet()) {
+                    double amount = Double.parseDouble(entry.getKey());
+                    totalLiters += amount;
+                }
+
+                callback.onTotalLitersFetched(totalLiters);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onTotalLitersFetchedError(errorMessage);
+            }
+        });
+    }
+    public void computeTotalLitersBetweenMileagesForPB(EditText vehicleEditText, TotalLitersFetched callback) {
+        findRecordsBetweenLowestAndHighestMileageForPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+            @Override
+            public void onMileageAmountCurrencyListFetched(List<List<Object>> recordList) {
+                double totalLiters = 0.0;
+
+                for (List<Object> record : recordList) {
+                    String litersStr = (String) record.get(1); // Assuming liters is the second item in the record list
+                    double liters = Double.parseDouble(litersStr);
+                    totalLiters += liters;
+                }
+
+                callback.onTotalLitersFetched(totalLiters);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onTotalLitersFetchedError(errorMessage);
+            }
+        });
+    }
+    public void computeTotalLitersBetweenMileagesForLPG(EditText vehicleEditText, TotalLitersFetched callback) {
+        findRecordsBetweenLowestAndHighestMileageForLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+            @Override
+            public void onMileageAmountCurrencyListFetched(List<List<Object>> recordList) {
+                double totalLiters = 0.0;
+
+                for (List<Object> record : recordList) {
+                    String litersStr = (String) record.get(1); // Assuming liters is the second item in the record list
+                    double liters = Double.parseDouble(litersStr);
+                    totalLiters += liters;
+                }
+
+                callback.onTotalLitersFetched(totalLiters);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onTotalLitersFetchedError(errorMessage);
+            }
+        });
+    }
+
+    public void computeLitersPer100kmDifferencePB(EditText vehicleEditText, LitersPerMileageDifferenceCallback callback) {
+        computeTotalLitersBetweenMileagesForPB(vehicleEditText, new TotalLitersFetched() {
+
+            @Override
+            public void onTotalLitersFetched(double totalLiters) {
+                calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
+
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        if (mileageDifference != 0) {
+                            double litersPerMileageDifference = totalLiters / mileageDifference*100.;
+                            callback.onResultFetched(litersPerMileageDifference);
+                        } else {
+                            callback.onError("Mileage difference is zero, division not possible.");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onTotalLitersFetchedError(String errorMessage) {
+                callback.onError(errorMessage);
+
+            }
+
+        });
+    }
+
+    public void computeLitersPer100kmDifferenceLPG(EditText vehicleEditText, LitersPerMileageDifferenceCallback callback) {
+        computeTotalLitersBetweenMileagesForLPG(vehicleEditText, new TotalLitersFetched() {
+
+            @Override
+            public void onTotalLitersFetched(double totalLiters) {
+                calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
+
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        if (mileageDifference != 0) {
+                            double litersPerMileageDifference = totalLiters / mileageDifference*100.;
+                            callback.onResultFetched(litersPerMileageDifference);
+                        } else {
+                            callback.onError("Mileage difference is zero, division not possible.");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        callback.onError(errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onTotalLitersFetchedError(String errorMessage) {
+                callback.onError(errorMessage);
+
+            }
+
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void computeAmountPerMileageForLPG(EditText vehicleEditText, AdjustedAmountPerMileageDifferenceFetched callback) {
 

@@ -52,11 +52,11 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_cost_100km"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cost_100km" />
+                app:layout_constraintStart_toStartOf="@+id/tv_cost_100km_last"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cost_100km_last" />
 
             <TextView
-                android:id="@+id/tv_cost_100km"
+                android:id="@+id/tv_cost_100km_last"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

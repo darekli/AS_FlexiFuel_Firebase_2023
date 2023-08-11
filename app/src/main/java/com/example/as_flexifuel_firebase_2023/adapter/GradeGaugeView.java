@@ -516,7 +516,7 @@ public class GradeGaugeView extends View {
     }
 
     public static class Adapter4Test extends Adapter {
-        private static final String[] TITLES = {"low", "mid",  "high"};
+        private static final String[] TITLES = {"low", "mid", "high"};
         private static final float[][] SCALES = {
                 {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
         };
@@ -525,9 +525,11 @@ public class GradeGaugeView extends View {
 //                Color.parseColor("#58d9f9"),
 //                Color.parseColor("#fddd60"),
 //                Color.parseColor("#ff6e76")
-                Color.GREEN,
-                Color.YELLOW,
-                Color.RED
+                Color.parseColor("#2E7D32"),
+                Color.parseColor("#FFD600"),
+                Color.parseColor("#D50000")
+
+
         };
 
         @Override
@@ -557,15 +559,14 @@ public class GradeGaugeView extends View {
     }
 
     public static class Adapter5Test extends Adapter {
-        private static final String[] TITLES = {"low", "mid",  "high"};
+        private static final String[] TITLES = {"low", "mid", "high"};
         private static final float[][] SCALES = {
                 {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
         };
         private static final int[] COLORS = {
-                Color.GREEN,
-               // Color.BLUE,
-                Color.YELLOW,
-                Color.RED
+                Color.parseColor("#2E7D32"),
+                Color.parseColor("#FFD600"),
+                Color.parseColor("#D50000")
         };
 
         @Override
@@ -593,16 +594,90 @@ public class GradeGaugeView extends View {
             return COLORS[position];
         }
     }
+
     public static class Adapter0Test extends Adapter {
-        private static final String[] TITLES = {"low", "mid",  "high"};
+        private static final String[] TITLES = {"low", "mid", "high"};
         private static final float[][] SCALES = {
                 {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
         };
         private static final int[] COLORS = {
-                Color.GREEN,
-                // Color.BLUE,
-                Color.YELLOW,
-                Color.RED
+                Color.parseColor("#2E7D32"),                // Color.BLUE,
+                Color.parseColor("#FFD600"),
+                Color.parseColor("#D50000")
+        };
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public CharSequence getTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public float getMinValue(int position) {
+            return SCALES[position][0];
+        }
+
+        @Override
+        public float getMaxValue(int position) {
+            return SCALES[position][1];
+        }
+
+        @Override
+        public int getColor(int position) {
+            return COLORS[position];
+        }
+    }
+
+    public static class AdapterAll1 extends Adapter {
+        private static final String[] TITLES = {"low", "mid", "high"};
+        private static final float[][] SCALES = {
+                {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
+        };
+        private static final int[] COLORS = {
+                Color.parseColor("#2E7D32"),                // Color.BLUE,
+                Color.parseColor("#FFD600"),
+                Color.parseColor("#D50000")
+        };
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+
+        @Override
+        public CharSequence getTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public float getMinValue(int position) {
+            return SCALES[position][0];
+        }
+
+        @Override
+        public float getMaxValue(int position) {
+            return SCALES[position][1];
+        }
+
+        @Override
+        public int getColor(int position) {
+            return COLORS[position];
+        }
+    }
+
+    public static class AdapterAll2 extends Adapter {
+        private static final String[] TITLES = {"low", "mid", "high"};
+        private static final float[][] SCALES = {
+                {0f, 6.0f}, {6.0f, 8f}, {8f, 9.5f}
+        };
+        private static final int[] COLORS = {
+                Color.parseColor("#2E7D32"),
+                Color.parseColor("#FFD600"),
+                Color.parseColor("#D50000")
         };
 
         @Override
