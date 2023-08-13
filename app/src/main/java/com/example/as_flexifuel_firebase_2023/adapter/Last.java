@@ -11,6 +11,7 @@ import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.DaysDifferenceCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
@@ -38,12 +39,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 
 public class Last {
     public void getFindLastIdIsFueledfp_FULLAndFuelTypeIs(String fuelTypeSpinner, LastIdCallback callback) {
@@ -3353,4 +3359,59 @@ public class Last {
         });
     }
 
+    public void computeDaysDifferenceBetweenLowestAndHighestMileageCountableLast(EditText vehicleEditText, DaysDifferenceCallback callback) {
+
+        findAllMileageAmountCurrencyDateBetweenLastAndSecondLastOrderByCurrencyLPG_RemoveLowestMileage(vehicleEditText, new MileageAmountCurrencyListFetched() {
+
+            @Override
+            public void onMileageAmountCurrencyListFetched(List<List<Object>> recordList) {
+                if (recordList.isEmpty()) {
+                    callback.onError("List is empty, cannot compute difference");
+                    return;
+                }
+
+                // Assuming the 6th item in the record is the date
+                String lowestMileageDateStr = (String) recordList.get(0).get(5);
+                String highestMileageDateStr = (String) recordList.get(recordList.size() - 1).get(5);
+
+                Date start = parseDate(lowestMileageDateStr);
+                Date end = parseDate(highestMileageDateStr);
+
+                if (start == null || end == null) {
+                    callback.onError("Error parsing dates");
+                    return;
+                }
+
+                long daysDifference = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS);
+
+                callback.onDaysDifferenceComputed(daysDifference);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
+    private Date parseDate(String dateStr) {
+        List<SimpleDateFormat> knownPatterns = new ArrayList<>();
+        knownPatterns.add(new SimpleDateFormat("yyyy-MM-dd"));
+        knownPatterns.add(new SimpleDateFormat("M/d/yy"));
+
+        for (SimpleDateFormat format : knownPatterns) {
+            try {
+                return format.parse(dateStr);
+            } catch (ParseException ignored) {
+            }
+        }
+
+        return null;
+    }
+
+    interface DaysDifferenceCallback {
+        void onDaysDifferenceComputed(long daysDifference);
+
+        void onError(String errorMessage);
+    }
 }
