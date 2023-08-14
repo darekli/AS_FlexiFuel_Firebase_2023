@@ -6,14 +6,15 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".MainActivity">
+
     <TextView
         android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
         android:layout_marginTop="16dp"
-        android:text="code version:"/>
+        android:text="code version:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,277 +37,284 @@
         android:id="@+id/button_add_refueling"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:icon="@drawable/ic_refueling_add"
-        android:text="Add new" />
-<androidx.appcompat.widget.LinearLayoutCompat
-    android:id="@+id/layout_add_refueling"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+        android:text="Add new"
+        app:icon="@drawable/ic_refueling_add" />
 
-    <ScrollView
-        android:id="@+id/scrollView_add_refueling"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layout_add_refueling"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
-        android:layout_marginTop="8dp"
-        android:visibility="visible">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView_add_refueling"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:orientation="vertical">
+            android:layout_height="340dp"
+            android:layout_marginTop="8dp"
+            android:visibility="visible">
 
-
-
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/vehicleEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Vehicle" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="400dp"
+                android:orientation="vertical">
 
 
-            <DatePicker
-                android:id="@+id/dateDatePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/mileageEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Mileage" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/vehicleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Vehicle" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="Select fuel type:"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
 
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                <DatePicker
+                    android:id="@+id/dateDatePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/mileageEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Mileage"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Spinner
                     android:id="@+id/fuelTypeSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:clickable="true"
                     android:focusable="false"
-                    android:prompt="@string/select_fuel_type"/>
+                    android:inputType="none"
+                    android:prompt="@string/select_fuel_type" />
 
-            </com.google.android.material.textfield.TextInputLayout>
 
-
-            <Spinner
-                android:id="@+id/fuelFPSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/fuel_fp_array"
-                android:prompt="@string/select_fuel_fp" />
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/litersEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Liters" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/amountEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Amount" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Spinner
-                android:id="@+id/countrySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/counrty_array"
-                android:prompt="@string/select_fuel_type" />
-
-            <Spinner
-                android:id="@+id/currencySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/fuel_fp_array"
-                android:prompt="@string/select_currency" />
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/currencyRateEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:hint="Currency rate" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <NumberPicker
-                    android:id="@+id/np_number_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="120dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnSpan="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="fill"
-                    android:layout_marginStart="16dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="0"
-                    android:textSize="32dp"
-                    android:textStyle="bold|italic"
-                    android:theme="@style/AppTheme.Picker"
-                    app:layout_constraintBottom_toBottomOf="@+id/np_ware"
-                    app:layout_constraintStart_toEndOf="@+id/np_ware"
-                    app:layout_constraintTop_toTopOf="@+id/np_ware" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:text="H" />
-
-                <NumberPicker
-                    android:id="@+id/np_number_minutes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="120dp"
-                    android:layout_row="0"
-                    android:layout_rowWeight="1"
-                    android:layout_column="0"
-                    android:layout_columnSpan="1"
-                    android:layout_columnWeight="1"
-                    android:layout_gravity="fill"
-                    android:layout_marginEnd="32dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="0"
-                    android:textSize="32dp"
-                    android:textStyle="bold|italic"
-                    android:theme="@style/AppTheme.Picker"
-                    app:layout_constraintBottom_toBottomOf="@+id/np_number_loaded"
-                    app:layout_constraintEnd_toStartOf="@+id/button_check"
-                    app:layout_constraintStart_toEndOf="@+id/np_number_loaded"
-                    app:layout_constraintTop_toTopOf="@+id/np_number_loaded" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:text="min" />
-                <com.google.android.material.textfield.TextInputLayout
+                <Spinner
+                    android:id="@+id/fuelFPSpinner"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/fuel_fp_array"
+                    android:prompt="@string/select_fuel_fp" />
+
+                <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/timeWornTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/litersEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Liters" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/amountEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Amount" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/countrySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/counrty_array"
+                    android:prompt="@string/select_fuel_type" />
+
+                <Spinner
+                    android:id="@+id/currencySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/fuel_fp_array"
+                    android:prompt="@string/select_currency" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/currencyRateEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Currency rate"
+                        android:visibility="gone" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="50dp"
-                    android:text="00:00" />
+                    android:orientation="horizontal">
+
+                    <NumberPicker
+                        android:id="@+id/np_number_hours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnSpan="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="fill"
+                        android:layout_marginStart="16dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="0"
+                        android:textSize="32dp"
+                        android:textStyle="bold|italic"
+                        android:theme="@style/AppTheme.Picker"
+                        app:layout_constraintBottom_toBottomOf="@+id/np_ware"
+                        app:layout_constraintStart_toEndOf="@+id/np_ware"
+                        app:layout_constraintTop_toTopOf="@+id/np_ware" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="H" />
+
+                    <NumberPicker
+                        android:id="@+id/np_number_minutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="120dp"
+                        android:layout_row="0"
+                        android:layout_rowWeight="1"
+                        android:layout_column="0"
+                        android:layout_columnSpan="1"
+                        android:layout_columnWeight="1"
+                        android:layout_gravity="fill"
+                        android:layout_marginEnd="32dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:text="0"
+                        android:textSize="32dp"
+                        android:textStyle="bold|italic"
+                        android:theme="@style/AppTheme.Picker"
+                        app:layout_constraintBottom_toBottomOf="@+id/np_number_loaded"
+                        app:layout_constraintEnd_toStartOf="@+id/button_check"
+                        app:layout_constraintStart_toEndOf="@+id/np_number_loaded"
+                        app:layout_constraintTop_toTopOf="@+id/np_number_loaded" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:text="min" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+
+                        <EditText
+                            android:id="@+id/timeWornTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="50dp"
+                            android:text="00:00" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/notesEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Notes" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/notesEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Notes" />
-        </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/poiEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="POI" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/latEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="latitude" />
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/lngEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="longitude" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/addButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Refueling" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
 
-            <ScrollView
-                android:id="@+id/scrollView3c"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                    <EditText
+                        android:id="@+id/poiEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="POI" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            </ScrollView>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/latEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="latitude" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <EditText
+                        android:id="@+id/lngEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="longitude" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Refueling" />
+
+                <ScrollView
+                    android:id="@+id/scrollView3c"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ScrollView>
 
 
-        </LinearLayout>
-    </ScrollView>
-</androidx.appcompat.widget.LinearLayoutCompat>
-
+            </LinearLayout>
+        </ScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <Button
