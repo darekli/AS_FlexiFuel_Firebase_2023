@@ -11,7 +11,6 @@ import com.example.as_flexifuel_firebase_2023.FuelType;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;
-import com.example.as_flexifuel_firebase_2023.adapter.interfaces.DaysDifferenceCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.HighestCommonMileageFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LastIdFetched;
@@ -337,7 +336,7 @@ public class Last {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
                     String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
-                    if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.getSelectedItem().toString())
+                    if (snapshotFuelType != null && snapshotFuelType.equals(fuelTypeSpinner.toString())
                             && snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
                         String mileageStr = snapshot.child("mileage").getValue(String.class);
                         int mileage = Integer.parseInt(mileageStr);

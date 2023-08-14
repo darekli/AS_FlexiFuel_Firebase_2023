@@ -45,6 +45,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCal
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,7 +69,8 @@ public class Ask extends AppCompatActivity {
     public Button buttonLast, button3Last, buttonLastAll, button_back_main, button_nbp_page;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
-    public Spinner fuelTypeSpinner;
+    // MD3 new spinner: fuelTypeSpinner
+    public MaterialAutoCompleteTextView fuelTypeSpinner;
     String lastCountableKm = "", secondLastCountableKm = "";
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
@@ -200,9 +202,19 @@ public class Ask extends AppCompatActivity {
         button3Last = findViewById(R.id.button_3last);
         buttonLastAll = findViewById(R.id.button_last_all);
 
-        ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
-        fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter<String> fuelTypeAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.activity_main,
+                getResources().getStringArray(R.array.fuel_type_array)
+        );
         fuelTypeSpinner.setAdapter(fuelTypeAdapter);
+
+//        ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
+//        fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        fuelTypeSpinner.setAdapter(fuelTypeAdapter);
+
+
         databaseRef = FirebaseDatabase.getInstance().getReference("refuelings");
 
         //tv_answer_01 = findViewById(R.id.tv_answer_01);

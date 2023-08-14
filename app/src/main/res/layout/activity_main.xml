@@ -36,6 +36,7 @@
         android:id="@+id/button_add_refueling"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        app:icon="@drawable/ic_refueling_add"
         android:text="Add new" />
 <androidx.appcompat.widget.LinearLayoutCompat
     android:id="@+id/layout_add_refueling"
@@ -55,31 +56,59 @@
             android:orientation="vertical">
 
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/vehicleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Vehicle" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <DatePicker
                 android:id="@+id/dateDatePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/mileageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:hint="Mileage" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/fuelTypeSpinner"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/fuel_type_array"
-                android:prompt="@string/select_fuel_type" />
+                android:hint="Select fuel type:"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/fuelTypeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:prompt="@string/select_fuel_type"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <Spinner
                 android:id="@+id/fuelFPSpinner"
@@ -87,18 +116,28 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/fuel_fp_array"
                 android:prompt="@string/select_fuel_fp" />
-
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/litersEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Liters" />
-
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/amountEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Amount" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/countrySpinner"
@@ -113,13 +152,18 @@
                 android:layout_height="wrap_content"
                 android:entries="@array/fuel_fp_array"
                 android:prompt="@string/select_currency" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/currencyRateEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:hint="Currency rate" />
-
+            </com.google.android.material.textfield.TextInputLayout>
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -181,7 +225,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:text="min" />
-
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/timeWornTextView"
                     android:layout_width="wrap_content"
@@ -189,28 +237,53 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="50dp"
                     android:text="00:00" />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
-
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/notesEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Notes" />
+        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/poiEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="POI" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/latEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="latitude" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/lngEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="longitude" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"

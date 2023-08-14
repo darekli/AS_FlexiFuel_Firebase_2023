@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.example.as_flexifuel_firebase_2023'
-    compileSdk 33
+    compileSdk 34
     // Define custom BuildConfig fields
     buildTypes {
         release {
@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.example.as_flexifuel_firebase_2023"
         minSdk 27
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -56,5 +56,11 @@ dependencies {
     implementation 'com.zhjl37.gaugeview:gaugeview:1.0.0'
     'org.gradle.maven.url=https://repo.maven.apache.org/maven2'
     ' org.gradle.maven.url=https://jitpack.io'
+
+
+    implementation "androidx.compose.material3:material3:1.2.0-alpha05"
+    implementation "androidx.compose.material3:material3-window-size-class:1.2.0-alpha05"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
+
 
 }

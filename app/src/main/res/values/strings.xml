@@ -10,4 +10,11 @@
         <item>EUR</item>
         <item>GBP</item>
     </string-array>
+
+
+    <string-array name="fuel_type_array2">
+        <item>PB</item>
+        <item>LPG</item>
+        <item>ON</item>
+    </string-array>
 </resources>
