@@ -13,6 +13,7 @@
     <!--        android:hint="Vehicle" />-->
 
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button_back"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -36,6 +37,7 @@
         android:orientation="horizontal">
 
         <Button
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/button_last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,6 +46,7 @@
             android:text="Last" />
 
         <Button
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/button_3last"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,6 +55,7 @@
             android:text="Last three" />
 
         <Button
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/button_last_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -617,7 +621,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/no_corners_transparent">
+        android:background="@drawable/refuel_card_background">
 
         <include
             android:id="@+id/l_cons_last_pb"
@@ -641,7 +645,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/no_corners_transparent"
+        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
         <include
@@ -685,7 +689,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/no_corners_transparent"
+        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
         <include
@@ -722,7 +726,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/no_corners_transparent"
+        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
 
@@ -767,7 +771,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/no_corners_transparent"
+        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
 
@@ -805,7 +809,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/no_corners_transparent"
+        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
 

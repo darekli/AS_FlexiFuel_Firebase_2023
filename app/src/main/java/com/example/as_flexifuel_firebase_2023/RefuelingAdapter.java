@@ -27,7 +27,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
     @NonNull
     @Override
     public RefuelingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_refueling, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_refuel_md3, parent, false);
         return new RefuelingViewHolder(view, listener);
     }
 
@@ -62,7 +62,7 @@ public class RefuelingAdapter extends RecyclerView.Adapter<RefuelingAdapter.Refu
         private TextView lngTextView;
         public RefuelingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            iDTextView = itemView.findViewById(R.id.iDTextView);
+            iDTextView = itemView.findViewById(R.id.idTextView);
             vehicleTextView = itemView.findViewById(R.id.vehicleTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             mileageTextView = itemView.findViewById(R.id.mileageTextView);
