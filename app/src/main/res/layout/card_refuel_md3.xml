@@ -2,308 +2,306 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="8dp">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/filterChipGroupNewRule"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/refuel_card_background"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:singleSelection="true">
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="wrap_content"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/filterChipGroupNewRule"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:hint="vehicle"
-            android:outlineSpotShadowColor="@color/colorTimeWarning_Dark"
-            android:textColorHint="@color/colorTimeWarning_Dark"
-            app:boxBackgroundMode="outline"
-            app:boxStrokeColor="@color/material_on_surface_stroke">
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/refuel_card_background"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleSelection="true">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/vehicleTextView"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:enabled="false"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black"
+                android:hint="vehicle"
+                android:outlineSpotShadowColor="@color/colorTimeWarning_Dark"
+                android:textColorHint="@color/colorTimeWarning_Dark"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/material_on_surface_stroke">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/vehicleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:enabled="false"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:hint="mileage">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mileageTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="mileage">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLaywout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:hint="date">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mileageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dateTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLaywout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="date">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayouta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:hint="fuel type">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fuelTypeTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayouta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginLeft="0dp"
+                android:hint="fuel type">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLayouta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="full/part">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fuelTypeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fuelFPTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLayouta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="full/part">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLaywouta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="liters">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fuelFPTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/litersTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLaywouta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="liters">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLayoutb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="country">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/litersTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/countryTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLayoutb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="country">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLaywoutb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="currency">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/countryTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/currencyTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLaywoutb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="currency">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="amount">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/currencyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/amountTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="amount">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLaywoudtb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="rate">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/amountTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/currencyRateTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLaywoudtb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="rate">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/currencyRateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLaywoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="poi">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/poiTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLaywoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:text="poi"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="poi">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:hint="time worn">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/poiTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:text="poi"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/timeWornTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="time worn">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndpzutLayoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="notes">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/timeWornTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/notesTextView"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndpzutLayoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:text="notes"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
-         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndphutLayoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="notes">
+                android:hint="notes">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/latTextView"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/notesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:text="notes"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndphutLayoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:text="lat"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLasyoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="notes">
+                android:hint="latitude">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/lngTextView"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/latTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="110dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:text="latitude"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLasyoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:text="lng"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textIndputLhasyoutc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="id">
+                android:hint="longitude">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/idTextView"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lngTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="110dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:text="longitude"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textIndputLhasyoutc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:minWidth="90dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="4dp"
-                android:text="id"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="id">
 
-    </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/idTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:minWidth="90dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="4dp"
+                    android:text="id"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+        </com.google.android.material.chip.ChipGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

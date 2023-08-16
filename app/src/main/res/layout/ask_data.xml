@@ -645,15 +645,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">
 
         <include
             android:id="@+id/l_cons_last_sldpg"
             layout="@layout/card_design_cost_once"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginBottom="0dp"
@@ -664,7 +663,7 @@
         <include
             android:id="@+id/l_cons_last_slpg"
             layout="@layout/card_design_distance_once"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"

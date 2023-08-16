@@ -5,7 +5,6 @@
     android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardBackgroundColor="@color/wizard_4"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     app:cardUseCompatPadding="true">
@@ -17,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/refuel_card_background"
+            android:background="@drawable/cost_distance_card_background"
             android:foregroundGravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:orientation="vertical"

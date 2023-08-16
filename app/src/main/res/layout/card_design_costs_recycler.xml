@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/refuel_card_background"
+            android:background="@drawable/no_corners"
             android:foregroundGravity="center_vertical"
             android:layout_marginEnd="8dp"
             android:orientation="vertical"
