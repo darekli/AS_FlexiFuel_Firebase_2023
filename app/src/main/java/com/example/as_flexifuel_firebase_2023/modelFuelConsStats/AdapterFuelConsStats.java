@@ -30,7 +30,7 @@ public class AdapterFuelConsStats extends RecyclerView.Adapter<AdapterFuelConsSt
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_fcs_design, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_fcs_design_md3, parent, false);
         return new ImageViewHolder(view);
     }
 

@@ -50,7 +50,9 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
 import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.AdapterFuelConsStats;
+import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.AdapterGaugeFuel;
 import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.ModelFuelConsStats;
+import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.ModelGaugeFuel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -90,6 +92,9 @@ public class Ask extends AppCompatActivity {
     private ViewPager2 viewPagerFCS;
     private List<ModelFuelConsStats> modelFuelConsStatsListLastCountable;
     private AdapterFuelConsStats adapterFuelConsStats;
+    private ViewPager2 viewPagerGaugeFuel;
+    private List<ModelGaugeFuel> modelGaugeFuelListLastCountable;
+    private AdapterGaugeFuel adapterGaugeFuel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,7 +234,38 @@ public class Ask extends AppCompatActivity {
                  * VIEWPAGER FCS Fuel Consumption Stats
                  */
                 modelFuelConsStatsListLastCountable = new ArrayList<>();
-                viewPagerFCS = findViewById(R.id.viewPager2_ese);
+                viewPagerFCS = findViewById(R.id.viewPager2_fcs);
+
+                viewPagerFCS.setCurrentItem(1);
+                int totalWidth = getResources().getDisplayMetrics().widthPixels;
+                int cardWidth = totalWidth * 60 / 100; // 60% of screen width, adjust as necessary
+                int sidePadding = (totalWidth - cardWidth) / 2;
+
+                viewPagerFCS.setClipToPadding(false);
+                viewPagerFCS.setPadding(sidePadding, 0, sidePadding, 0);
+                CompositePageTransformer transformer = new CompositePageTransformer();
+                transformer.addTransformer(new MarginPageTransformer(24)); // Adding a slight margin between items, adjust if needed
+
+                transformer.addTransformer((page, position) -> {
+                    float absPos = Math.abs(position);
+                    if (absPos >= 1) {
+                        // No transformation for off-screen items
+                        page.setScaleY(1f);
+                        page.setAlpha(1f);
+                    } else {
+                        page.setScaleY(0.85f + (1 - absPos) * 0.15f);
+                        page.setAlpha(0.5f + (1 - absPos) * 0.5f);
+                    }
+                });
+
+                viewPagerFCS.setPageTransformer(transformer);
+
+/**
+ * VIEWPAGER Gauge Fuel
+ */
+                modelGaugeFuelListLastCountable = new ArrayList<>();
+                viewPagerGaugeFuel = findViewById(R.id.viewPager2_gauge_fuel);
+
 
                 /**
                  * GAUGE
@@ -381,7 +417,7 @@ public class Ask extends AppCompatActivity {
                         modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_money, String.valueOf(mileageDifference), String.valueOf(" km")));
 
                         tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
-                       // tvDistanceLast.setText(mileageDifference + " km");
+                        // tvDistanceLast.setText(mileageDifference + " km");
                     }
 
                     @Override
@@ -710,22 +746,13 @@ public class Ask extends AppCompatActivity {
  * VIEWPAGER FCS Fuel Consumption Stats CONTINUE...
  * this part of code bellow you have to add only one time than it works for all viewPager2 adapter
  */
+//
                         adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListLastCountable, viewPagerFCS);
                         viewPagerFCS.setAdapter(adapterFuelConsStats);
                         viewPagerFCS.setOffscreenPageLimit(3);
                         viewPagerFCS.setClipChildren(false);
                         viewPagerFCS.setClipToPadding(false);
                         viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-                        CompositePageTransformer transformer = new CompositePageTransformer();
-                        transformer.addTransformer(new MarginPageTransformer(0));
-                        transformer.addTransformer(new ViewPager2.PageTransformer() {
-                            @Override
-                            public void transformPage(@NonNull View page, float position) {
-                                float r = 1 - Math.abs(position);
-                                page.setScaleY(0.85f + r * 0.14f);
-                                //page.setScaleY(0.5f + r * 0.04f);
-                            }
-                        });
 
 
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
