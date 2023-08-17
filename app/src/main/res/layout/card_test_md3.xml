@@ -34,7 +34,7 @@
             android:text="l/100km"
             android:textSize="14dp"/>
         <ImageView
-            android:id="@+id/image_ese_id"
+            android:id="@+id/image_fcs_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

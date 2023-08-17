@@ -33,7 +33,7 @@
             app:layout_constraintVertical_bias="1.0">
 
             <ImageView
-                android:id="@+id/image_ese_id"
+                android:id="@+id/image_fcs_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -53,7 +53,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:background="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/image_ese_id"
+                app:layout_constraintEnd_toEndOf="@+id/image_fcs_id"
                 app:layout_constraintStart_toStartOf="@+id/tv_cost_100km_once"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cost_100km_once" />
 
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_toRightOf="@id/image_ese_id"
+                android:layout_toRightOf="@id/image_fcs_id"
                 android:text="pln/100km"
                 android:textColor="@color/white"
                 android:textSize="12sp"

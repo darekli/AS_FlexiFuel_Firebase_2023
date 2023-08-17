@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.as_flexifuel_firebase_2023.FuelFP;
 import com.example.as_flexifuel_firebase_2023.FuelType;
@@ -45,7 +49,8 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumAllLitersCal
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.AdapterFuelConsStats;
+import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.ModelFuelConsStats;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +60,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -76,21 +82,23 @@ public class Ask extends AppCompatActivity {
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
     GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg, gaugeView_avg_l_cons_all_pb, gaugeView_avg_l_cons_all_lpg;
-    TextView tvDistanceOnce, tvCost100kmOnce, tvDistanceLast, tvCost100kmLast, tvDistanceAll, tvCost100kmAll;
+    TextView tvDistanceOnce, tvCost100kmOnce,
+            tvDistanceAll, tvCost100kmAll;
 
     private Last last;
     private All all;
+    private ViewPager2 viewPagerFCS;
+    private List<ModelFuelConsStats> modelFuelConsStatsListLastCountable;
+    private AdapterFuelConsStats adapterFuelConsStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ask_data);
+        setContentView(R.layout.ask_page);
 
         last = new Last();
         all = new All();
 
-        tvDistanceLast = findViewById(R.id.tv_distance_last);
-        tvCost100kmLast = findViewById(R.id.tv_cost_100km_last);
         tvDistanceOnce = findViewById(R.id.tv_distance_once);
         tvCost100kmOnce = findViewById(R.id.tv_cost_100km_once);
         tvDistanceAll = findViewById(R.id.tv_distance_all);
@@ -203,13 +211,6 @@ public class Ask extends AppCompatActivity {
         buttonLastAll = findViewById(R.id.button_last_all);
 
 
-//        ArrayAdapter<String> fuelTypeAdapter = new ArrayAdapter<>(
-//                this,
-//                R.layout.activity_main,
-//                getResources().getStringArray(R.array.fuel_type_array)
-//        );
-//        fuelTypeSpinner.setAdapter(fuelTypeAdapter);
-
         ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
         fuelTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fuelTypeSpinner.setAdapter(fuelTypeAdapter);
@@ -219,9 +220,16 @@ public class Ask extends AppCompatActivity {
 
         //tv_answer_01 = findViewById(R.id.tv_answer_01);
         //   buttonAsk = findViewById(R.id.button_ask);
+
+
         buttonLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * VIEWPAGER FCS Fuel Consumption Stats
+                 */
+                modelFuelConsStatsListLastCountable = new ArrayList<>();
+                viewPagerFCS = findViewById(R.id.viewPager2_ese);
 
                 /**
                  * GAUGE
@@ -369,8 +377,11 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onMileageDifferenceFetched(int mileageDifference) {
+                        // VCS PLN/100km
+                        modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_money, String.valueOf(mileageDifference), String.valueOf(" km")));
+
                         tv_answer_23.setText("23. PB==LPG mileage diff highest and 2nd highest: " + mileageDifference + " kms");
-                        tvDistanceLast.setText(mileageDifference + " km");
+                       // tvDistanceLast.setText(mileageDifference + " km");
                     }
 
                     @Override
@@ -694,8 +705,31 @@ public class Ask extends AppCompatActivity {
                 last.calculateRatioAndSumForLastCountablePbLPG(vehicleEditText, new SumCalculated() {
                     @Override
                     public void onSumCalculated(double totalSum) {
+                        modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_money, String.valueOf(totalSum), String.valueOf(" PLN/100km")));
+/**
+ * VIEWPAGER FCS Fuel Consumption Stats CONTINUE...
+ * this part of code bellow you have to add only one time than it works for all viewPager2 adapter
+ */
+                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListLastCountable, viewPagerFCS);
+                        viewPagerFCS.setAdapter(adapterFuelConsStats);
+                        viewPagerFCS.setOffscreenPageLimit(3);
+                        viewPagerFCS.setClipChildren(false);
+                        viewPagerFCS.setClipToPadding(false);
+                        viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+                        CompositePageTransformer transformer = new CompositePageTransformer();
+                        transformer.addTransformer(new MarginPageTransformer(0));
+                        transformer.addTransformer(new ViewPager2.PageTransformer() {
+                            @Override
+                            public void transformPage(@NonNull View page, float position) {
+                                float r = 1 - Math.abs(position);
+                                page.setScaleY(0.85f + r * 0.14f);
+                                //page.setScaleY(0.5f + r * 0.04f);
+                            }
+                        });
+
+
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
-                        tvCost100kmLast.setText(totalSum + " PLN/100km");
+                        //tvCost100kmLast.setText(totalSum + " PLN/100km");
                     }
 
                     @Override
@@ -1006,6 +1040,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onDaysDifferenceComputed(long daysDifference) {
                         tv_answer_69.setText("69. Days last: " + daysDifference);
+                        modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
 
                     }
 
@@ -1274,6 +1309,7 @@ public class Ask extends AppCompatActivity {
                         });
 
                 last.calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText);
+
 
             }
         });
