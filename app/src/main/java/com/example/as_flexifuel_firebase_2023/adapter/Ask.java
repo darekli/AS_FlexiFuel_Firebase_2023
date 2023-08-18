@@ -83,8 +83,8 @@ public class Ask extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "MySharedPrefs";
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
-    GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg, gaugeView_avg_l_cons_all_pb, gaugeView_avg_l_cons_all_lpg;
-    //TextView tvDistanceOnce, tvCost100kmOnce, tvCost100kmAll;
+    GradeGaugeView gaugeView_l, gaugeView_r;
+
 
     private Last last;
     private All all;
@@ -95,10 +95,10 @@ public class Ask extends AppCompatActivity {
     private List<ModelFuelConsStats> modelFuelConsStatsListAllCountable;
 
     private AdapterFuelConsStats adapterFuelConsStats;
-    private ViewPager2 viewPagerGaugeFuel;
-    private List<ModelGaugeFuel> modelGaugeFuelListLastCountable;
-    private List<ModelGaugeFuel> modelGaugeFuelListAllCountable;
-    private AdapterGaugeFuel adapterGaugeFuel;
+//    private ViewPager2 viewPagerGaugeFuel;
+//    private List<ModelGaugeFuel> modelGaugeFuelListLastCountable;
+//    private List<ModelGaugeFuel> modelGaugeFuelListAllCountable;
+//    private AdapterGaugeFuel adapterGaugeFuel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,14 +121,6 @@ public class Ask extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-        // button_nbp_page = findViewById(R.id.button_nbp_page);
-//        button_nbp_page.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), NbpPage.class));
-//            }
-//        });
-
 
         vehicleEditText = findViewById(R.id.et_ask_vehicle);
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
@@ -223,48 +215,24 @@ public class Ask extends AppCompatActivity {
 
         databaseRef = FirebaseDatabase.getInstance().getReference("refuelings");
 
-        //tv_answer_01 = findViewById(R.id.tv_answer_01);
-        //   buttonAsk = findViewById(R.id.button_ask);
         /**
          * VIEWPAGER FCS Fuel Consumption Stats
          */
         viewPagerFCS = findViewById(R.id.viewPager2_fcs);
-        viewPagerFCS.setCurrentItem(1);
-        int totalWidth = getResources().getDisplayMetrics().widthPixels;
-        int cardWidth = totalWidth * 60 / 100; // 60% of screen width, adjust as necessary
-        int sidePadding = (totalWidth - cardWidth) / 2;
-
-        viewPagerFCS.setClipToPadding(false);
-        viewPagerFCS.setPadding(sidePadding, 0, sidePadding, 0);
-        CompositePageTransformer transformer = new CompositePageTransformer();
-        transformer.addTransformer(new MarginPageTransformer(24)); // Adding a slight margin between items, adjust if needed
-
-        transformer.addTransformer((page, position) -> {
-            float absPos = Math.abs(position);
-            if (absPos >= 1) {
-                // No transformation for off-screen items
-                page.setScaleY(1f);
-                page.setAlpha(1f);
-            } else {
-                page.setScaleY(0.85f + (1 - absPos) * 0.15f);
-                page.setAlpha(0.5f + (1 - absPos) * 0.5f);
-            }
-        });
-
-        viewPagerFCS.setPageTransformer(transformer);
+        configureViewPager(viewPagerFCS);
 
         /**
          * GAUGE
          */
 
         // gauge l
-        gaugeView_avg_l_cons_last_pb = findViewById(R.id.gauge_fuel_l);
-        gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
-        gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.AdapterLeft());
+        gaugeView_l = findViewById(R.id.gauge_fuel_l);
+        gaugeView_l.setLabel("l/100km");
+        gaugeView_l.setAdapter(new GradeGaugeView.AdapterLeft());
         // gauge r
-        gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gauge_fuel_r);
-        gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
-        gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.AdapterRight());
+        gaugeView_r = findViewById(R.id.gauge_fuel_r);
+        gaugeView_r.setLabel("l/100km");
+        gaugeView_r.setAdapter(new GradeGaugeView.AdapterRight());
 
         /**
          * BUTTON ALL
@@ -274,31 +242,14 @@ public class Ask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                //pb all
-//                gaugeView_avg_l_cons_all_pb = findViewById(R.id.gauge_fuel_l);
-//                gaugeView_avg_l_cons_all_pb.setLabel("l/100km");
-//                gaugeView_avg_l_cons_all_pb.setAdapter(new GradeGaugeView.AdapterAll1());
-////lpg all
-//                gaugeView_avg_l_cons_all_lpg = findViewById(R.id.gauge_fuel_r);
-//                gaugeView_avg_l_cons_all_lpg.setLabel("l/100km");
-//                gaugeView_avg_l_cons_all_lpg.setAdapter(new GradeGaugeView.AdapterAll2());
+                adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListAllCountable, viewPagerFCS);  // You can remove this if you only use the adapter inside the method
+                setUpViewPager(viewPagerFCS, modelFuelConsStatsListAllCountable);
 
+                configureViewPager(viewPagerFCS);
                 all.findLowestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
                     @Override
                     public void onLastIdFetched(String lastId) {
                         tv_answer_52.setText("52. all, first smallest mileage: " + lastId + " kms");
-
-                        /**
-                         * VIEWPAGER FCS Fuel Consumption Stats CONTINUE...
-                         * this part of code bellow you have to add only one time than it works for all viewPager2 adapter
-                         */
-                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListAllCountable, viewPagerFCS);
-                        viewPagerFCS.setAdapter(adapterFuelConsStats);
-                        viewPagerFCS.setOffscreenPageLimit(3);
-                        viewPagerFCS.setClipChildren(false);
-                        viewPagerFCS.setClipToPadding(false);
-                        viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-
                     }
 
                     @Override
@@ -307,7 +258,6 @@ public class Ask extends AppCompatActivity {
                     }
                 });
                 all.findLastMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
-
                     @Override
                     public void onLastIdFetched(String lastId) {
                         tv_answer_53.setText("53. all, last highest mileage: " + lastId + " kms");
@@ -325,7 +275,6 @@ public class Ask extends AppCompatActivity {
                         tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
                         //  tvDistanceAll.setText(mileageDifference + " km");
                         modelFuelConsStatsListAllCountable.add(new ModelFuelConsStats(R.drawable.ic_code, String.valueOf(mileageDifference), String.valueOf(" km")));
-
                     }
 
                     @Override
@@ -495,7 +444,7 @@ public class Ask extends AppCompatActivity {
                         tv_answer_66.setText("66. PB " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
                         String l100km = String.format("%.3f", (adjustedAmountPerLiter));
                         //gauge
-                        //   gaugeView_avg_l_cons_all_pb.setCurrent(Float.parseFloat(l100km));
+                        gaugeView_l.setCurrent(Float.parseFloat(l100km));
                     }
 
                     @Override
@@ -510,6 +459,8 @@ public class Ask extends AppCompatActivity {
                         String l100km = String.format("%.3f", (adjustedAmountPerLiter));
                         //gauge
                         //   gaugeView_avg_l_cons_all_lpg.setCurrent(Float.parseFloat(l100km));
+                        //gauge
+                        gaugeView_r.setCurrent(Float.parseFloat(l100km));
 
                     }
 
@@ -810,17 +761,8 @@ public class Ask extends AppCompatActivity {
         buttonLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /**
-                 * GAUGE
-                 */
-
-                //shifting gauge to new page
-                // setContentView(R.layout.gauge_fuel_cons);
-                //only Pb, lpg or on
-//                gaugeView_avg_l_cons_once = findViewById(R.id.gaugeview_fuel_0);
-//                gaugeView_avg_l_cons_once.setLabel("l/100km");
-//                gaugeView_avg_l_cons_once.setAdapter(new GradeGaugeView.Adapter0Test());
+//                adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListAllCountable, viewPagerFCS);  // You can remove this if you only use the adapter inside the method
+//                setUpViewPager(viewPagerFCS, modelFuelConsStatsListAllCountable);
 
 
                 String vehicle = vehicleEditText.getText().toString();
@@ -876,7 +818,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onDaysDifferenceComputed(long daysDifference) {
                         tv_answer_69.setText("69. Days last: " + daysDifference);
-                       // modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
+                        // modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
 
                     }
 
@@ -1060,7 +1002,7 @@ public class Ask extends AppCompatActivity {
                         tv_answer_30.setText("30. PB avg fuel consumption: " + formattedSumLiters + " liters");
 
                         //gauge
-                        gaugeView_avg_l_cons_last_pb.setCurrent(Float.parseFloat(formattedSumLiters));
+                        gaugeView_l.setCurrent(Float.parseFloat(formattedSumLiters));
                     }
 
                     @Override
@@ -1078,7 +1020,7 @@ public class Ask extends AppCompatActivity {
                         String formattedSumLiters = decimalFormat.format(ratio);
                         tv_answer_31.setText("31. LPG avg fuel consumption: " + formattedSumLiters + " liters");
                         //gauge
-                        gaugeView_avg_l_cons_last_lpg.setCurrent(Float.parseFloat(formattedSumLiters));
+                        gaugeView_r.setCurrent(Float.parseFloat(formattedSumLiters));
 
                     }
 
@@ -1287,12 +1229,14 @@ public class Ask extends AppCompatActivity {
  * this part of code bellow you have to add only one time than it works for all viewPager2 adapter
  */
 //
-                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListLastCountable, viewPagerFCS);
-                        viewPagerFCS.setAdapter(adapterFuelConsStats);
-                        viewPagerFCS.setOffscreenPageLimit(3);
-                        viewPagerFCS.setClipChildren(false);
-                        viewPagerFCS.setClipToPadding(false);
-                        viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+//                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListLastCountable, viewPagerFCS);
+//                        viewPagerFCS.setAdapter(adapterFuelConsStats);
+//                        viewPagerFCS.setOffscreenPageLimit(3);
+//                        viewPagerFCS.setClipChildren(false);
+//                        viewPagerFCS.setClipToPadding(false);
+//                        viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListLastCountable, viewPagerFCS);  // You can remove this if you only use the adapter inside the method
+                        setUpViewPager(viewPagerFCS, modelFuelConsStatsListLastCountable);
 
 
                         tv_answer_46.setText("46.(23.45.*100) PLN/100km: " + totalSum + " PLN/100km");
@@ -1351,7 +1295,7 @@ public class Ask extends AppCompatActivity {
                     @Override
                     public void onLiterPerMileageFetched(String literPerMileage) {
                         tv_answer_50.setText("50. " + literPerMileage + " liters/100km");
-                        gaugeView_avg_l_cons_once.setCurrent(Float.parseFloat(literPerMileage));
+                        // gaugeView_avg_l_cons_once.setCurrent(Float.parseFloat(literPerMileage));
 
                     }
 
@@ -1716,5 +1660,44 @@ public class Ask extends AppCompatActivity {
         });
     }
 
+    private void configureViewPager(ViewPager2 viewPager) {
+        viewPager.setCurrentItem(1);
 
+        int totalWidth = getResources().getDisplayMetrics().widthPixels;
+        int cardWidth = totalWidth * 60 / 100; // 60% of screen width, adjust as necessary
+        int sidePadding = (totalWidth - cardWidth) / 2;
+
+        viewPager.setClipToPadding(false);
+        viewPager.setPadding(sidePadding, 0, sidePadding, 0);
+
+        CompositePageTransformer transformer = new CompositePageTransformer();
+        transformer.addTransformer(new MarginPageTransformer(24)); // Adding a slight margin between items, adjust if needed
+
+        transformer.addTransformer((page, position) -> {
+            float absPos = Math.abs(position);
+            if (absPos >= 1) {
+                // No transformation for off-screen items
+                page.setScaleY(1f);
+                page.setAlpha(1f);
+            } else {
+                page.setScaleY(0.85f + (1 - absPos) * 0.15f);
+                page.setAlpha(0.5f + (1 - absPos) * 0.5f);
+            }
+        });
+
+        viewPager.setPageTransformer(transformer);
+    }
+
+
+    private void setUpViewPager(ViewPager2 viewPager, List<ModelFuelConsStats> dataList) {
+        AdapterFuelConsStats adapter = new AdapterFuelConsStats(dataList, viewPager);
+        viewPager.setAdapter(adapter);
+
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.setClipChildren(false);
+        viewPager.setClipToPadding(false);
+        if (viewPager.getChildAt(0) != null) {
+            viewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        }
+    }
 }
