@@ -3,7 +3,6 @@ package com.example.as_flexifuel_firebase_2023.modelFuelConsStats;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,7 +29,7 @@ public class AdapterGaugeFuel extends RecyclerView.Adapter<AdapterGaugeFuel.Imag
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gauge_fuel, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gauge_fuel_l, parent, false);
         return new ImageViewHolder(view);
     }
 
@@ -55,7 +54,7 @@ public class AdapterGaugeFuel extends RecyclerView.Adapter<AdapterGaugeFuel.Imag
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvFuelValue = (TextView) itemView.findViewById(R.id.gauge_view_fuel);
+            tvFuelValue = (TextView) itemView.findViewById(R.id.gauge_fuel_r);
         }
     }
     //responsible for sliding images in loop

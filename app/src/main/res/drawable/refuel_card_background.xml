@@ -12,8 +12,8 @@
         android:top="8dp" />
 
         <gradient android:angle="270"
-            android:endColor="#DCE3E9"
-            android:startColor="#DCE3E9"
+            android:endColor="@color/white"
+            android:startColor="@color/white"
             android:type="linear" />
 
     <corners android:radius="24dp" />

@@ -74,7 +74,7 @@ public class Ask extends AppCompatActivity {
     public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54, tv_answer_55, tv_answer_56, tv_answer_57, tv_answer_58, tv_answer_59;
     public TextView tv_answer_60, tv_answer_61, tv_answer_62, tv_answer_63, tv_answer_64, tv_answer_65, tv_answer_66, tv_answer_67, tv_answer_68, tv_answer_69;
     public TextView tv_answer_70, tv_answer_71, tv_answer_72, tv_answer_73, tv_answer_74;
-    public Button buttonLast, button3Last, buttonLastAll, button_back_main, button_nbp_page;
+    public Button buttonLast, button3Last, buttonAll, button_back_main;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
     // MD3 new spinner: fuelTypeSpinner
@@ -84,16 +84,20 @@ public class Ask extends AppCompatActivity {
     private static final String VEHICLE_PREF_KEY = "vehicle";
 
     GradeGaugeView gaugeView_avg_l_cons_once, gaugeView_avg_l_cons_last_pb, gaugeView_avg_l_cons_last_lpg, gaugeView_avg_l_cons_all_pb, gaugeView_avg_l_cons_all_lpg;
-    TextView tvDistanceOnce, tvCost100kmOnce,
-            tvDistanceAll, tvCost100kmAll;
+    //TextView tvDistanceOnce, tvCost100kmOnce, tvCost100kmAll;
 
     private Last last;
     private All all;
     private ViewPager2 viewPagerFCS;
+    //last
     private List<ModelFuelConsStats> modelFuelConsStatsListLastCountable;
+    //all
+    private List<ModelFuelConsStats> modelFuelConsStatsListAllCountable;
+
     private AdapterFuelConsStats adapterFuelConsStats;
     private ViewPager2 viewPagerGaugeFuel;
     private List<ModelGaugeFuel> modelGaugeFuelListLastCountable;
+    private List<ModelGaugeFuel> modelGaugeFuelListAllCountable;
     private AdapterGaugeFuel adapterGaugeFuel;
 
     @Override
@@ -103,12 +107,8 @@ public class Ask extends AppCompatActivity {
 
         last = new Last();
         all = new All();
-
-        tvDistanceOnce = findViewById(R.id.tv_distance_once);
-        tvCost100kmOnce = findViewById(R.id.tv_cost_100km_once);
-        tvDistanceAll = findViewById(R.id.tv_distance_all);
-        tvCost100kmAll = findViewById(R.id.tv_cost_100km_all);
-
+        modelFuelConsStatsListLastCountable = new ArrayList<>();
+        modelFuelConsStatsListAllCountable = new ArrayList<>();
 
 /**
  * BACK TO MAIN ACTIVITY
@@ -213,7 +213,7 @@ public class Ask extends AppCompatActivity {
 
         buttonLast = findViewById(R.id.button_last);
         button3Last = findViewById(R.id.button_3last);
-        buttonLastAll = findViewById(R.id.button_last_all);
+        buttonAll = findViewById(R.id.button_all);
 
 
         ArrayAdapter<FuelType> fuelTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, FuelType.values());
@@ -225,47 +225,591 @@ public class Ask extends AppCompatActivity {
 
         //tv_answer_01 = findViewById(R.id.tv_answer_01);
         //   buttonAsk = findViewById(R.id.button_ask);
+        /**
+         * VIEWPAGER FCS Fuel Consumption Stats
+         */
+        viewPagerFCS = findViewById(R.id.viewPager2_fcs);
+        viewPagerFCS.setCurrentItem(1);
+        int totalWidth = getResources().getDisplayMetrics().widthPixels;
+        int cardWidth = totalWidth * 60 / 100; // 60% of screen width, adjust as necessary
+        int sidePadding = (totalWidth - cardWidth) / 2;
 
+        viewPagerFCS.setClipToPadding(false);
+        viewPagerFCS.setPadding(sidePadding, 0, sidePadding, 0);
+        CompositePageTransformer transformer = new CompositePageTransformer();
+        transformer.addTransformer(new MarginPageTransformer(24)); // Adding a slight margin between items, adjust if needed
 
-        buttonLast.setOnClickListener(new View.OnClickListener() {
+        transformer.addTransformer((page, position) -> {
+            float absPos = Math.abs(position);
+            if (absPos >= 1) {
+                // No transformation for off-screen items
+                page.setScaleY(1f);
+                page.setAlpha(1f);
+            } else {
+                page.setScaleY(0.85f + (1 - absPos) * 0.15f);
+                page.setAlpha(0.5f + (1 - absPos) * 0.5f);
+            }
+        });
+
+        viewPagerFCS.setPageTransformer(transformer);
+
+        /**
+         * GAUGE
+         */
+
+        // gauge l
+        gaugeView_avg_l_cons_last_pb = findViewById(R.id.gauge_fuel_l);
+        gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
+        gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.AdapterLeft());
+        // gauge r
+        gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gauge_fuel_r);
+        gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
+        gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.AdapterRight());
+
+        /**
+         * BUTTON ALL
+         */
+
+        buttonAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * VIEWPAGER FCS Fuel Consumption Stats
-                 */
-                modelFuelConsStatsListLastCountable = new ArrayList<>();
-                viewPagerFCS = findViewById(R.id.viewPager2_fcs);
 
-                viewPagerFCS.setCurrentItem(1);
-                int totalWidth = getResources().getDisplayMetrics().widthPixels;
-                int cardWidth = totalWidth * 60 / 100; // 60% of screen width, adjust as necessary
-                int sidePadding = (totalWidth - cardWidth) / 2;
+//                //pb all
+//                gaugeView_avg_l_cons_all_pb = findViewById(R.id.gauge_fuel_l);
+//                gaugeView_avg_l_cons_all_pb.setLabel("l/100km");
+//                gaugeView_avg_l_cons_all_pb.setAdapter(new GradeGaugeView.AdapterAll1());
+////lpg all
+//                gaugeView_avg_l_cons_all_lpg = findViewById(R.id.gauge_fuel_r);
+//                gaugeView_avg_l_cons_all_lpg.setLabel("l/100km");
+//                gaugeView_avg_l_cons_all_lpg.setAdapter(new GradeGaugeView.AdapterAll2());
 
-                viewPagerFCS.setClipToPadding(false);
-                viewPagerFCS.setPadding(sidePadding, 0, sidePadding, 0);
-                CompositePageTransformer transformer = new CompositePageTransformer();
-                transformer.addTransformer(new MarginPageTransformer(24)); // Adding a slight margin between items, adjust if needed
+                all.findLowestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
+                    @Override
+                    public void onLastIdFetched(String lastId) {
+                        tv_answer_52.setText("52. all, first smallest mileage: " + lastId + " kms");
 
-                transformer.addTransformer((page, position) -> {
-                    float absPos = Math.abs(position);
-                    if (absPos >= 1) {
-                        // No transformation for off-screen items
-                        page.setScaleY(1f);
-                        page.setAlpha(1f);
-                    } else {
-                        page.setScaleY(0.85f + (1 - absPos) * 0.15f);
-                        page.setAlpha(0.5f + (1 - absPos) * 0.5f);
+                        /**
+                         * VIEWPAGER FCS Fuel Consumption Stats CONTINUE...
+                         * this part of code bellow you have to add only one time than it works for all viewPager2 adapter
+                         */
+                        adapterFuelConsStats = new AdapterFuelConsStats(modelFuelConsStatsListAllCountable, viewPagerFCS);
+                        viewPagerFCS.setAdapter(adapterFuelConsStats);
+                        viewPagerFCS.setOffscreenPageLimit(3);
+                        viewPagerFCS.setClipChildren(false);
+                        viewPagerFCS.setClipToPadding(false);
+                        viewPagerFCS.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findLastMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
+
+                    @Override
+                    public void onLastIdFetched(String lastId) {
+                        tv_answer_53.setText("53. all, last highest mileage: " + lastId + " kms");
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
+
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
+                        //  tvDistanceAll.setText(mileageDifference + " km");
+                        modelFuelConsStatsListAllCountable.add(new ModelFuelConsStats(R.drawable.ic_code, String.valueOf(mileageDifference), String.valueOf(" km")));
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
                     }
                 });
 
-                viewPagerFCS.setPageTransformer(transformer);
+                all.findRecordsBetweenLowestAndHighestMileageForPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
 
-/**
- * VIEWPAGER Gauge Fuel
- */
-                modelGaugeFuelListLastCountable = new ArrayList<>();
-                viewPagerGaugeFuel = findViewById(R.id.viewPager2_gauge_fuel);
+                        tv_answer_55.setText("55.pb 1st record is removed  " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
 
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findRecordsBetweenLowestAndHighestMileageForLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+
+                        tv_answer_56.setText("56.lpg 1st record is removed " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingPB(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_57.setText("57. pb " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingLPG(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_58.setText("58. lpg " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeTotalAdjustedAmountPB(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        tv_answer_59.setText("59. PB PLN total: " + adjustedAmount);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalAdjustedAmountLPG(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        String pln = String.format("%.2f", (adjustedAmount));
+                        tv_answer_60.setText("60. LPG PLN total: " + pln);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_61.setText("61. PB total PLN/100km: " + pln100km);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_62.setText("62. PB total PLN/100km: " + pln100km);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalAmountPerMileage(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_63.setText("63. PB+LPG total PLN/100km " + pln100km);
+                        modelFuelConsStatsListAllCountable.add(new ModelFuelConsStats(R.drawable.ic_money, String.valueOf(pln100km), String.valueOf(" PLN/100km")));
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_61.setText("61. for PB total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+                all.computeTotalLitersBetweenMileagesForPB(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_64.setText("64. PB " + String.valueOf(totalLiters) + " l total liters all PB");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalLitersBetweenMileagesForLPG(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_65.setText("65. LPG " + String.valueOf(totalLiters) + " l total liters all LPG");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeLitersPer100kmDifferencePB(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_66.setText("66. PB " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
+                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
+                        //gauge
+                        //   gaugeView_avg_l_cons_all_pb.setCurrent(Float.parseFloat(l100km));
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeLitersPer100kmDifferenceLPG(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_67.setText("67. LPG " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
+                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
+                        //gauge
+                        //   gaugeView_avg_l_cons_all_lpg.setCurrent(Float.parseFloat(l100km));
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeDaysDifferenceBetweenLowestAndHighestMileageCountableAll(vehicleEditText, new DaysDifferenceCallback() {
+
+
+                    @Override
+                    public void onDaysDifferenceComputed(long daysDifference) {
+                        tv_answer_68.setText("68. Days all: " + daysDifference);
+                        modelFuelConsStatsListAllCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_62.setText("62. for LPG total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+                all.findLowestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
+
+                    @Override
+                    public void onLastIdFetched(String lastId) {
+                        tv_answer_52.setText("52. all, first smallest mileage: " + lastId + " kms");
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findLastMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
+
+                    @Override
+                    public void onLastIdFetched(String lastId) {
+                        tv_answer_53.setText("53. all, last highest mileage: " + lastId + " kms");
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
+
+                    @Override
+                    public void onMileageDifferenceFetched(int mileageDifference) {
+                        tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
+                        //tvDistanceAll.setText(mileageDifference + " km");
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.findRecordsBetweenLowestAndHighestMileageForPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+
+                        tv_answer_55.setText("55.pb 1st record is removed  " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findRecordsBetweenLowestAndHighestMileageForLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
+                    @Override
+                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
+
+                        tv_answer_56.setText("56.lpg 1st record is removed " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingPB(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_57.setText("57. pb " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.findAmountToCurrencyRateMappingLPG(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
+                    @Override
+                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
+
+
+                        tv_answer_58.setText("58. lpg " + amountToCurrencyRateMap.toString());
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeTotalAdjustedAmountPB(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        tv_answer_59.setText("59. PB PLN total: " + adjustedAmount);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalAdjustedAmountLPG(vehicleEditText, new AdjustedAmountFetched() {
+                    @Override
+                    public void onAdjustedAmountFetched(double adjustedAmount) {
+                        String pln = String.format("%.2f", (adjustedAmount));
+                        tv_answer_60.setText("60. LPG PLN total: " + pln);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_61.setText("61. PB total PLN/100km: " + pln100km);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+
+                        tv_answer_62.setText("62. PB total PLN/100km: " + pln100km);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalAmountPerMileage(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_63.setText("63. PB+LPG total PLN/100km " + pln100km);
+                        //tvCost100kmAll.setText(pln100km + " PLN/100km");
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_61.setText("61. for PB total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+                all.computeTotalLitersBetweenMileagesForPB(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_64.setText("64. PB " + String.valueOf(totalLiters) + " l total liters all PB");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+                all.computeTotalLitersBetweenMileagesForLPG(vehicleEditText, new TotalLitersFetched() {
+                    @Override
+                    public void onTotalLitersFetched(double totalLiters) {
+                        tv_answer_65.setText("65. LPG " + String.valueOf(totalLiters) + " l total liters all LPG");
+                    }
+
+                    @Override
+                    public void onTotalLitersFetchedError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeLitersPer100kmDifferencePB(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_66.setText("66. PB " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
+                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
+                        //gauge
+                        // gaugeView_avg_l_cons_all_pb.setCurrent(Float.parseFloat(l100km));
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+                all.computeLitersPer100kmDifferenceLPG(vehicleEditText, new LitersPerMileageDifferenceCallback() {
+                    @Override
+                    public void onResultFetched(double adjustedAmountPerLiter) {
+                        tv_answer_67.setText("67. LPG " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
+                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
+                        //gauge
+                        // gaugeView_avg_l_cons_all_lpg.setCurrent(Float.parseFloat(l100km));
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                all.computeDaysDifferenceBetweenLowestAndHighestMileageCountableAll(vehicleEditText, new DaysDifferenceCallback() {
+
+
+                    @Override
+                    public void onDaysDifferenceComputed(long daysDifference) {
+                        tv_answer_68.setText("68. Days all: " + daysDifference);
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+
+                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
+
+                    @Override
+                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
+                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
+                        tv_answer_62.setText("62. for LPG total PLN/100km: " + pln100km);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                    }
+                });
+
+            }
+        });
+
+        /**
+         * BUTTON LAST
+         */
+        buttonLast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                 /**
                  * GAUGE
@@ -274,27 +818,9 @@ public class Ask extends AppCompatActivity {
                 //shifting gauge to new page
                 // setContentView(R.layout.gauge_fuel_cons);
                 //only Pb, lpg or on
-                gaugeView_avg_l_cons_once = findViewById(R.id.gaugeview_fuel_0);
-                gaugeView_avg_l_cons_once.setLabel("l/100km");
-                gaugeView_avg_l_cons_once.setAdapter(new GradeGaugeView.Adapter0Test());
-
-//pb last
-                gaugeView_avg_l_cons_last_pb = findViewById(R.id.gaugeview_fuel_1);
-                gaugeView_avg_l_cons_last_pb.setLabel("l/100km");
-                gaugeView_avg_l_cons_last_pb.setAdapter(new GradeGaugeView.Adapter4Test());
-//lpg last
-                gaugeView_avg_l_cons_last_lpg = findViewById(R.id.gaugeview_fuel_2);
-                gaugeView_avg_l_cons_last_lpg.setLabel("l/100km");
-                gaugeView_avg_l_cons_last_lpg.setAdapter(new GradeGaugeView.Adapter5Test());
-
-//pb all
-                gaugeView_avg_l_cons_all_pb = findViewById(R.id.gaugeview_fuel_all_1);
-                gaugeView_avg_l_cons_all_pb.setLabel("l/100km");
-                gaugeView_avg_l_cons_all_pb.setAdapter(new GradeGaugeView.AdapterAll1());
-//lpg all
-                gaugeView_avg_l_cons_all_lpg = findViewById(R.id.gaugeview_fuel_all_2);
-                gaugeView_avg_l_cons_all_lpg.setLabel("l/100km");
-                gaugeView_avg_l_cons_all_lpg.setAdapter(new GradeGaugeView.AdapterAll2());
+//                gaugeView_avg_l_cons_once = findViewById(R.id.gaugeview_fuel_0);
+//                gaugeView_avg_l_cons_once.setLabel("l/100km");
+//                gaugeView_avg_l_cons_once.setAdapter(new GradeGaugeView.Adapter0Test());
 
 
                 String vehicle = vehicleEditText.getText().toString();
@@ -342,6 +868,20 @@ public class Ask extends AppCompatActivity {
 
                     @Override
                     public void onLastIdFetched(int finalResult) {
+
+                    }
+                });
+                last.computeDaysDifferenceBetweenLowestAndHighestMileageCountableLast(vehicleEditText, new Last.DaysDifferenceCallback() {
+
+                    @Override
+                    public void onDaysDifferenceComputed(long daysDifference) {
+                        tv_answer_69.setText("69. Days last: " + daysDifference);
+                       // modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
+
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
 
                     }
                 });
@@ -824,274 +1364,6 @@ public class Ask extends AppCompatActivity {
                 tv_answer_51.setText("-------ALL--------------");
 
 
-                all.findLowestMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
-
-                    @Override
-                    public void onLastIdFetched(String lastId) {
-                        tv_answer_52.setText("52. all, first smallest mileage: " + lastId + " kms");
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.findLastMileageIfFueledfp_FULLAndBothFuelTypeIsLPGAndPb(vehicleEditText, new LastIdFetched() {
-
-                    @Override
-                    public void onLastIdFetched(String lastId) {
-                        tv_answer_53.setText("53. all, last highest mileage: " + lastId + " kms");
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.calculateDifferenceBetweenLastAndSmallestMileage(vehicleEditText, new MileageDifferenceFetched() {
-
-                    @Override
-                    public void onMileageDifferenceFetched(int mileageDifference) {
-                        tv_answer_54.setText("54. all, mileage difference: " + mileageDifference + " kms");
-                        tvDistanceAll.setText(mileageDifference + " km");
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-                all.findRecordsBetweenLowestAndHighestMileageForPB(vehicleEditText, new MileageAmountCurrencyListFetched() {
-                    @Override
-                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-
-                        tv_answer_55.setText("55.pb 1st record is removed  " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.findRecordsBetweenLowestAndHighestMileageForLPG(vehicleEditText, new MileageAmountCurrencyListFetched() {
-                    @Override
-                    public void onMileageAmountCurrencyListFetched(List<List<Object>> mileageAmountCurrencyList) {
-
-                        tv_answer_56.setText("56.lpg 1st record is removed " + mileageAmountCurrencyList.toString() + " size: " + mileageAmountCurrencyList.size());
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.findAmountToCurrencyRateMappingPB(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
-                    @Override
-                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
-
-
-                        tv_answer_57.setText("57. pb " + amountToCurrencyRateMap.toString());
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.findAmountToCurrencyRateMappingLPG(vehicleEditText, new AmountCurrencyRateMapFetchedString() {
-                    @Override
-                    public void onMileageAmountCurrencyMapFetched(Map<String, String> amountToCurrencyRateMap) {
-
-
-                        tv_answer_58.setText("58. lpg " + amountToCurrencyRateMap.toString());
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-                all.computeTotalAdjustedAmountPB(vehicleEditText, new AdjustedAmountFetched() {
-                    @Override
-                    public void onAdjustedAmountFetched(double adjustedAmount) {
-                        tv_answer_59.setText("59. PB PLN total: " + adjustedAmount);
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.computeTotalAdjustedAmountLPG(vehicleEditText, new AdjustedAmountFetched() {
-                    @Override
-                    public void onAdjustedAmountFetched(double adjustedAmount) {
-                        String pln = String.format("%.2f", (adjustedAmount));
-                        tv_answer_60.setText("60. LPG PLN total: " + pln);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-
-                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
-
-                    @Override
-                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
-                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
-
-                        tv_answer_61.setText("61. PB total PLN/100km: " + pln100km);
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
-
-                    @Override
-                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
-                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
-
-                        tv_answer_62.setText("62. PB total PLN/100km: " + pln100km);
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.computeTotalAmountPerMileage(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
-                    @Override
-                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
-                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
-                        tv_answer_63.setText("63. PB+LPG total PLN/100km " + pln100km);
-                        tvCost100kmAll.setText(pln100km + " PLN/100km");
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.computeAmountPerMileageForPB(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
-
-                    @Override
-                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
-                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
-                        tv_answer_61.setText("61. for PB total PLN/100km: " + pln100km);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                    }
-                });
-                all.computeTotalLitersBetweenMileagesForPB(vehicleEditText, new TotalLitersFetched() {
-                    @Override
-                    public void onTotalLitersFetched(double totalLiters) {
-                        tv_answer_64.setText("64. PB " + String.valueOf(totalLiters) + " l total liters all PB");
-                    }
-
-                    @Override
-                    public void onTotalLitersFetchedError(String errorMessage) {
-
-                    }
-                });
-                all.computeTotalLitersBetweenMileagesForLPG(vehicleEditText, new TotalLitersFetched() {
-                    @Override
-                    public void onTotalLitersFetched(double totalLiters) {
-                        tv_answer_65.setText("65. LPG " + String.valueOf(totalLiters) + " l total liters all LPG");
-                    }
-
-                    @Override
-                    public void onTotalLitersFetchedError(String errorMessage) {
-
-                    }
-                });
-
-                all.computeLitersPer100kmDifferencePB(vehicleEditText, new LitersPerMileageDifferenceCallback() {
-                    @Override
-                    public void onResultFetched(double adjustedAmountPerLiter) {
-                        tv_answer_66.setText("66. PB " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
-                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
-                        //gauge
-                        gaugeView_avg_l_cons_all_pb.setCurrent(Float.parseFloat(l100km));
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                all.computeLitersPer100kmDifferenceLPG(vehicleEditText, new LitersPerMileageDifferenceCallback() {
-                    @Override
-                    public void onResultFetched(double adjustedAmountPerLiter) {
-                        tv_answer_67.setText("67. LPG " + String.valueOf(adjustedAmountPerLiter) + " l/100km");
-                        String l100km = String.format("%.3f", (adjustedAmountPerLiter));
-                        //gauge
-                        gaugeView_avg_l_cons_all_lpg.setCurrent(Float.parseFloat(l100km));
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-                all.computeDaysDifferenceBetweenLowestAndHighestMileageCountableAll(vehicleEditText, new DaysDifferenceCallback() {
-
-
-                    @Override
-                    public void onDaysDifferenceComputed(long daysDifference) {
-                        tv_answer_68.setText("68. Days all: " + daysDifference);
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-                last.computeDaysDifferenceBetweenLowestAndHighestMileageCountableLast(vehicleEditText, new Last.DaysDifferenceCallback() {
-
-                    @Override
-                    public void onDaysDifferenceComputed(long daysDifference) {
-                        tv_answer_69.setText("69. Days last: " + daysDifference);
-                        modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-
-                    }
-                });
-
-
-                all.computeAmountPerMileageForLPG(vehicleEditText, new AdjustedAmountPerMileageDifferenceFetched() {
-
-                    @Override
-                    public void onAdjustedAmountPerMileageDifferenceFetched(double adjustedAmountPerMileage) {
-                        String pln100km = String.format("%.2f", (adjustedAmountPerMileage));
-                        tv_answer_62.setText("62. for LPG total PLN/100km: " + pln100km);
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                    }
-                });
-
-
                 last.getFindSecondLastMileageIfFueledfp_FULLAndFuelTypeIsAndVehicleIs(fuelTypeSpinner, vehicleEditText, new
 
                         LastIdFetched() {
@@ -1244,7 +1516,7 @@ public class Ask extends AppCompatActivity {
                             @Override
                             public void onMileageDifferenceFetched(int mileageDifference) {
                                 tv_answer_08.setText("8. " + String.valueOf(mileageDifference));
-                                tvDistanceOnce.setText((mileageDifference + " km"));
+                                //tvDistanceOnce.setText((mileageDifference + " km"));
                             }
 
                             @Override
@@ -1334,11 +1606,24 @@ public class Ask extends AppCompatActivity {
 
                             }
                         });
+                last.computeDaysDifferenceBetweenLowestAndHighestMileageCountableLast(vehicleEditText, new Last.DaysDifferenceCallback() {
 
+                    @Override
+                    public void onDaysDifferenceComputed(long daysDifference) {
+                        tv_answer_69.setText("69. Days last: " + daysDifference);
+                        modelFuelConsStatsListLastCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
                 last.calculateDifferenceBetweenLastAndSecondLastMileage(fuelTypeSpinner, vehicleEditText);
 
 
             }
+
         });
     }
 

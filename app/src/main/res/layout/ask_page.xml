@@ -56,7 +56,7 @@
 
         <Button
             style="?attr/materialButtonOutlinedStyle"
-            android:id="@+id/button_last_all"
+            android:id="@+id/button_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -616,72 +616,7 @@
 
     </ScrollView>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/refuel_card_background">
 
-        <include
-            android:id="@+id/l_cons_last_pb"
-            layout="@layout/gauge_fuel_0_cons"
-            android:layout_width="180dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal">
-
-        <include
-            android:id="@+id/l_cons_last_sldpg"
-            layout="@layout/card_design_cost_once"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/l_cons_last_slpg"
-            layout="@layout/card_design_distance_once"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:layout_marginLeft="16dp"
-        android:text="Last countable">
-    </TextView>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -694,7 +629,7 @@
 
         <include
             android:id="@+id/l_cons_last_pb"
-            layout="@layout/gauge_fuel_1_cons"
+            layout="@layout/gauge_fuel_l"
             android:layout_width="180dp"
             android:layout_height="100dp"
             android:layout_marginLeft="0dp"
@@ -707,7 +642,7 @@
 
         <include
             android:id="@+id/l_cons_last_lpg"
-            layout="@layout/gauge_fuel_2_cons"
+            layout="@layout/gauge_fuel_r"
             android:layout_width="180dp"
             android:layout_height="100dp"
             android:layout_marginLeft="0dp"
@@ -730,99 +665,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2_gauge_fuel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
-       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:text="All countable">
-    </TextView>
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/refuel_card_background"
-        android:orientation="horizontal">
-
-
-        <include
-            android:id="@+id/l_cons_all_pb"
-            layout="@layout/gauge_fuel_all_1"
-            android:layout_width="180dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/l_cons_all_lpg"
-            layout="@layout/gauge_fuel_all_2"
-            android:layout_width="180dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/refuel_card_background"
-        android:orientation="horizontal">
-
-
-        <include
-            android:id="@+id/l_cons_all_slpga"
-            layout="@layout/card_design_distance_all"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <include
-            android:id="@+id/l_cons_all_sflpga"
-            layout="@layout/card_design_cost_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginBottom="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

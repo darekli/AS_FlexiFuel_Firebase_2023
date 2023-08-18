@@ -8,8 +8,8 @@
     tools:context=".MainActivity">
 
     <com.example.as_flexifuel_firebase_2023.adapter.GradeGaugeView
-        android:id="@+id/gauge_view_fuel"
+        android:id="@+id/gauge_fuel_r"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top" />
+        android:gravity="top|right" />
 </androidx.constraintlayout.widget.ConstraintLayout>
