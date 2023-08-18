@@ -18,8 +18,8 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.as_flexifuel_firebase_2023.FuelFP;
-import com.example.as_flexifuel_firebase_2023.FuelType;
+import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
+import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 import com.example.as_flexifuel_firebase_2023.MainActivity;
 import com.example.as_flexifuel_firebase_2023.R;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountFetched;
@@ -50,9 +50,7 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.SumCalculated;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalSumCalculated2;
 import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.AdapterFuelConsStats;
-import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.AdapterGaugeFuel;
 import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.ModelFuelConsStats;
-import com.example.as_flexifuel_firebase_2023.modelFuelConsStats.ModelGaugeFuel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,7 +72,7 @@ public class Ask extends AppCompatActivity {
     public TextView tv_answer_50, tv_answer_51, tv_answer_52, tv_answer_53, tv_answer_54, tv_answer_55, tv_answer_56, tv_answer_57, tv_answer_58, tv_answer_59;
     public TextView tv_answer_60, tv_answer_61, tv_answer_62, tv_answer_63, tv_answer_64, tv_answer_65, tv_answer_66, tv_answer_67, tv_answer_68, tv_answer_69;
     public TextView tv_answer_70, tv_answer_71, tv_answer_72, tv_answer_73, tv_answer_74;
-    public Button buttonLast, button3Last, buttonAll, button_back_main;
+    public Button buttonLast, button3Last, buttonAll, buttonBackToMain;
     public EditText vehicleEditText;
     public DatabaseReference databaseRef;
     // MD3 new spinner: fuelTypeSpinner
@@ -113,9 +111,9 @@ public class Ask extends AppCompatActivity {
 /**
  * BACK TO MAIN ACTIVITY
  */
-        button_back_main = findViewById(R.id.button_back);
+        buttonBackToMain = findViewById(R.id.button_back);
 
-        button_back_main.setOnClickListener(new View.OnClickListener() {
+        buttonBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));

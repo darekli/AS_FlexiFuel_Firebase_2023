@@ -4,8 +4,8 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.example.as_flexifuel_firebase_2023.FuelFP;
-import com.example.as_flexifuel_firebase_2023.FuelType;
+import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
+import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AdjustedAmountPerMileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetchedString;
@@ -15,7 +15,6 @@ import com.example.as_flexifuel_firebase_2023.adapter.interfaces.LitersPerMileag
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageAmountCurrencyListFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.MileageDifferenceFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.TotalLitersFetched;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

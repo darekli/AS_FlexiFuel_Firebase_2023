@@ -5,9 +5,9 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
-import com.example.as_flexifuel_firebase_2023.Currency;
-import com.example.as_flexifuel_firebase_2023.FuelFP;
-import com.example.as_flexifuel_firebase_2023.FuelType;
+import com.example.as_flexifuel_firebase_2023.enums.Currency;
+import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
+import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AmountCurrencyRateMapFetched;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.AverageFuelConsumptionCallback;
 import com.example.as_flexifuel_firebase_2023.adapter.interfaces.CommonMileagesFetched;

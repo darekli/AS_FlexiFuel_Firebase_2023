@@ -1,8 +1,9 @@
 package com.example.as_flexifuel_firebase_2023;
 
-import androidx.annotation.NonNull;
-
-import java.util.Objects;
+import com.example.as_flexifuel_firebase_2023.enums.Country;
+import com.example.as_flexifuel_firebase_2023.enums.Currency;
+import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
+import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 
 public class Refueling {
     private String id;

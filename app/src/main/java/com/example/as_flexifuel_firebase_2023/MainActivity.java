@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +32,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.as_flexifuel_firebase_2023.adapter.Ask;
+import com.example.as_flexifuel_firebase_2023.enums.Country;
+import com.example.as_flexifuel_firebase_2023.enums.Currency;
+import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
+import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 import com.example.as_flexifuel_firebase_2023.nbp.NbpApiService;
 import com.example.as_flexifuel_firebase_2023.nbp.Rate;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     private RefuelingAdapter refuelingAdapter;
 
     //    private TextView tv_answer_01;
-    private Button addRefuelingButton, buttonAskPage;
+    private Button buttonSaveRefueling, buttonAskPage;
 //    private DatabaseReference databaseRef;
 
     public NumberPicker np_number_hours, np_number_minutes;
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
 
     //Button editAddCurrencyRateButton;
-    Button buttonAddNewRefueling;
+    Button buttonAddNewRefueling,buttonCancelRefueling;
 
 
 
@@ -121,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buttonAskPage = findViewById(R.id.button_ask_page);
+        buttonAskPage.setVisibility(View.VISIBLE);
         //  editAddCurrencyRateButton = findViewById(R.id.updateButton_currency_rate);
 //        editAddCurrencyRateButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -132,8 +139,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        buttonAddNewRefueling = findViewById(R.id.button_add_refueling);
 
+        buttonAddNewRefueling = findViewById(R.id.button_add_refueling);
+        buttonCancelRefueling = findViewById(R.id.button_cancel_refueling);
+        LinearLayout refuelingRecyclerView = findViewById(R.id.layout_refueling_recycler_view);
+        refuelingRecyclerView.setVisibility(View.VISIBLE);
         /**
          * NBP API
          */
@@ -170,12 +180,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearLayoutAddRefueling.setVisibility(View.VISIBLE);
+                refuelingRecyclerView.setVisibility(View.GONE);
+                buttonAskPage.setVisibility(View.GONE);
+
             }
+
         });
+        buttonCancelRefueling.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                linearLayoutAddRefueling.setVisibility(View.GONE);
+                refuelingRecyclerView.setVisibility(View.VISIBLE);
+                buttonAskPage.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+
         /**
          * PAGE ASK
          */
-        buttonAskPage = findViewById(R.id.button_ask_page);
+
 
         buttonAskPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         poiEditText = findViewById(R.id.poiEditText);
         latEditText = findViewById(R.id.latEditText);
         lngEditText = findViewById(R.id.lngEditText);
-        addRefuelingButton = findViewById(R.id.addButton);
+        buttonSaveRefueling = findViewById(R.id.button_save_refueling);
 
         // Initialize Firebase database reference
         refuelingsRef = FirebaseDatabase.getInstance().getReference("refuelings");
@@ -301,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         refuelingsRecyclerView.setLayoutManager(layoutManager);
-        addRefuelingButton.setOnClickListener(new View.OnClickListener() {
+        buttonSaveRefueling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addRefueling();
