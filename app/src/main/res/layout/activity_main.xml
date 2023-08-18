@@ -23,7 +23,7 @@
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/refuelingsRecyclerView"
+            android:id="@+id/refueling_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -33,10 +33,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fuelFPSpinner" />
     </LinearLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="vehicle"
+        android:layout_marginTop="2dp"
+        android:outlineSpotShadowColor="@color/colorTimeWarning_Dark"
+        android:textColorHint="@color/colorTimeWarning_Dark"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/material_on_surface_stroke">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_vehicle_text_view"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="4dp"
+
+            android:textColor="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/button_search_vehicle"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="32dp"
+            android:text="Search"
+            app:icon="@drawable/ic_refueling_add" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 <androidx.appcompat.widget.LinearLayoutCompat
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
+
     <Button
         android:id="@+id/button_add_refueling"
         style="?attr/materialButtonOutlinedStyle"

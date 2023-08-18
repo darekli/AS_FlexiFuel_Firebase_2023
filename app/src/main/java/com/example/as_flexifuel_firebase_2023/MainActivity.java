@@ -109,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
 
     //Button editAddCurrencyRateButton;
-    Button buttonAddNewRefueling,buttonCancelRefueling;
+    Button buttonAddNewRefueling, buttonCancelRefueling, buttonSearchVehicle;
 
-
+    EditText searchRefuelingByVehicle;
 
     private Runnable versionCheckRunnable = new Runnable() {
         @Override
@@ -137,11 +137,11 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-
-
-
         buttonAddNewRefueling = findViewById(R.id.button_add_refueling);
         buttonCancelRefueling = findViewById(R.id.button_cancel_refueling);
+        buttonSearchVehicle = findViewById(R.id.button_search_vehicle);
+        searchRefuelingByVehicle = findViewById(R.id.search_vehicle_text_view);
+
         LinearLayout refuelingRecyclerView = findViewById(R.id.layout_refueling_recycler_view);
         refuelingRecyclerView.setVisibility(View.VISIBLE);
         /**
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 /**
  * BUTTON ADD REFUELING
  */
-        LinearLayoutCompat linearLayoutAddRefueling =findViewById(R.id.layout_add_refueling);
+        LinearLayoutCompat linearLayoutAddRefueling = findViewById(R.id.layout_add_refueling);
         linearLayoutAddRefueling.setVisibility(View.GONE);
 
         buttonAddNewRefueling.setOnClickListener(new View.OnClickListener() {
@@ -316,17 +316,31 @@ public class MainActivity extends AppCompatActivity {
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         currencySpinner.setAdapter(currencyAdapter);
 
+
         refuelingsList = new ArrayList<>();
         refuelingAdapter = new RefuelingAdapter(refuelingsList);
-        RecyclerView refuelingsRecyclerView = findViewById(R.id.refuelingsRecyclerView);
+        RecyclerView refuelingsRecyclerView = findViewById(R.id.refueling_recycler_view);
         refuelingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         refuelingsRecyclerView.setAdapter(refuelingAdapter);
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //reverse mode
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         refuelingsRecyclerView.setLayoutManager(layoutManager);
+
+        //search all by vehicle
+
+        List<Refueling> filteredRefuelings = new ArrayList<>();
+        for (Refueling refueling : refuelingsList) {
+            if (refueling.getVehicle().contains("zs")) {
+                filteredRefuelings.add(refueling);
+            }
+        }
+
+
         buttonSaveRefueling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -351,7 +365,16 @@ public class MainActivity extends AppCompatActivity {
                 showOptionsDialog(selectedRefueling);
             }
         });
-        retrieveRefuelings();
+        //retrieveRefuelings();
+
+
+        buttonSearchVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchByVehicleRetrieveRefuelings();
+
+            }
+        });
     }
 
     private void addRefueling() {
@@ -445,6 +468,48 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void searchByVehicleRetrieveRefuelings() {
+        refuelingsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                refuelingsList.clear();
+                String searchText = searchRefuelingByVehicle.getText().toString().toLowerCase();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Refueling refueling = snapshot.getValue(Refueling.class);
+                    if (refueling != null && matchesSearchCriteria(refueling.getVehicle(), searchText)) {
+                        refuelingsList.add(refueling);
+                    }
+                }
+                refuelingAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Failed to retrieve refuelings", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
+    private boolean matchesSearchCriteria(String vehicle, String searchText) {
+        if (searchText.length() < 3) {
+            // If search text is less than 3 characters, don't process further
+            return false;
+        }
+        String lowerCaseVehicle = vehicle.toLowerCase();
+        String lowerCaseSearchText = searchText.toLowerCase();
+        for (int i = 0; i <= lowerCaseVehicle.length() - 3; i++) {
+            if (lowerCaseSearchText.contains(lowerCaseVehicle.substring(i, i + 3))) {
+                // Found a match of 3 consecutive characters
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void showOptionsDialog(final Refueling refueling) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
