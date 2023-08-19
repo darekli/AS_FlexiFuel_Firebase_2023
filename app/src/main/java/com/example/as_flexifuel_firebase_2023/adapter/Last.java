@@ -450,7 +450,15 @@ public class Last {
                     String snapshotFuelType = snapshot.child("fuelType").getValue(String.class);
                     String snapshotVehicle = snapshot.child("vehicle").getValue(String.class);
                     String mileageStr = snapshot.child("mileage").getValue(String.class);
-                    int mileage = Integer.parseInt(mileageStr);
+                    int mileage = 0; // Step 1: Default value
+                    if (mileageStr != null && !mileageStr.isEmpty()) { // Step 2: Check
+                        try {
+                            mileage = Integer.parseInt(mileageStr); // Step 3: Attempt parsing
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            // Handle the error or log it
+                        }
+                    }
 
                     if (snapshotVehicle != null && snapshotVehicle.equals(vehicleEditText.getText().toString())) {
                         if (snapshotFuelType != null && snapshotFuelType.equals(FuelType.PB.toString())) {

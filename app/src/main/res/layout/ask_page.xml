@@ -3,6 +3,8 @@
     android:id="@+id/layout_ask_data"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:orientation="vertical">
 
     <Button
@@ -15,17 +17,26 @@
         android:text="Home page"
         app:icon="@drawable/ic_arrow_back" />
 
-    <EditText
-        android:id="@+id/et_ask_vehicle"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textIndputLayouta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Vehicle" />
+        android:hint="Vehicle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_ask_vehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minWidth="90dp"
+            android:textColor="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/ask_fuel_type_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"/>
 
     <GridLayout
         android:layout_width="match_parent"
@@ -66,8 +77,6 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/refuel_card_background"
         android:orientation="horizontal">

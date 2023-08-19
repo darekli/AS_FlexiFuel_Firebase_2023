@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonAddNewRefueling, buttonCancelRefueling, buttonSearchVehicle;
 
     EditText searchRefuelingByVehicle;
-
+    LinearLayout layoutRefuelingRecyclerView, layoutLogoImage;
     private Runnable versionCheckRunnable = new Runnable() {
         @Override
         public void run() {
@@ -142,8 +142,13 @@ public class MainActivity extends AppCompatActivity {
         buttonSearchVehicle = findViewById(R.id.button_search_vehicle);
         searchRefuelingByVehicle = findViewById(R.id.search_vehicle_text_view);
 
-        LinearLayout refuelingRecyclerView = findViewById(R.id.layout_refueling_recycler_view);
-        refuelingRecyclerView.setVisibility(View.VISIBLE);
+        layoutRefuelingRecyclerView = findViewById(R.id.layout_refueling_recycler_view);
+        layoutRefuelingRecyclerView.setVisibility(View.GONE);
+
+
+        layoutLogoImage = findViewById(R.id.layout_logo_image);
+        layoutLogoImage.setVisibility(View.VISIBLE);
+
         /**
          * NBP API
          */
@@ -180,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearLayoutAddRefueling.setVisibility(View.VISIBLE);
-                refuelingRecyclerView.setVisibility(View.GONE);
+                layoutRefuelingRecyclerView.setVisibility(View.GONE);
+                layoutLogoImage.setVisibility(View.GONE);
                 buttonAskPage.setVisibility(View.GONE);
 
             }
@@ -191,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 linearLayoutAddRefueling.setVisibility(View.GONE);
-                refuelingRecyclerView.setVisibility(View.VISIBLE);
+                layoutRefuelingRecyclerView.setVisibility(View.VISIBLE);
                 buttonAskPage.setVisibility(View.VISIBLE);
             }
 
@@ -372,7 +378,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 searchByVehicleRetrieveRefuelings();
-
+               // layoutLogoImage.setVisibility(View.GONE);
+               // layoutRefuelingRecyclerView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -475,12 +482,22 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 refuelingsList.clear();
                 String searchText = searchRefuelingByVehicle.getText().toString().toLowerCase();
+                boolean hasMatches = false; // Assume no matches initially
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Refueling refueling = snapshot.getValue(Refueling.class);
                     if (refueling != null && matchesSearchCriteria(refueling.getVehicle(), searchText)) {
                         refuelingsList.add(refueling);
+                        hasMatches = true; // Update the flag when you find a match
                     }
+                }
+
+                if (hasMatches) {
+                    layoutLogoImage.setVisibility(View.GONE);
+                    layoutRefuelingRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    layoutLogoImage.setVisibility(View.VISIBLE);
+                    layoutRefuelingRecyclerView.setVisibility(View.GONE);
                 }
                 refuelingAdapter.notifyDataSetChanged();
             }
@@ -490,8 +507,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Failed to retrieve refuelings", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
 
 
     private boolean matchesSearchCriteria(String vehicle, String searchText) {

@@ -17,6 +17,20 @@
         android:textSize="16sp" />
 
     <LinearLayout
+        android:id="@+id/layout_logo_image"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_money">
+
+        </ImageView>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/layout_refueling_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="320dp"
@@ -44,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="vehicle"
-        android:layout_marginTop="2dp"
         android:outlineSpotShadowColor="@color/colorTimeWarning_Dark"
         android:textColorHint="@color/colorTimeWarning_Dark"
         app:boxBackgroundMode="outline"
@@ -55,9 +68,6 @@
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="4dp"
-
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
         <Button

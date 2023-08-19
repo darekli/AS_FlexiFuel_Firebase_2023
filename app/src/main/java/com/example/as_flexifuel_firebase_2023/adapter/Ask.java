@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.as_flexifuel_firebase_2023.adapter.interfaces.VehiclesFetched;
 import com.example.as_flexifuel_firebase_2023.enums.FuelFP;
 import com.example.as_flexifuel_firebase_2023.enums.FuelType;
 import com.example.as_flexifuel_firebase_2023.MainActivity;
@@ -86,6 +88,7 @@ public class Ask extends AppCompatActivity {
 
     private Last last;
     private All all;
+    private Search search;
     private ViewPager2 viewPagerFCS;
     //last
     private List<ModelFuelConsStats> modelFuelConsStatsListLastCountable;
@@ -105,6 +108,7 @@ public class Ask extends AppCompatActivity {
 
         last = new Last();
         all = new All();
+        search = new Search();
         modelFuelConsStatsListLastCountable = new ArrayList<>();
         modelFuelConsStatsListAllCountable = new ArrayList<>();
 
@@ -476,6 +480,20 @@ public class Ask extends AppCompatActivity {
                         tv_answer_68.setText("68. Days all: " + daysDifference);
                         modelFuelConsStatsListAllCountable.add(new ModelFuelConsStats(R.drawable.ic_calendar, String.valueOf(daysDifference), String.valueOf(" days")));
 
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+
+                    }
+                });
+
+                search.findAllAvailableVehicles(new VehiclesFetched() {
+                    @Override
+                    public void onVehiclesFetched(ArrayList<String> vehicles) {
+                        tv_answer_70.setText("----- SEARCH -------");
+                        String vehiclesText = TextUtils.join(", ", vehicles);
+                        tv_answer_71.setText("Saved vehicles: "+vehiclesText);
                     }
 
                     @Override
